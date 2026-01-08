@@ -8,6 +8,7 @@ use App\Enums\CourseStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -57,6 +58,16 @@ class Course extends Model
     public function modules(): HasMany
     {
         return $this->hasMany(Module::class);
+    }
+
+    /**
+     * Get the students enrolled in the course.
+     */
+    public function students(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'course_user')
+            ->withPivot(['status', 'enrolled_at', 'expires_at'])
+            ->withTimestamps();
     }
 }
 
