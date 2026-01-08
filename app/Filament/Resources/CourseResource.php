@@ -8,6 +8,7 @@ use App\Enums\CourseStatus;
 use App\Filament\Resources\CourseResource\Pages\CreateCourse;
 use App\Filament\Resources\CourseResource\Pages\EditCourse;
 use App\Filament\Resources\CourseResource\Pages\ListCourses;
+use App\Filament\Resources\CourseResource\RelationManagers\ModulesRelationManager;
 use App\Models\Course;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
@@ -161,7 +162,7 @@ class CourseResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ModulesRelationManager::class,
         ];
     }
 
