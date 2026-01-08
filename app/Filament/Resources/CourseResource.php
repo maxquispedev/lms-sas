@@ -12,13 +12,13 @@ use App\Filament\Resources\CourseResource\RelationManagers\ModulesRelationManage
 use App\Models\Course;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\ImageColumn;
@@ -37,10 +37,11 @@ class CourseResource extends Resource
     {
         return $schema
             ->components([
-                Grid::make(2)
+                Grid::make()
+                    ->columns(2)
                     ->schema([
                         // Columna Izquierda: Detalles Principales
-                        Section::make('Detalles Principales')
+                        Fieldset::make('Detalles Principales')
                             ->schema([
                                 Select::make('teacher_id')
                                     ->label('Instructor')
@@ -72,7 +73,7 @@ class CourseResource extends Resource
                             ]),
 
                         // Columna Derecha: Meta & Precio
-                        Section::make('Meta & Precio')
+                        Fieldset::make('Meta & Precio')
                             ->schema([
                                 FileUpload::make('image_url')
                                     ->label('Imagen')
