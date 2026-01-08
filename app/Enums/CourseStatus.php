@@ -9,5 +9,17 @@ enum CourseStatus: string
     case Draft = 'Draft';
     case Published = 'Published';
     case Archived = 'Archived';
+
+    /**
+     * Get the color for the badge.
+     */
+    public function getColor(): string
+    {
+        return match ($this) {
+            self::Draft => 'gray',
+            self::Published => 'success',
+            self::Archived => 'danger',
+        };
+    }
 }
 
