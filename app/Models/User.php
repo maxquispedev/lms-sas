@@ -69,6 +69,16 @@ class User extends Authenticatable
     }
 
     /**
+     * Get all lessons for the user (with completion status).
+     */
+    public function lessons(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_user')
+            ->withPivot(['completed', 'completed_at'])
+            ->withTimestamps();
+    }
+
+    /**
      * Get the lessons that the user has completed.
      */
     public function lessons_completed(): BelongsToMany
