@@ -67,4 +67,15 @@ class User extends Authenticatable
             ->withPivot(['status', 'enrolled_at', 'expires_at'])
             ->withTimestamps();
     }
+
+    /**
+     * Get the lessons that the user has completed.
+     */
+    public function lessons_completed(): BelongsToMany
+    {
+        return $this->belongsToMany(Lesson::class, 'lesson_user')
+            ->wherePivot('completed', true)
+            ->withPivot(['completed', 'completed_at'])
+            ->withTimestamps();
+    }
 }
