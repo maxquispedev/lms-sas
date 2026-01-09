@@ -1,10 +1,10 @@
 @auth
-<nav class="bg-gray-900 dark:bg-gray-900 border-b border-gray-800 dark:border-gray-800 shadow-lg">
+<nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg transition-colors duration-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             {{-- Logo / Nombre --}}
             <div class="flex items-center">
-                <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-white hover:text-gray-200 transition-colors duration-200">
+                <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200">
                     {{ config('app.name', 'Tu Academia') }}
                 </a>
             </div>
@@ -18,7 +18,7 @@
                     {{-- Botón del Usuario --}}
                     <button
                         @click="open = !open"
-                        class="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-3 py-2"
+                        class="flex items-center space-x-3 text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 rounded-lg px-3 py-2"
                     >
                         {{-- Avatar --}}
                         <div class="w-10 h-10 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white font-semibold text-sm shadow-md ring-2 ring-blue-500/20">
