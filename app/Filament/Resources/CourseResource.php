@@ -79,13 +79,20 @@ class CourseResource extends Resource
                                     ->label('Imagen')
                                     ->disk('public')
                                     ->directory('courses')
+                                    ->visibility('public')
                                     ->image()
                                     ->imageEditor()
                                     ->imageEditorAspectRatios([
                                         '16:9',
                                         '4:3',
                                         '1:1',
-                                    ]),
+                                    ])
+                                    ->imagePreviewHeight('250')
+                                    ->maxSize(5120)
+                                    ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
+                                    ->downloadable()
+                                    ->openable()
+                                    ->columnSpanFull(),
 
                                 TextInput::make('price')
                                     ->label('Precio')
