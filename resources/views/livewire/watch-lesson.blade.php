@@ -117,7 +117,7 @@
                             wire:click="toggleComplete"
                             class="flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200 {{ $this->isLessonCompleted() 
                                 ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white' 
-                                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300' 
+                                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 cursor-pointer' 
                             }}"
                             title="{{ $this->isLessonCompleted() ? 'Marcar como No Visto' : 'Marcar como Visto' }}"
                         >
@@ -176,21 +176,8 @@
                         </div>
                     </div>
 
-                    {{-- Autoplay Toggle --}}
-                    <div class="flex items-center justify-between mb-6 pb-6 border-b border-gray-200 dark:border-gray-700">
-                        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Autoplay
-                        </span>
-                        <button
-                            wire:click="toggleAutoplay"
-                            type="button"
-                            class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 {{ $autoplay ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700' }}"
-                            role="switch"
-                            aria-checked="{{ $autoplay ? 'true' : 'false' }}"
-                        >
-                            <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $autoplay ? 'translate-x-5' : 'translate-x-0' }}"></span>
-                        </button>
-                    </div>
+                    {{-- Separator --}}
+                    <div class="mb-6 border-b border-gray-200 dark:border-gray-700"></div>
 
                     {{-- Modules and Lessons --}}
                     <div class="space-y-2" x-data="{ 
