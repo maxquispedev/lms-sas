@@ -115,15 +115,25 @@
                         {{-- Marcar Visto Button (Left) --}}
                         <button
                             wire:click="toggleComplete"
-                            class="flex items-center justify-center w-10 h-10 rounded-lg transition-colors duration-200 {{ $this->isLessonCompleted() 
-                                ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white' 
-                                : 'bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 cursor-pointer' 
+                            class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm {{ $this->isLessonCompleted() 
+                                ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white shadow-green-500/20 border border-green-600 dark:border-green-500' 
+                                : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 cursor-pointer' 
                             }}"
-                            title="{{ $this->isLessonCompleted() ? 'Marcar como No Visto' : 'Marcar como Visto' }}"
+                            aria-label="{{ $this->isLessonCompleted() ? 'Marcar como no completado' : 'Marcar como completado' }}"
                         >
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                            </svg>
+                            @if($this->isLessonCompleted())
+                                {{-- Check icon when completed --}}
+                                <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                </svg>
+                                <span class="whitespace-nowrap">Completado</span>
+                            @else
+                                {{-- Circle icon when not completed --}}
+                                <svg class="w-5 h-5 flex-shrink-0 text-gray-400 dark:text-gray-500 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="whitespace-nowrap">No Completado</span>
+                            @endif
                         </button>
 
                         {{-- Navigation Buttons (Right) --}}
