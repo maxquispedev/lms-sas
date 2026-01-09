@@ -25,6 +25,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CourseResource extends Resource
@@ -121,7 +122,13 @@ class CourseResource extends Resource
                 ImageColumn::make('image_url')
                     ->label('Imagen')
                     ->circular()
-                    ->defaultImageUrl(url('/images/placeholder.png')),
+                    ->defaultImageUrl(url('/images/placeholder.png'))
+                    ->getStateUsing(function ($record) {
+                        if (!$record->image_url) {
+                            return null;
+                        }
+                        return Storage::disk('public')->url($record->image_url);
+                    }),
 
                 TextColumn::make('title')
                     ->label('Título')
