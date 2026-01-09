@@ -12,36 +12,6 @@
                 </p>
             </div>
 
-            {{-- Video Player --}}
-            <div class="aspect-video bg-gray-900 dark:bg-black rounded-lg overflow-hidden relative">
-                @if($currentLesson->iframe_code)
-                    <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:absolute [&>iframe]:inset-0">
-                        {!! $currentLesson->iframe_code !!}
-                    </div>
-                @else
-                    <div class="w-full h-full flex items-center justify-center absolute inset-0">
-                        <div class="text-center">
-                            <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                            </svg>
-                            <p class="text-gray-400 dark:text-gray-600">No hay video disponible</p>
-                        </div>
-                    </div>
-                @endif
-            </div>
-
-            {{-- Lesson Content --}}
-            @if($currentLesson->content)
-                <div class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                        Sobre esta lección
-                    </h3>
-                    <div class="prose dark:prose-invert max-w-none">
-                        {!! $currentLesson->content !!}
-                    </div>
-                </div>
-            @endif
-
             {{-- Controls --}}
             <div class="flex flex-col sm:flex-row gap-4">
                 <button
@@ -80,6 +50,36 @@
                     </a>
                 @endif
             </div>
+
+            {{-- Video Player --}}
+            <div class="aspect-video bg-gray-900 dark:bg-black rounded-lg overflow-hidden relative">
+                @if($currentLesson->iframe_code)
+                    <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:absolute [&>iframe]:inset-0">
+                        {!! $currentLesson->iframe_code !!}
+                    </div>
+                @else
+                    <div class="w-full h-full flex items-center justify-center absolute inset-0">
+                        <div class="text-center">
+                            <svg class="mx-auto h-16 w-16 text-gray-400 dark:text-gray-600 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <p class="text-gray-400 dark:text-gray-600">No hay video disponible</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+
+            {{-- Lesson Content --}}
+            @if($currentLesson->content)
+                <div class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                        Sobre esta lección
+                    </h3>
+                    <div class="prose dark:prose-invert max-w-none">
+                        {!! $currentLesson->content !!}
+                    </div>
+                </div>
+            @endif
         </div>
 
         {{-- Right Column: Playlist (1/3) --}}
