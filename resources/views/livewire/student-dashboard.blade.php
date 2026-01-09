@@ -15,7 +15,7 @@
         Mis Cursos
     </h1>
 
-    @if($courses->isEmpty())
+    @if($this->courses->isEmpty())
         <div class="text-center py-12">
             <div class="max-w-md mx-auto">
                 <svg class="mx-auto h-24 w-24 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,7 +31,7 @@
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            @foreach($courses as $course)
+            @foreach($this->courses as $course)
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     {{-- Course Image --}}
                     <div class="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
@@ -80,7 +80,7 @@
 
                         {{-- Action Button --}}
                         <a 
-                            href="#" 
+                            href="{{ route('course.learn', $course->slug) }}" 
                             class="block w-full text-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white font-medium rounded-lg transition-colors duration-200"
                         >
                             Continuar Aprendiendo

@@ -36,7 +36,7 @@
     </nav>
 
     <main>
-        @yield('content')
+        {{ $slot }}
     </main>
 
     @livewireScripts

@@ -21,14 +21,18 @@ class WatchLesson extends Component
     /**
      * Mount the component.
      */
-    public function mount(Course $course, ?string $lesson = null, EnrollmentService $enrollmentService): void
+    public function mount(
+        EnrollmentService $enrollmentService,
+        Course $course,
+        ?string $lesson = null,
+    ): void
     {
-        $this->course = $course->load('modules.lessons');
-
         // Check access
         if (!$enrollmentService->checkAccess(Auth::user(), $course)) {
             abort(403, 'No tienes acceso a este curso.');
         }
+
+        $this->course = $course->load('modules.lessons');
 
         // Resolve lesson
         if ($lesson) {
