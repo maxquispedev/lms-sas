@@ -17,7 +17,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -41,7 +41,7 @@ class CourseResource extends Resource
                     ->columns(2)
                     ->schema([
                         // Columna Izquierda: Detalles Principales
-                        Fieldset::make('Detalles Principales')
+                        Section::make('Detalles Principales')
                             ->schema([
                                 Select::make('teacher_id')
                                     ->label('Instructor')
@@ -73,7 +73,7 @@ class CourseResource extends Resource
                             ]),
 
                         // Columna Derecha: Meta & Precio
-                        Fieldset::make('Meta & Precio')
+                        Section::make('Meta & Precio')
                             ->schema([
                                 FileUpload::make('image_url')
                                     ->label('Imagen')
@@ -101,7 +101,8 @@ class CourseResource extends Resource
                                     ->required()
                                     ->default(CourseStatus::Draft),
                             ]),
-                    ]),
+                    ])
+                    ->columnSpanFull()
             ]);
     }
 
