@@ -80,7 +80,8 @@ class ModulesRelationManager extends RelationManager
                     ])
                     ->reorderableWithButtons()
                     ->defaultItems(0)
-                    ->collapsible(),
+                    ->collapsible()
+                    ->columnSpanFull(),
             ]);
     }
 
