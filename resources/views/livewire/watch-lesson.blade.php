@@ -26,6 +26,11 @@
                 </li>
             </ol>
         </nav>
+        {{-- Lesson Title --}}
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
+                        {{ $currentLesson->title }}
+                    </h1>
+        {{-- End Lesson Title --}}
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Left Column: Video Player (2/3) --}}
@@ -48,12 +53,8 @@
                     @endif
                 </div>
 
-                {{-- Lesson Title and Info --}}
+                {{-- Info --}}
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-                        {{ $currentLesson->title }}
-                    </h1>
-
                     {{-- Instructor Information --}}
                     @if($course->teacher)
                         <div class="flex items-center gap-3 mb-4">
@@ -80,9 +81,6 @@
                     {{-- Course Description --}}
                     @if($currentLesson->content)
                         <div class="mt-6">
-                            <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-3">
-                                {{ $currentLesson->title }}
-                            </h2>
                             <div class="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
                                 {!! $currentLesson->content !!}
                             </div>
