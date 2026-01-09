@@ -27,12 +27,36 @@ class StudentDashboard extends Component
             return collect();
         }
 
+        $completedLessonIds = $user
+            ->lessons_completed()
+            ->pluck('lessons.id')
+            ->toArray();
+
         return $user
             ->courses()
             ->wherePivot('status', 'active')
-            ->with('teacher')
+            ->with([
+                'teacher',
+                'modules.lessons',
+            ])
             ->orderByPivot('enrolled_at', 'desc')
-            ->get();
+            ->get()
+            ->each(function (Course $course) use ($completedLessonIds): void {
+                $lessonIds = $course->modules
+                    ->flatMap->lessons
+                    ->pluck('id');
+
+                $totalLessons = $lessonIds->count();
+                $completedCount = $lessonIds
+                    ->filter(fn (int $lessonId): bool => in_array($lessonId, $completedLessonIds, true))
+                    ->count();
+
+                $course->total_lessons = $totalLessons;
+                $course->completed_lessons = $completedCount;
+                $course->progress = $totalLessons > 0
+                    ? (int) floor(($completedCount / $totalLessons) * 100)
+                    : 0;
+            });
     }
 
     /**

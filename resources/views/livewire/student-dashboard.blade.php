@@ -35,19 +35,12 @@
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     {{-- Course Image --}}
                     <div class="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
-                        @if($course->image_url)
-                            <img 
-                                src="{{ $course->image_url }}" 
-                                alt="{{ $course->title }}"
-                                class="w-full h-full object-cover"
-                            >
-                        @else
-                            <div class="w-full h-full flex items-center justify-center">
-                                <svg class="w-16 h-16 text-gray-400 dark:text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                            </div>
-                        @endif
+                        <img 
+                            src="{{ $course->image_url ?: 'https://placehold.co/800x450?text=Curso' }}" 
+                            alt="{{ $course->title }}"
+                            class="w-full h-full object-cover"
+                            onerror="this.onerror=null;this.src='https://placehold.co/800x450?text=Curso';"
+                        >
                     </div>
 
                     {{-- Course Content --}}
@@ -67,15 +60,18 @@
                                     Progreso
                                 </span>
                                 <span class="text-xs font-medium text-gray-700 dark:text-gray-300">
-                                    0% Completado
+                                    {{ $course->progress }}% Completado
                                 </span>
                             </div>
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                                 <div 
                                     class="bg-blue-600 dark:bg-blue-500 h-2 rounded-full transition-all duration-300"
-                                    style="width: 0%"
+                                    style="width: {{ $course->progress }}%"
                                 ></div>
                             </div>
+                            <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                {{ $course->completed_lessons }} / {{ $course->total_lessons }} lecciones completadas
+                            </p>
                         </div>
 
                         {{-- Action Button --}}
