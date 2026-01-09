@@ -99,8 +99,8 @@
                     @endif
                 </div>
 
-                {{-- Action Buttons --}}
-                <div class="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+                {{-- Action Button - Marcar Visto (Left) --}}
+                <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button
                         wire:click="toggleComplete"
                         class="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors duration-200 {{ $this->isLessonCompleted() 
@@ -120,18 +120,6 @@
                             <span>Marcar como Visto</span>
                         @endif
                     </button>
-
-                    @if($nextLesson)
-                        <a
-                            href="{{ route('course.learn', [$course, $nextLesson->slug]) }}"
-                            class="flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white rounded-lg font-medium transition-colors duration-200"
-                        >
-                            <span>Siguiente Lección</span>
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                            </svg>
-                        </a>
-                    @endif
                 </div>
             </div>
 
@@ -142,6 +130,55 @@
                         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">
                             Contenido
                         </h2>
+                    </div>
+
+                    {{-- Navigation Buttons --}}
+                    <div class="flex items-center gap-2 mb-6">
+                        {{-- Previous Button --}}
+                        @if($previousLesson)
+                            <a
+                                href="{{ route('course.learn', [$course, $previousLesson->slug]) }}"
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-colors duration-200"
+                                title="Lección anterior"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </a>
+                        @else
+                            <button
+                                disabled
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                                title="No hay lección anterior"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                        @endif
+
+                        {{-- Next Button --}}
+                        @if($nextLesson)
+                            <a
+                                href="{{ route('course.learn', [$course, $nextLesson->slug]) }}"
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 transition-colors duration-200"
+                                title="Siguiente lección"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </a>
+                        @else
+                            <button
+                                disabled
+                                class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-600 cursor-not-allowed"
+                                title="No hay siguiente lección"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        @endif
                     </div>
 
                     {{-- Autoplay Toggle --}}

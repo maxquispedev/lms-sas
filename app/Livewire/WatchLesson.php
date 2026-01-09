@@ -130,6 +130,31 @@ class WatchLesson extends Component
     }
 
     /**
+     * Get the previous lesson in the course.
+     */
+    public function getPreviousLesson(): ?Lesson
+    {
+        $modules = $this->course->modules
+            ->sortBy('sort_order');
+
+        $allLessons = $modules
+            ->flatMap(function ($module) {
+                return $module->lessons->sortBy('sort_order');
+            })
+            ->values();
+
+        $currentIndex = $allLessons->search(function ($lesson) {
+            return $lesson->id === $this->currentLesson->id;
+        });
+
+        if ($currentIndex !== false && $currentIndex > 0) {
+            return $allLessons->get($currentIndex - 1);
+        }
+
+        return null;
+    }
+
+    /**
      * Render the component.
      */
     public function render(): View
@@ -153,6 +178,7 @@ class WatchLesson extends Component
             'modules' => $modules,
             'completedLessonIds' => $completedLessonIds,
             'nextLesson' => $this->getNextLesson(),
+            'previousLesson' => $this->getPreviousLesson(),
         ]);
     }
 }
