@@ -40,17 +40,14 @@ class OrderResource extends Resource
 
                 Select::make('course_id')
                     ->label('Curso a Vender')
-                    ->options(
-                        Course::where('status', CourseStatus::Published)
-                            ->pluck('title', 'id')
+                    ->relationship(
+                        name: 'course',
+                        titleAttribute: 'title',
+                        modifyQueryUsing: fn ($query) => $query->where('status', CourseStatus::Published)
                     )
                     ->required()
-                    ->dehydrated(false)
                     ->searchable()
-                    ->getSearchResultsUsing(fn (string $search) => Course::where('status', CourseStatus::Published)
-                        ->where('title', 'like', "%{$search}%")
-                        ->limit(50)
-                        ->pluck('title', 'id')),
+                    ->preload(),
 
                 TextInput::make('transaction_id')
                     ->label('ID Referencia (Opcional)')

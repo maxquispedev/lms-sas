@@ -21,6 +21,7 @@ class Order extends Model
      */
     protected $fillable = [
         'user_id',
+        'course_id',
         'total_amount',
         'status',
         'payment_gateway',
@@ -47,6 +48,14 @@ class Order extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the course associated with the order.
+     */
+    public function course(): BelongsTo
+    {
+        return $this->belongsTo(Course::class);
     }
 }
 

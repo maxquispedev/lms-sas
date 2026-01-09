@@ -32,6 +32,7 @@ class PaymentService
             // Step 1: Create Order
             $order = Order::create([
                 'user_id' => $user->id,
+                'course_id' => $course->id,
                 'total_amount' => $course->price,
                 'status' => OrderStatus::Paid,
                 'payment_gateway' => PaymentGateway::Manual,
