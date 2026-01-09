@@ -29,10 +29,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 antialiased">
+<body class="bg-gray-50 dark:bg-gray-900 antialiased transition-colors duration-200">
     <x-student-navigation />
 
-    <main>
+    <main class="min-h-[calc(100vh-4rem)]">
         {{ $slot }}
     </main>
 

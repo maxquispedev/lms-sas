@@ -1,10 +1,10 @@
 @auth
-<nav class="bg-gray-900 dark:bg-gray-900 shadow-lg">
+<nav class="bg-gray-900 dark:bg-gray-900 border-b border-gray-800 dark:border-gray-800 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             {{-- Logo / Nombre --}}
             <div class="flex items-center">
-                <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-white hover:text-gray-200 transition-colors">
+                <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-white hover:text-gray-200 transition-colors duration-200">
                     {{ config('app.name', 'Tu Academia') }}
                 </a>
             </div>
@@ -18,10 +18,10 @@
                     {{-- Botón del Usuario --}}
                     <button
                         @click="open = !open"
-                        class="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg px-3 py-2"
+                        class="flex items-center space-x-3 text-white hover:text-gray-200 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-lg px-3 py-2"
                     >
                         {{-- Avatar --}}
-                        <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold text-sm">
+                        <div class="w-10 h-10 rounded-full bg-blue-600 dark:bg-blue-500 flex items-center justify-center text-white font-semibold text-sm shadow-md ring-2 ring-blue-500/20">
                             @if(Auth::user()->avatar_url)
                                 <img 
                                     src="{{ Auth::user()->avatar_url }}" 
@@ -32,8 +32,8 @@
                                 {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
                             @endif
                         </div>
-                        <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{ 'rotate-180': open }">
+                        <span class="text-sm font-medium hidden sm:inline">{{ Auth::user()->name }}</span>
+                        <svg class="w-4 h-4 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{ 'rotate-180': open }">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
                     </button>
@@ -48,12 +48,12 @@
                         x-transition:leave="transition ease-in duration-75"
                         x-transition:leave-start="transform opacity-100 scale-100"
                         x-transition:leave-end="transform opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg py-1 z-50 border border-gray-200 dark:border-gray-700"
+                        class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-xl py-1 z-50 border border-gray-200 dark:border-gray-700"
                         style="display: none;"
                     >
                         <a
                             href="{{ route('student.dashboard') }}"
-                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150"
                         >
                             <div class="flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,7 +65,7 @@
 
                         <a
                             href="{{ route('student.profile') }}"
-                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150"
                         >
                             <div class="flex items-center gap-2">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -81,7 +81,7 @@
                             @csrf
                             <button
                                 type="submit"
-                                class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                                class="w-full text-left block px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-150"
                             >
                                 <div class="flex items-center gap-2">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
