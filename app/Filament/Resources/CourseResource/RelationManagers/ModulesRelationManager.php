@@ -81,6 +81,7 @@ class ModulesRelationManager extends RelationManager
                     ->reorderableWithButtons()
                     ->defaultItems(0)
                     ->collapsible()
+                    ->itemLabel(fn (array $state): ?string => $state['title'] ?? 'Nueva Lección')
                     ->columnSpanFull(),
             ]);
     }
