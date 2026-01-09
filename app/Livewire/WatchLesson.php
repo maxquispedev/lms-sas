@@ -17,6 +17,7 @@ class WatchLesson extends Component
 {
     public Course $course;
     public ?Lesson $currentLesson = null;
+    public bool $autoplay = false;
 
     /**
      * Mount the component.
@@ -59,6 +60,9 @@ class WatchLesson extends Component
         if (!$this->currentLesson) {
             abort(404, 'No hay lecciones disponibles en este curso.');
         }
+
+        // Ensure module relationship is loaded
+        $this->currentLesson->load('module');
     }
 
     /**
@@ -79,6 +83,14 @@ class WatchLesson extends Component
 
         // Refresh component state
         $this->dispatch('lesson-completion-toggled');
+    }
+
+    /**
+     * Toggle autoplay preference.
+     */
+    public function toggleAutoplay(): void
+    {
+        $this->autoplay = !$this->autoplay;
     }
 
     /**
@@ -133,6 +145,9 @@ class WatchLesson extends Component
             ->lessons_completed()
             ->pluck('lessons.id')
             ->toArray();
+
+        // Load teacher relationship
+        $this->course->load('teacher');
 
         return view('livewire.watch-lesson', [
             'modules' => $modules,
