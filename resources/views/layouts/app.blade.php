@@ -16,24 +16,7 @@
     @livewireStyles
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 antialiased">
-    <nav class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-gray-900 dark:text-gray-100">
-                        {{ config('app.name', 'LMS Platform') }}
-                    </a>
-                </div>
-                <div class="flex items-center space-x-4">
-                    @auth
-                        <span class="text-sm text-gray-700 dark:text-gray-300">
-                            {{ Auth::user()->name }}
-                        </span>
-                    @endauth
-                </div>
-            </div>
-        </div>
-    </nav>
+    <x-student-navigation />
 
     <main>
         {{ $slot }}

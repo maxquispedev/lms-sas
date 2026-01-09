@@ -3,6 +3,7 @@
 use App\Livewire\Auth\Login;
 use App\Livewire\CourseCheckout;
 use App\Livewire\StudentDashboard;
+use App\Livewire\StudentProfile;
 use App\Livewire\WatchLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -29,6 +30,9 @@ Route::post('/logout', function (Request $request) {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/my-courses', StudentDashboard::class)
         ->name('student.dashboard');
+
+    Route::get('/my-profile', StudentProfile::class)
+        ->name('student.profile');
 
     Route::get('/learn/{course:slug}/{lesson:slug?}', WatchLesson::class)
         ->name('course.learn');
