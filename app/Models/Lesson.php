@@ -23,6 +23,7 @@ class Lesson extends Model
         'title',
         'slug',
         'iframe_code',
+        'content',
         'is_free',
         'sort_order',
     ];

@@ -10,6 +10,7 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -62,6 +63,10 @@ class ModulesRelationManager extends RelationManager
                         Textarea::make('iframe_code')
                             ->label('Embed Code')
                             ->rows(2)
+                            ->columnSpanFull(),
+
+                        RichEditor::make('content')
+                            ->label('Contenido y Recursos')
                             ->columnSpanFull(),
 
                         Toggle::make('is_free')
