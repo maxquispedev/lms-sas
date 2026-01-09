@@ -36,10 +36,10 @@
                     {{-- Course Image --}}
                     <div class="aspect-video bg-gray-200 dark:bg-gray-700 overflow-hidden">
                         <img 
-                            src="{{ $course->image_url ?: 'https://placehold.co/800x450?text=Curso' }}" 
+                            src="{{ $course->cover_url }}" 
                             alt="{{ $course->title }}"
                             class="w-full h-full object-cover"
-                            onerror="this.onerror=null;this.src='https://placehold.co/800x450?text=Curso';"
+                            loading="lazy"
                         >
                     </div>
 
