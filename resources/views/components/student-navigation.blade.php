@@ -1,5 +1,5 @@
 @auth
-<nav class="bg-gray-900 shadow-lg">
+<nav class="bg-gray-900 dark:bg-gray-900 shadow-lg">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             {{-- Logo / Nombre --}}
@@ -10,7 +10,10 @@
             </div>
 
             {{-- Usuario y Dropdown --}}
-            <div class="flex items-center">
+            <div class="flex items-center gap-3">
+                {{-- Theme Toggle --}}
+                <livewire:theme-toggle />
+
                 <div class="relative" x-data="{ open: false }">
                     {{-- Botón del Usuario --}}
                     <button
