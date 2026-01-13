@@ -27,7 +27,7 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout')->middleware('auth');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/my-courses', StudentDashboard::class)
         ->name('student.dashboard');
 

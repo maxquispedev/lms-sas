@@ -36,7 +36,7 @@ class Login extends Component
 
         session()->regenerate();
 
-        $this->redirectIntended(route('student.dashboard'), navigate: true);
+        $this->redirect(route('student.dashboard'), navigate: false);
     }
 
     public function render(): View

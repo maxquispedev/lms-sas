@@ -7,6 +7,80 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## LMS - Sistema de Gestión de Aprendizaje
+
+Sistema de gestión de aprendizaje desarrollado con Laravel 12, FilamentPHP v4, Livewire 3 y TailwindCSS.
+
+## Desarrollo Local
+
+### Requisitos Previos
+
+- PHP 8.5 o superior
+- Composer
+- Node.js y pnpm
+- Base de datos (MySQL/PostgreSQL)
+
+### Instalación
+
+1. Clonar el repositorio
+2. Instalar dependencias de PHP:
+```bash
+composer install
+```
+
+3. Instalar dependencias de Node:
+```bash
+pnpm install
+```
+
+4. Configurar el archivo `.env`:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+5. Configurar la base de datos en `.env` y ejecutar migraciones:
+```bash
+php artisan migrate
+```
+
+### Iniciar el Servidor de Desarrollo
+
+**Terminal 1 - Servidor Laravel:**
+```bash
+php artisan serve
+```
+El servidor estará disponible en `http://localhost:8000`
+
+**Terminal 2 - Servidor Vite (Assets):**
+```bash
+pnpm run dev
+```
+Vite estará disponible en `http://localhost:5173` (solo para desarrollo de assets)
+
+### Acceso
+
+- **Frontend (Estudiantes):** `http://localhost:8000`
+- **Admin Panel (Filament):** `http://localhost:8000/admin`
+
+### Comandos Útiles
+
+```bash
+# Limpiar caché
+php artisan cache:clear
+php artisan config:clear
+php artisan view:clear
+
+# Compilar assets para producción
+pnpm run build
+
+# Ejecutar migraciones
+php artisan migrate
+
+# Crear usuario administrador
+php artisan make:filament-user
+```
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
