@@ -1,3 +1,20 @@
+@assets
+<script>
+(function() {
+    // Cargar el script de forma dinámica para tener mejor control
+    const script = document.createElement('script');
+    script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js';
+    script.async = true;
+    script.onload = function() {
+        window.confettiLoaded = true;
+        // Disparar evento personalizado cuando el script está listo
+        window.dispatchEvent(new Event('confettiReady'));
+    };
+    document.head.appendChild(script);
+})();
+</script>
+@endassets
+
 <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-2xl w-full">
         {{-- Success Card --}}
@@ -113,3 +130,84 @@
         </div>
     </div>
 </div>
+
+@script
+<script>
+(function() {
+    // Función para disparar confetti desde ambos lados
+    function fireConfetti() {
+        if (typeof confetti === 'undefined') {
+            return false;
+        }
+
+        // Explosión inicial desde el centro
+        confetti({
+            particleCount: 60,
+            spread: 70,
+            origin: { y: 0.6 },
+            colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+        });
+
+        // Configuración de la animación de confetti
+        const duration = 1500; // 1.5 segundos
+        const end = Date.now() + duration;
+
+        // Función para disparar confetti desde ambos lados
+        const frame = () => {
+            if (Date.now() > end) {
+                return;
+            }
+
+            // Disparar confetti desde la izquierda
+            confetti({
+                particleCount: 2,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+            });
+
+            // Disparar confetti desde la derecha
+            confetti({
+                particleCount: 2,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+            });
+
+            requestAnimationFrame(frame);
+        };
+
+        // Iniciar la animación continua
+        frame();
+
+        return true;
+    }
+
+    // Función para iniciar el confetti cuando esté listo
+    function startConfetti() {
+        if (fireConfetti()) {
+            return;
+        }
+        
+        // Si no está disponible, intentar varias veces con delay
+        let attempts = 0;
+        const maxAttempts = 20; // 2 segundos máximo
+        
+        const checkInterval = setInterval(() => {
+            attempts++;
+            if (fireConfetti() || attempts >= maxAttempts) {
+                clearInterval(checkInterval);
+            }
+        }, 100);
+    }
+
+    // Escuchar el evento cuando el script esté listo
+    window.addEventListener('confettiReady', startConfetti);
+    
+    // También intentar inmediatamente (por si el script ya está cargado)
+    setTimeout(startConfetti, 100);
+})();
+</script>
+@endscript
