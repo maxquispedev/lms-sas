@@ -99,13 +99,19 @@
                 <button
                     id="btn_pagar"
                     type="button"
-                    class="block w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl"
+                    class="block w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                    wire:loading.attr="disabled"
                 >
                     <div class="flex items-center justify-center gap-3">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" wire:loading.remove wire:target="processPayment">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                         </svg>
-                        <span>Pagar con Tarjeta/Yape</span>
+                        <svg class="animate-spin h-6 w-6 text-white" wire:loading wire:target="processPayment" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span wire:loading.remove wire:target="processPayment">Pagar con Tarjeta/Yape</span>
+                        <span wire:loading wire:target="processPayment">Procesando pago...</span>
                     </div>
                 </button>
 
@@ -167,5 +173,20 @@
         e.preventDefault();
         Culqi.open();
     });
+
+    // Función callback de Culqi (debe ser global)
+    window.culqi = function() {
+        if (Culqi.token) {
+            // Token generado exitosamente
+            const tokenId = Culqi.token.id;
+            const email = Culqi.token.email;
+            
+            // Enviar token al componente Livewire
+            $wire.processPayment(tokenId, email);
+        } else if (Culqi.error) {
+            // Error en el proceso de pago
+            alert(Culqi.error.user_message || 'Ocurrió un error al procesar el pago. Por favor, intenta nuevamente.');
+        }
+    };
 </script>
 @endscript
