@@ -142,9 +142,9 @@ class CourseCheckout extends Component
                 transactionId: $chargeId
             );
 
-            // Redirect to course with success message
+            // Redirect to payment success page
             session()->flash('message', 'Compra realizada exitosamente.');
-            $this->redirect(route('course.learn', $this->course));
+            $this->redirect(route('payment.success', $this->course));
         } else {
             // Show error message
             $errorMessage = $result['message'] ?? 'Ocurrió un error al procesar el pago. Por favor, intenta nuevamente.';

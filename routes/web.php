@@ -2,6 +2,7 @@
 
 use App\Livewire\Auth\Login;
 use App\Livewire\CourseCheckout;
+use App\Livewire\PaymentSuccess;
 use App\Livewire\StudentDashboard;
 use App\Livewire\StudentProfile;
 use App\Livewire\WatchLesson;
@@ -31,6 +32,9 @@ Route::get('/checkout/{course:slug}', CourseCheckout::class)
     ->name('course.checkout');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/payment/success/{course:slug}', PaymentSuccess::class)
+        ->name('payment.success');
+
     Route::get('/my-courses', StudentDashboard::class)
         ->name('student.dashboard');
 
