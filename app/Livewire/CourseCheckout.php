@@ -20,7 +20,9 @@ class CourseCheckout extends Component
 {
     public Course $course;
 
-    public string $name = '';
+    public string $first_name = '';
+
+    public string $last_name = '';
 
     public string $email = '';
 
@@ -55,11 +57,13 @@ class CourseCheckout extends Component
         // If user is guest, validate registration fields
         if (!auth()->check()) {
             $this->validate([
-                'name' => ['required', 'string', 'max:255'],
+                'first_name' => ['required', 'string', 'max:255'],
+                'last_name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
                 'password' => ['required', 'string', 'min:8'],
             ], [
-                'name.required' => 'El nombre es obligatorio.',
+                'first_name.required' => 'El nombre es obligatorio.',
+                'last_name.required' => 'El apellido es obligatorio.',
                 'email.required' => 'El correo electrónico es obligatorio.',
                 'email.email' => 'El correo electrónico debe tener un formato válido.',
                 'email.unique' => 'Este correo electrónico ya está registrado.',
@@ -96,7 +100,7 @@ class CourseCheckout extends Component
 
             // Create the user with the form data
             $user = User::create([
-                'name' => $this->name,
+                'name' => trim($this->first_name . ' ' . $this->last_name),
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
             ]);

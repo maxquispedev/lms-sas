@@ -129,20 +129,38 @@
                 {{-- Registration Form for Guests --}}
                 @guest
                     <div class="space-y-4 mb-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Nombre completo
-                            </label>
-                            <input
-                                type="text"
-                                id="name"
-                                wire:model="name"
-                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
-                                placeholder="Ingresa tu nombre completo"
-                            >
-                            @error('name')
-                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                            @enderror
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Nombre
+                                </label>
+                                <input
+                                    type="text"
+                                    id="first_name"
+                                    wire:model="first_name"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                    placeholder="Ingresa tu nombre"
+                                >
+                                @error('first_name')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Apellido
+                                </label>
+                                <input
+                                    type="text"
+                                    id="last_name"
+                                    wire:model="last_name"
+                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                    placeholder="Ingresa tu apellido"
+                                >
+                                @error('last_name')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
                         </div>
 
                         <div>
@@ -252,7 +270,7 @@
 
         const paymentMethods = {
             tarjeta: true,
-            yape: true,
+            yape: false,
             billetera: false,
             bancaMovil: false,
             agente: false,
