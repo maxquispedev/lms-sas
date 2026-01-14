@@ -27,11 +27,16 @@ class CourseCheckout extends Component
     ): void {
         $this->course = $course;
 
-        // Check if user already has access
-        if ($enrollmentService->checkAccess(Auth::user(), $course)) {
-            session()->flash('message', 'Ya tienes este curso.');
-            $this->redirect(route('student.dashboard'));
+        // Check if user is authenticated
+        if (auth()->check()) {
+            // Check if user already has access
+            if ($enrollmentService->checkAccess(Auth::user(), $course)) {
+                session()->flash('message', 'Ya tienes este curso.');
+                $this->redirect(route('student.dashboard'));
+            }
         }
+        // If user is not authenticated (Guest), allow component to load normally
+        // so they can pay and register
     }
 
     /**

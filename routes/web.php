@@ -27,6 +27,9 @@ Route::post('/logout', function (Request $request) {
     return redirect()->route('login');
 })->name('logout')->middleware('auth');
 
+Route::get('/checkout/{course:slug}', CourseCheckout::class)
+    ->name('course.checkout');
+
 Route::middleware('auth')->group(function () {
     Route::get('/my-courses', StudentDashboard::class)
         ->name('student.dashboard');
@@ -36,7 +39,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/learn/{course:slug}/{lesson:slug?}', WatchLesson::class)
         ->name('course.learn');
-
-    Route::get('/checkout/{course:slug}', CourseCheckout::class)
-        ->name('course.checkout');
 });
