@@ -223,30 +223,33 @@
 
 @script
 <script>
+(function() {
     // Variable para guardar la instancia del Checkout
     let CulqiInstance = null;
-    
-    // Función para inicializar Culqi
-    const initCulqi = () => {
+
+    // Esperamos el evento de Livewire para iniciar el pago
+    $wire.on('init-payment', () => {
+        // Verificar que CulqiCheckout esté disponible
         if (typeof CulqiCheckout === 'undefined') {
             console.error('La librería de Culqi aún no ha cargado.');
-            return false;
+            alert('Por favor, espera unos segundos y vuelve a intentar. La pasarela está cargando.');
+            return;
         }
-        
-        if (CulqiInstance) return true; // Ya está inicializado
-        
+
+        // Obtener email (guest o autenticado)
         const email = $wire.email || '{{ auth()->user()->email ?? "" }}';
-        
+
+        // Configuración
         const settings = {
-            title: '{{ $course->title }}',
+            title: '{{ addslashes($course->title) }}',
             currency: 'PEN',
-            amount: {{ $course->price * 100 }},
+            amount: {{ intval($course->price * 100) }},
         };
-        
+
         const client = {
             email: email,
         };
-        
+
         const paymentMethods = {
             tarjeta: true,
             yape: true,
@@ -255,7 +258,7 @@
             agente: false,
             cuotealo: false,
         };
-        
+
         const options = {
             lang: 'es',
             installments: false,
@@ -263,50 +266,45 @@
             paymentMethods: paymentMethods,
             paymentMethodsSort: Object.keys(paymentMethods),
         };
-        
+
         const appearance = {
             theme: 'default',
             hiddenCulqiLogo: false,
             menuType: 'sidebar',
         };
-        
+
         const config = {
             settings,
             client,
             options,
             appearance,
         };
-        
+
         const publicKey = 'pk_test_1Ejteu5U8jSpW630';
+
+        // Crear nueva instancia cada vez (evita problemas de estado)
         CulqiInstance = new CulqiCheckout(publicKey, config);
-        
-        // Handler para cuando se genera el token
-        CulqiInstance.culqi = () => {
+
+        // Handler para cuando Culqi responde
+        CulqiInstance.culqi = function() {
             if (CulqiInstance.token) {
-                const token = CulqiInstance.token.id;
-                console.log('Token creado:', token);
+                const tokenId = CulqiInstance.token.id;
+                const tokenEmail = CulqiInstance.token.email;
+                console.log('Token creado:', tokenId);
                 CulqiInstance.close();
-                // Enviar el token a Livewire para procesar el pago
-                $wire.processPayment(token);
+                $wire.processPayment(tokenId, tokenEmail);
             } else if (CulqiInstance.order) {
-                console.log('Order creado:', CulqiInstance.order);
+                console.log('Order creada:', CulqiInstance.order);
                 CulqiInstance.close();
             } else if (CulqiInstance.error) {
-                console.error('Error:', CulqiInstance.error);
+                console.error('Error Culqi:', CulqiInstance.error);
+                alert(CulqiInstance.error.user_message || 'Ocurrió un error en el pago.');
             }
         };
-        
-        return true;
-    };
-    
-    // Esperamos el evento de Livewire para iniciar el pago
-    $wire.on('init-payment', () => {
-        if (!initCulqi()) {
-            alert('Por favor, espera unos segundos y vuelve a intentar. La pasarela está cargando.');
-            return;
-        }
-        
+
+        // Abrir el checkout
         CulqiInstance.open();
     });
+})();
 </script>
 @endscript
