@@ -10,7 +10,7 @@
             <div class="aspect-video bg-gray-200 dark:bg-gray-700 rounded-lg overflow-hidden">
                 @if($course->image_url)
                     <img 
-                        src="{{ $course->image_url }}" 
+                        src="{{ str_starts_with($course->image_url, 'http') ? $course->image_url : \Illuminate\Support\Facades\Storage::disk('public')->url($course->image_url) }}" 
                         alt="{{ $course->title }}"
                         class="w-full h-full object-cover"
                     >
