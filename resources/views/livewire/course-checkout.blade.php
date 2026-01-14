@@ -1,3 +1,7 @@
+@assets
+<script src="https://js.culqi.com/checkout-js"></script>
+@endassets
+
 <div class="max-w-4xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         {{-- Left Column: Course Summary --}}
@@ -122,23 +126,77 @@
                     Estás a un paso. Completa tu pago de forma segura con Culqi.
                 </p>
 
+                {{-- Registration Form for Guests --}}
+                @guest
+                    <div class="space-y-4 mb-6">
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Nombre completo
+                            </label>
+                            <input
+                                type="text"
+                                id="name"
+                                wire:model="name"
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                placeholder="Ingresa tu nombre completo"
+                            >
+                            @error('name')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Correo electrónico
+                            </label>
+                            <input
+                                type="email"
+                                id="email"
+                                wire:model="email"
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                placeholder="tu@correo.com"
+                            >
+                            @error('email')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Contraseña
+                            </label>
+                            <input
+                                type="password"
+                                id="password"
+                                wire:model="password"
+                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                                placeholder="Mínimo 8 caracteres"
+                            >
+                            @error('password')
+                                <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+                @endguest
+
                 {{-- Culqi Payment Button --}}
                 <button
                     id="btn_pagar"
                     type="button"
-                    class="block w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                    wire:click="validateAndPay"
                     wire:loading.attr="disabled"
+                    class="block w-full px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <div class="flex items-center justify-center gap-3">
-                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" wire:loading.remove wire:target="processPayment">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" wire:loading.remove wire:target="validateAndPay">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
                         </svg>
-                        <svg class="animate-spin h-6 w-6 text-white" wire:loading wire:target="processPayment" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <svg class="animate-spin h-6 w-6 text-white" wire:loading wire:target="validateAndPay" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                             <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
-                        <span wire:loading.remove wire:target="processPayment">Pagar con Tarjeta/Yape</span>
-                        <span wire:loading wire:target="processPayment">Procesando pago...</span>
+                        <span wire:loading.remove wire:target="validateAndPay">Pagar con Tarjeta/Yape</span>
+                        <span wire:loading wire:target="validateAndPay">Procesando pago...</span>
                     </div>
                 </button>
 
@@ -163,41 +221,42 @@
     </div>
 </div>
 
-{{-- Culqi Checkout Script --}}
-<script src="https://js.culqi.com/checkout-js"></script>
-
 @script
 <script>
     // Configurar Culqi con las variables del componente
     Culqi.publicKey = '{{ config('services.culqi.public_key') }}';
 
-    // Configurar settings de Culqi
-    Culqi.settings({
-        title: '{{ $course->title }}',
-        currency: 'PEN',
-        amount: {{ (int)($course->price * 100) }}, // Monto en céntimos (multiplicado por 100)
-        description: 'Compra del curso: {{ $course->title }}',
-    });
+    // Escuchar el evento init-payment de Livewire
+    $wire.on('init-payment', () => {
+        // Obtener el email del formulario o del usuario autenticado
+        const email = $wire.email || @js(auth()->check() ? auth()->user()->email : '');
 
-    // Configurar opciones de Culqi
-    Culqi.options({
-        lang: 'es',
-        paymentMethods: {
-            tarjeta: true,
-            yape: true,
-            bancaMovil: false,
-            agente: false,
-            billetera: false,
-            cuotealo: false,
-        },
-        appearance: {
-            style: 'default',
-        },
-    });
+        // Configurar settings de Culqi
+        Culqi.settings({
+            title: '{{ $course->title }}',
+            currency: 'PEN',
+            amount: {{ (int)($course->price * 100) }}, // Monto en céntimos (multiplicado por 100)
+            description: 'Compra del curso: {{ $course->title }}',
+        });
 
-    // Evento click del botón de pago
-    document.getElementById('btn_pagar').addEventListener('click', function(e) {
-        e.preventDefault();
+        // Configurar opciones de Culqi
+        Culqi.options({
+            lang: 'es',
+            email: email,
+            paymentMethods: {
+                tarjeta: true,
+                yape: true,
+                bancaMovil: false,
+                agente: false,
+                billetera: false,
+                cuotealo: false,
+            },
+            appearance: {
+                style: 'default',
+            },
+        });
+
+        // Abrir el checkout de Culqi
         Culqi.open();
     });
 
