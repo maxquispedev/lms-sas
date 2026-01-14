@@ -223,66 +223,90 @@
 
 @script
 <script>
-    // Esperamos a que Livewire inicie el proceso de pago
-    $wire.on('init-payment', () => {
-        
-        // Verificación de seguridad: ¿Ya cargó la librería?
-        if (typeof Culqi === 'undefined') {
+    // Variable para guardar la instancia del Checkout
+    let CulqiInstance = null;
+    
+    // Función para inicializar Culqi
+    const initCulqi = () => {
+        if (typeof CulqiCheckout === 'undefined') {
             console.error('La librería de Culqi aún no ha cargado.');
-            alert('Por favor, espera unos segundos y vuelve a intentar. La pasarela está cargando.');
-            return;
+            return false;
         }
-
-        // 1. Configuración (Ahora es segura porque Culqi existe)
-        Culqi.publicKey = 'pk_test_1Ejteu5U8jSpW630'; // Tu llave de prueba
-
-        // 2. Obtener datos
-        // Usamos el email del componente (si es guest) o del usuario auth
-        const email = $wire.email || '{{ auth()->user()->email ?? "" }}'; 
-
-        // 3. Settings
-        Culqi.settings({
+        
+        if (CulqiInstance) return true; // Ya está inicializado
+        
+        const email = $wire.email || '{{ auth()->user()->email ?? "" }}';
+        
+        const settings = {
             title: '{{ $course->title }}',
             currency: 'PEN',
             amount: {{ $course->price * 100 }},
-            description: 'Compra del curso: {{Str::limit($course->title, 20)}}',
-        });
-
-        // 4. Options
-        Culqi.options({
+        };
+        
+        const client = {
+            email: email,
+        };
+        
+        const paymentMethods = {
+            tarjeta: true,
+            yape: true,
+            billetera: false,
+            bancaMovil: false,
+            agente: false,
+            cuotealo: false,
+        };
+        
+        const options = {
             lang: 'es',
+            installments: false,
             modal: true,
-            email: email, // Pre-llenamos el email si existe
-            paymentMethods: {
-                tarjeta: true,
-                yape: true,
-                billetera: true,
-                bancaMovil: true,
-                agente: true,
-                cuotealo: true,
-            },
-            appearance: {
-                theme: 'default',
-                menuType: 'sidebar',
-            },
-        });
-
-        // 5. Abrir
-        Culqi.open();
-    });
-
-    // Callback global de Culqi (Fuera del evento, pero dentro del script)
-    window.culqi = function() {
-        if (Culqi.token) {
-            $wire.processPayment(Culqi.token.id, Culqi.token.email);
-        } else if (Culqi.order) {
-            console.log('Order creada:', Culqi.order); 
-             // Aquí podrías manejar PagoEfectivo si lo implementas luego
-        } else if (Culqi.error) {
-            console.error(Culqi.error);
-            // Muestra el error de forma amigable (SweetAlert o alert nativo)
-            alert(Culqi.error.user_message);
-        }
+            paymentMethods: paymentMethods,
+            paymentMethodsSort: Object.keys(paymentMethods),
+        };
+        
+        const appearance = {
+            theme: 'default',
+            hiddenCulqiLogo: false,
+            menuType: 'sidebar',
+        };
+        
+        const config = {
+            settings,
+            client,
+            options,
+            appearance,
+        };
+        
+        const publicKey = 'pk_test_1Ejteu5U8jSpW630';
+        CulqiInstance = new CulqiCheckout(publicKey, config);
+        
+        // Handler para cuando se genera el token
+        CulqiInstance.culqi = () => {
+            if (CulqiInstance.token) {
+                const token = CulqiInstance.token.id;
+                console.log('Token creado:', token);
+                CulqiInstance.close();
+                // Enviar el token a Livewire para procesar el pago
+                $wire.processPayment(token);
+            } else if (CulqiInstance.order) {
+                console.log('Order creado:', CulqiInstance.order);
+                CulqiInstance.close();
+            } else if (CulqiInstance.error) {
+                console.error('Error:', CulqiInstance.error);
+            }
+        };
+        
+        return true;
     };
+    
+    // Esperamos el evento de Livewire para iniciar el pago
+    $wire.on('init-payment', () => {
+        if (!initCulqi()) {
+            alert('Por favor, espera unos segundos y vuelve a intentar. La pasarela está cargando.');
+            return;
+        }
+        
+        CulqiInstance.open();
+    });
 </script>
 @endscript
