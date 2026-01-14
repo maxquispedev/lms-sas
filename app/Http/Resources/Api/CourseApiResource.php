@@ -25,11 +25,27 @@ class CourseApiResource extends JsonResource
             'description' => $this->description,
             'teacher' => $this->when($this->relationLoaded('teacher') && $this->teacher, [
                 'name' => $this->teacher->name,
-                'avatar' => $this->teacher->avatar_url ? url($this->teacher->avatar_url) : null,
+                'avatar_url' => $this->teacher->avatar_url ? url($this->teacher->avatar_url) : null,
             ]),
-            'modules_count' => $this->whenLoaded('modules', function () {
-                return $this->modules->count();
-            }, 0),
+            'modules' => $this->whenLoaded('modules', function () {
+                return $this->modules->map(function ($module) {
+                    return [
+                        'id' => $module->id,
+                        'title' => $module->title,
+                        'sort_order' => $module->sort_order,
+                        'lessons' => $module->lessons->map(function ($lesson) {
+                            return [
+                                'id' => $lesson->id,
+                                'title' => $lesson->title,
+                                'slug' => $lesson->slug,
+                                'duration' => $lesson->duration ?? null,
+                                'is_free' => $lesson->is_free,
+                                'sort_order' => $lesson->sort_order,
+                            ];
+                        })->sortBy('sort_order')->values(),
+                    ];
+                })->sortBy('sort_order')->values();
+            }, []),
         ];
     }
 }
