@@ -42,6 +42,27 @@ class CulqiService
     }
 
     /**
+     * Parsea el mensaje de error de Culqi para extraer información estructurada.
+     *
+     * @param string $errorMessage El mensaje de error de la excepción
+     * @return array<string, mixed> Datos del error parseados
+     */
+    private function parseCulqiError(string $errorMessage): array
+    {
+        // Intentar decodificar el mensaje como JSON
+        $decoded = json_decode($errorMessage, true);
+
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            return $decoded;
+        }
+
+        // Si no es JSON válido, retornar estructura básica
+        return [
+            'merchant_message' => $errorMessage,
+        ];
+    }
+
+    /**
      * Crea un cargo en Culqi para un curso.
      *
      * @param User $user El usuario que realiza la compra
@@ -84,16 +105,38 @@ class CulqiService
                 'data' => $charge,
             ];
         } catch (CulqiException $e) {
+            $errorMessage = $e->getMessage();
+            $errorData = $this->parseCulqiError($errorMessage);
+
             Log::error('Error de Culqi al crear cargo', [
                 'user_id' => $user->id,
                 'course_id' => $course->id,
-                'error' => $e->getMessage(),
+                'error' => $errorMessage,
+                'error_type' => $errorData['type'] ?? null,
+                'error_code' => $errorData['code'] ?? null,
+                'decline_code' => $errorData['decline_code'] ?? null,
                 'trace' => $e->getTraceAsString(),
             ]);
 
+            // Si es un error de tarjeta, usar el mensaje específico
+            if (($errorData['type'] ?? null) === 'card_error') {
+                $userMessage = $errorData['user_message'] ?? $errorData['merchant_message'] ?? 'El pago fue denegado. Por favor, verifica los datos de tu tarjeta o intenta con otra tarjeta.';
+                
+                return [
+                    'success' => false,
+                    'message' => $userMessage,
+                    'error_type' => 'card_error',
+                    'decline_code' => $errorData['decline_code'] ?? null,
+                ];
+            }
+
+            // Para otros tipos de errores, usar el mensaje del error
+            $message = $errorData['user_message'] ?? $errorData['merchant_message'] ?? $errorMessage;
+
             return [
                 'success' => false,
-                'message' => $e->getMessage(),
+                'message' => $message,
+                'error_type' => $errorData['type'] ?? 'unknown',
             ];
         } catch (\Exception $e) {
             Log::error('Error inesperado al crear cargo en Culqi', [

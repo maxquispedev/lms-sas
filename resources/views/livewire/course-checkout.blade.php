@@ -86,6 +86,33 @@
 
         {{-- Right Column: Payment --}}
         <div class="space-y-6">
+            {{-- Error Message --}}
+            @if(session('error'))
+                <div class="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-400 text-red-800 dark:text-red-200 px-4 py-3 rounded-r-lg shadow-sm">
+                    <div class="flex items-start gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <div>
+                            <p class="font-medium">Error en el pago</p>
+                            <p class="text-sm mt-1">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
+            {{-- Success Message --}}
+            @if(session('message'))
+                <div class="bg-green-50 dark:bg-green-900/30 border-l-4 border-green-500 dark:border-green-400 text-green-800 dark:text-green-200 px-4 py-3 rounded-r-lg shadow-sm">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="font-medium">{{ session('message') }}</span>
+                    </div>
+                </div>
+            @endif
+
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 sticky top-8">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                     Finalizar Compra
