@@ -45,5 +45,33 @@ class PaymentService
             return $order;
         });
     }
+
+    /**
+     * Create an order for a Culqi payment and enroll the user in the course.
+     *
+     * @param User $user The user making the purchase
+     * @param Course $course The course being purchased
+     * @param string $transactionId The Culqi charge ID
+     * @return Order The created order
+     */
+    public function createCulqiOrder(User $user, Course $course, string $transactionId): Order
+    {
+        return DB::transaction(function () use ($user, $course, $transactionId): Order {
+            // Step 1: Create Order
+            $order = Order::create([
+                'user_id' => $user->id,
+                'course_id' => $course->id,
+                'total_amount' => $course->price,
+                'status' => OrderStatus::Paid,
+                'payment_gateway' => PaymentGateway::Culqi,
+                'transaction_id' => $transactionId,
+            ]);
+
+            // Step 2: Enroll user in the course
+            $this->enrollmentService->enrollUser($user, $course);
+
+            return $order;
+        });
+    }
 }
 
