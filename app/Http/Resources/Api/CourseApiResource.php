@@ -6,6 +6,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class CourseApiResource extends JsonResource
 {
@@ -21,11 +22,19 @@ class CourseApiResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'price' => (float) $this->price,
-            'image_url' => $this->image_url ? url($this->image_url) : null,
+            'image_url' => $this->image_url 
+                ? (str_starts_with($this->image_url, 'http') 
+                    ? $this->image_url 
+                    : Storage::disk('public')->url($this->image_url))
+                : null,
             'description' => $this->description,
             'teacher' => $this->when($this->relationLoaded('teacher') && $this->teacher, [
                 'name' => $this->teacher->name,
-                'avatar_url' => $this->teacher->avatar_url ? url($this->teacher->avatar_url) : null,
+                'avatar_url' => $this->teacher->avatar_url 
+                    ? (str_starts_with($this->teacher->avatar_url, 'http')
+                        ? $this->teacher->avatar_url
+                        : Storage::disk('public')->url($this->teacher->avatar_url))
+                    : null,
             ]),
             'modules' => $this->whenLoaded('modules', function () {
                 return $this->modules->map(function ($module) {
