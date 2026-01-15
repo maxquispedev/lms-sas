@@ -224,12 +224,12 @@
             </div>
 
             {{-- Additional Info --}}
-            <div class="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
+            <div class="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg p-4">
                 <div class="flex items-start gap-3">
-                    <svg class="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <div class="text-sm text-blue-800 dark:text-blue-200">
+                    <div class="text-sm text-emerald-800 dark:text-emerald-200">
                         <p class="font-medium mb-1">Proceso de pago manual</p>
                         <p>Una vez que completes el pago, recibirás acceso al curso en un plazo máximo de 24 horas.</p>
                     </div>

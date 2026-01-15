@@ -4,7 +4,7 @@
         <nav class="mb-6" aria-label="Breadcrumb">
             <ol class="flex items-center flex-wrap gap-2 text-sm">
                 <li>
-                    <a href="{{ route('student.dashboard') }}" class="text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 font-medium">
+                    <a href="{{ route('student.dashboard') }}" class="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200 font-medium">
                         Inicio
                     </a>
                 </li>
@@ -83,7 +83,7 @@
                     {{-- Course Description --}}
                     @if($currentLesson->content)
                         <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-                            <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-strong:text-gray-900 dark:prose-strong:text-gray-100">
+                            <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-emerald-600 dark:prose-a:text-emerald-400 prose-strong:text-gray-900 dark:prose-strong:text-gray-100">
                                 {!! $currentLesson->content !!}
                             </div>
                         </div>
@@ -92,7 +92,7 @@
                             <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                                 Sobre este curso
                             </h2>
-                            <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-blue-600 dark:prose-a:text-blue-400">
+                            <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-emerald-600 dark:prose-a:text-emerald-400">
                                 {!! $course->description !!}
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                             wire:click="toggleComplete"
                             class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm {{ $this->isLessonCompleted() 
                                 ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white shadow-green-500/30 border border-green-600 dark:border-green-500' 
-                                : 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-600 cursor-pointer' 
+                                : 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600 cursor-pointer' 
                             }}"
                             aria-label="{{ $this->isLessonCompleted() ? 'Marcar como no completado' : 'Marcar como completado' }}"
                         >
@@ -165,7 +165,7 @@
                             @if($nextLesson)
                                 <a
                                     href="{{ route('course.learn', [$course, $nextLesson->slug]) }}"
-                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-600 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 text-white transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
+                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
                                     title="Siguiente lección"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -217,12 +217,12 @@
                                         : expandedModules.push({{ $module->id }})"
                                     class="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group"
                                 >
-                                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                         {{ $module->title }}
                                     </h3>
                                     <svg 
                                         class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"
-                                        :class="expandedModules.includes({{ $module->id }}) ? 'rotate-90 text-blue-600 dark:text-blue-400' : ''"
+                                        :class="expandedModules.includes({{ $module->id }}) ? 'rotate-90 text-emerald-600 dark:text-emerald-400' : ''"
                                         fill="none" 
                                         viewBox="0 0 24 24" 
                                         stroke="currentColor"
@@ -246,8 +246,8 @@
                                         <a
                                             href="{{ route('course.learn', [$course, $lesson->slug]) }}"
                                             class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group {{ $currentLesson->id === $lesson->id 
-                                                ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-semibold border-l-2 border-blue-600 dark:border-blue-400' 
-                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-blue-600 dark:hover:text-blue-400' 
+                                                ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-semibold border-l-2 border-emerald-600 dark:border-emerald-400' 
+                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-emerald-600 dark:hover:text-emerald-400' 
                                             }}"
                                         >
                                             {{-- Check Icon if completed --}}
@@ -257,7 +257,7 @@
                                                 </svg>
                                             @else
                                                 <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
-                                                    <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-blue-500 dark:group-hover:bg-blue-400 transition-colors"></div>
+                                                    <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-emerald-500 dark:group-hover:bg-emerald-400 transition-colors"></div>
                                                 </div>
                                             @endif
 

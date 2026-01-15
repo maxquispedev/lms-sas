@@ -16,7 +16,7 @@
                     type="email"
                     id="email"
                     wire:model.defer="email"
-                    class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:border-emerald-500 focus:ring-emerald-500"
                     placeholder="tu@correo.com"
                     required
                 />
@@ -33,7 +33,7 @@
                     type="password"
                     id="password"
                     wire:model.defer="password"
-                    class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:border-blue-500 focus:ring-blue-500"
+                    class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-100 focus:border-emerald-500 focus:ring-emerald-500"
                     placeholder="••••••••"
                     required
                 />
@@ -44,7 +44,7 @@
 
             <button
                 type="submit"
-                class="w-full inline-flex justify-center items-center px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+                class="w-full inline-flex justify-center items-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors duration-200"
             >
                 Ingresar
             </button>
