@@ -1,12 +1,43 @@
 @auth
-<nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg transition-colors duration-200">
+<nav class="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-lg transition-colors duration-200" x-data="{ mobileMenuOpen: false }">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            {{-- Logo / Nombre --}}
-            <div class="flex items-center">
+            {{-- Logo / Nombre y Menú Principal --}}
+            <div class="flex items-center gap-6">
                 <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200">
                     {{ config('app.name', 'Tu Academia') }}
                 </a>
+                
+                {{-- Menú de Navegación Desktop --}}
+                <nav class="hidden md:flex items-center gap-4">
+                    <a 
+                        href="{{ route('courses.catalog') }}" 
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                    >
+                        Cursos
+                    </a>
+                    <a 
+                        href="{{ route('student.dashboard') }}" 
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                    >
+                        Mis Cursos
+                    </a>
+                </nav>
+            </div>
+
+            {{-- Botón Menú Móvil --}}
+            <div class="md:hidden flex items-center">
+                <button
+                    @click="mobileMenuOpen = !mobileMenuOpen"
+                    class="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-2"
+                >
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="!mobileMenuOpen">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="mobileMenuOpen" style="display: none;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
 
             {{-- Usuario y Dropdown --}}
@@ -52,18 +83,6 @@
                         style="display: none;"
                     >
                         <a
-                            href="{{ route('student.dashboard') }}"
-                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150"
-                        >
-                            <div class="flex items-center gap-2">
-                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                                </svg>
-                                Mis Cursos
-                            </div>
-                        </a>
-
-                        <a
                             href="{{ route('student.profile') }}"
                             class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors duration-150"
                         >
@@ -93,6 +112,37 @@
                         </form>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        {{-- Menú Móvil --}}
+        <div 
+            x-show="mobileMenuOpen"
+            @click.away="mobileMenuOpen = false"
+            x-transition:enter="transition ease-out duration-100"
+            x-transition:enter-start="transform opacity-0 scale-95"
+            x-transition:enter-end="transform opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-75"
+            x-transition:leave-start="transform opacity-100 scale-100"
+            x-transition:leave-end="transform opacity-0 scale-95"
+            class="md:hidden border-t border-gray-200 dark:border-gray-700 py-4"
+            style="display: none;"
+        >
+            <div class="flex flex-col gap-2">
+                <a 
+                    href="{{ route('courses.catalog') }}" 
+                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                    @click="mobileMenuOpen = false"
+                >
+                    Cursos
+                </a>
+                <a 
+                    href="{{ route('student.dashboard') }}" 
+                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200"
+                    @click="mobileMenuOpen = false"
+                >
+                    Mis Cursos
+                </a>
             </div>
         </div>
     </div>

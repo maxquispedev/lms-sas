@@ -3,6 +3,7 @@
 use App\Http\Controllers\CertificateController;
 use App\Livewire\Auth\Login;
 use App\Livewire\CourseCheckout;
+use App\Livewire\CoursesCatalog;
 use App\Livewire\PaymentSuccess;
 use App\Livewire\StudentDashboard;
 use App\Livewire\StudentProfile;
@@ -35,6 +36,9 @@ Route::get('/checkout/{course:slug}', CourseCheckout::class)
 Route::middleware('auth')->group(function () {
     Route::get('/payment/success/{course:slug}', PaymentSuccess::class)
         ->name('payment.success');
+
+    Route::get('/courses', CoursesCatalog::class)
+        ->name('courses.catalog');
 
     Route::get('/my-courses', StudentDashboard::class)
         ->name('student.dashboard');
