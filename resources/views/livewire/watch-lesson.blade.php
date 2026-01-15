@@ -4,7 +4,7 @@
         <nav class="mb-6" aria-label="Breadcrumb">
             <ol class="flex items-center flex-wrap gap-2 text-sm">
                 <li>
-                    <a href="{{ route('student.dashboard') }}" class="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200 font-medium">
+                    <a href="{{ route('student.dashboard') }}" class="text-gray-600 dark:text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors duration-200 font-medium cursor-pointer">
                         Inicio
                     </a>
                 </li>
@@ -115,9 +115,9 @@
                         {{-- Marcar Visto Button (Left) --}}
                         <button
                             wire:click="toggleComplete"
-                            class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm {{ $this->isLessonCompleted() 
+                            class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm cursor-pointer {{ $this->isLessonCompleted() 
                                 ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white shadow-green-500/30 border border-green-600 dark:border-green-500' 
-                                : 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600 cursor-pointer' 
+                                : 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-emerald-300 dark:hover:border-emerald-600' 
                             }}"
                             aria-label="{{ $this->isLessonCompleted() ? 'Marcar como no completado' : 'Marcar como completado' }}"
                         >
@@ -142,7 +142,7 @@
                             @if($previousLesson)
                                 <a
                                     href="{{ route('course.learn', [$course, $previousLesson->slug]) }}"
-                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-200 shadow-sm hover:shadow"
+                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-200 shadow-sm hover:shadow cursor-pointer"
                                     title="Lección anterior"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -165,7 +165,7 @@
                             @if($nextLesson)
                                 <a
                                     href="{{ route('course.learn', [$course, $nextLesson->slug]) }}"
-                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white transition-all duration-200 shadow-sm hover:shadow-md active:scale-95"
+                                    class="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-600 dark:bg-emerald-500 hover:bg-emerald-700 dark:hover:bg-emerald-600 text-white transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
                                     title="Siguiente lección"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -191,7 +191,7 @@
                         <div class="mb-6">
                             <a 
                                 href="{{ route('certificates.download', $course) }}" 
-                                class="block w-full text-center px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+                                class="block w-full text-center px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -215,7 +215,7 @@
                                     @click="expandedModules.includes({{ $module->id }}) 
                                         ? expandedModules = expandedModules.filter(id => id !== {{ $module->id }})
                                         : expandedModules.push({{ $module->id }})"
-                                    class="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group"
+                                    class="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group cursor-pointer"
                                 >
                                     <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                         {{ $module->title }}
@@ -245,7 +245,7 @@
                                     @foreach($module->lessons as $lesson)
                                         <a
                                             href="{{ route('course.learn', [$course, $lesson->slug]) }}"
-                                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group {{ $currentLesson->id === $lesson->id 
+                                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group cursor-pointer {{ $currentLesson->id === $lesson->id 
                                                 ? 'bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 font-semibold border-l-2 border-emerald-600 dark:border-emerald-400' 
                                                 : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-emerald-600 dark:hover:text-emerald-400' 
                                             }}"

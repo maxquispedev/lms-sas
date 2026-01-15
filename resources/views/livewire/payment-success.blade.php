@@ -93,7 +93,7 @@
                 {{-- Primary Button: Go to Course --}}
                 <a
                     href="{{ route('course.learn', $course) }}"
-                    class="flex-1 px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl"
+                    class="flex-1 px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl cursor-pointer"
                 >
                     <div class="flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,7 +107,7 @@
                 {{-- Secondary Button: View My Courses --}}
                 <a
                     href="{{ route('student.dashboard') }}"
-                    class="flex-1 px-6 py-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded-lg transition-colors duration-200 text-center"
+                    class="flex-1 px-6 py-4 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100 font-semibold rounded-lg transition-colors duration-200 text-center cursor-pointer"
                 >
                     <div class="flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,7 +123,7 @@
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 ¿Necesitas ayuda? 
-                <a href="#" class="text-purple-600 dark:text-purple-400 hover:underline font-medium">
+                <a href="#" class="text-purple-600 dark:text-purple-400 hover:underline font-medium cursor-pointer">
                     Contacta con soporte
                 </a>
             </p>

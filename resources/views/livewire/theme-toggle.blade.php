@@ -34,7 +34,7 @@
     <button
         @click="toggleTheme"
         type="button"
-        class="flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900"
+        class="flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 dark:text-white hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900 cursor-pointer"
         aria-label="Cambiar tema"
         title="Cambiar entre tema claro y oscuro"
     >
