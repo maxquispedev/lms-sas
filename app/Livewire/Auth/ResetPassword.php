@@ -24,10 +24,10 @@ class ResetPassword extends Component
     /**
      * Mount the component.
      */
-    public function mount(string $token, string $email): void
+    public function mount(string $token): void
     {
         $this->token = $token;
-        $this->email = $email;
+        $this->email = request()->query('email', '');
     }
 
     /**
