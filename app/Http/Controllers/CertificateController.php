@@ -23,7 +23,7 @@ class CertificateController extends Controller
         $user = Auth::user();
 
         // Verificar si el usuario ha completado el 100% del curso
-        $course->load('modules.lessons');
+        $course->load('modules.lessons', 'teacher');
         $allLessonIds = $course->modules
             ->flatMap->lessons
             ->pluck('id')
