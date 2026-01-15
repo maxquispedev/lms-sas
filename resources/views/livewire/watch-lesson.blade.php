@@ -186,6 +186,21 @@
                         </div>
                     </div>
 
+                    {{-- Download Certificate Button (only when 100% complete) --}}
+                    @if($courseProgress == 100)
+                        <div class="mb-6">
+                            <a 
+                                href="{{ route('certificates.download', $course) }}" 
+                                class="block w-full text-center px-4 py-3 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] flex items-center justify-center gap-2"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Descargar Certificado
+                            </a>
+                        </div>
+                    @endif
+
                     {{-- Separator --}}
                     <div class="mb-6 border-b border-gray-200 dark:border-gray-700"></div>
 

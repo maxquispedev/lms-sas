@@ -155,6 +155,33 @@ class WatchLesson extends Component
     }
 
     /**
+     * Calculate the course progress percentage.
+     */
+    public function getCourseProgress(): int
+    {
+        $user = Auth::user();
+        
+        $allLessonIds = $this->course->modules
+            ->flatMap->lessons
+            ->pluck('id')
+            ->toArray();
+
+        $completedLessonIds = $user
+            ->lessons_completed()
+            ->pluck('lessons.id')
+            ->toArray();
+
+        $totalLessons = count($allLessonIds);
+        $completedCount = count(array_intersect($allLessonIds, $completedLessonIds));
+
+        if ($totalLessons === 0) {
+            return 0;
+        }
+
+        return (int) floor(($completedCount / $totalLessons) * 100);
+    }
+
+    /**
      * Render the component.
      */
     public function render(): View
@@ -174,11 +201,14 @@ class WatchLesson extends Component
         // Load teacher relationship
         $this->course->load('teacher');
 
+        $courseProgress = $this->getCourseProgress();
+
         return view('livewire.watch-lesson', [
             'modules' => $modules,
             'completedLessonIds' => $completedLessonIds,
             'nextLesson' => $this->getNextLesson(),
             'previousLesson' => $this->getPreviousLesson(),
+            'courseProgress' => $courseProgress,
         ]);
     }
 }
