@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CertificateController;
 use App\Livewire\Auth\Login;
 use App\Livewire\CourseCheckout;
 use App\Livewire\PaymentSuccess;
@@ -43,4 +44,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/learn/{course:slug}/{lesson:slug?}', WatchLesson::class)
         ->name('course.learn');
+
+    Route::get('/certificates/{course}/download', [CertificateController::class, 'download'])
+        ->name('certificates.download');
 });
