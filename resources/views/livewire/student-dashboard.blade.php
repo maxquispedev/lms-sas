@@ -1,5 +1,5 @@
 <div class="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
-    {{-- Flash Message --}}
+    {{-- Flash Messages --}}
     @if(session('message'))
         <div class="mb-6 bg-blue-50 dark:bg-blue-900/30 border-l-4 border-blue-500 dark:border-blue-400 text-blue-800 dark:text-blue-200 px-4 py-3 rounded-r-lg shadow-sm">
             <div class="flex items-center gap-2">
@@ -7,6 +7,17 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <span class="font-medium">{{ session('message') }}</span>
+            </div>
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div class="mb-6 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 dark:border-red-400 text-red-800 dark:text-red-200 px-4 py-3 rounded-r-lg shadow-sm">
+            <div class="flex items-center gap-2">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="font-medium">{{ session('error') }}</span>
             </div>
         </div>
     @endif
@@ -89,6 +100,19 @@
                                 {{ $course->completed_lessons }} de {{ $course->total_lessons }} lecciones completadas
                             </p>
                         </div>
+
+                        {{-- Download Certificate Button (only when 100% complete) --}}
+                        @if($course->progress == 100)
+                            <a 
+                                href="{{ route('certificates.download', $course) }}" 
+                                class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] mb-3 flex items-center justify-center gap-2"
+                            >
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Descargar Certificado
+                            </a>
+                        @endif
 
                         {{-- Action Button --}}
                         <a 
