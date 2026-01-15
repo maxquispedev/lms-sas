@@ -15,7 +15,7 @@ class StudentProfile extends Component
 {
     public string $name = '';
     public string $last_name = '';
-    public readonly string $email;
+    public string $email = '';
     public string $current_password = '';
     public string $new_password = '';
     public string $new_password_confirmation = '';
