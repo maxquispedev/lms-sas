@@ -69,8 +69,8 @@
                             Precio pagado
                         </p>
                         <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                            ${{ number_format($order?->total_amount ?? $course->price, 2, '.', ',') }}
-                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">USD</span>
+                            S/ {{ number_format($order?->total_amount ?? $course->price, 2, '.', ',') }}
+                            <span class="text-sm font-normal text-gray-500 dark:text-gray-400">PEN</span>
                         </p>
                     </div>
                 </div>

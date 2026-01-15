@@ -71,7 +71,7 @@ class OrderResource extends Resource
 
                 TextColumn::make('total_amount')
                     ->label('Total')
-                    ->money('USD')
+                    ->money('PEN')
                     ->sortable(),
 
                 TextColumn::make('status')

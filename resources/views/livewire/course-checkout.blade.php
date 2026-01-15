@@ -30,10 +30,10 @@
                 </h1>
                 <div class="flex items-baseline gap-2">
                     <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">
-                        ${{ number_format($course->price, 2, '.', ',') }}
+                        S/ {{ number_format($course->price, 2, '.', ',') }}
                     </span>
                     <span class="text-sm text-gray-500 dark:text-gray-400">
-                        USD
+                        PEN
                     </span>
                 </div>
             </div>

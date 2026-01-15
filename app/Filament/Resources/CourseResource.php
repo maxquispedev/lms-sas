@@ -98,7 +98,7 @@ class CourseResource extends Resource
                                 TextInput::make('price')
                                     ->label('Precio')
                                     ->numeric()
-                                    ->prefix('$')
+                                    ->prefix('S/ ')
                                     ->default(0)
                                     ->required(),
 
@@ -152,7 +152,7 @@ class CourseResource extends Resource
 
                 TextColumn::make('price')
                     ->label('Precio')
-                    ->money('USD')
+                    ->money('PEN')
                     ->sortable(),
 
                 TextColumn::make('created_at')
