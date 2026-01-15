@@ -45,25 +45,47 @@
             </div>
 
             <form wire:submit="updateProfile" class="space-y-5">
-                <div>
-                    <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
-                        Nombre
-                    </label>
-                    <input
-                        type="text"
-                        id="name"
-                        wire:model="name"
-                        class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm"
-                        required
-                    >
-                    @error('name')
-                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            {{ $message }}
-                        </p>
-                    @enderror
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                        <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Nombre
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            wire:model="name"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm"
+                            required
+                        >
+                        @error('name')
+                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="last_name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                            Apellido
+                        </label>
+                        <input
+                            type="text"
+                            id="last_name"
+                            wire:model="last_name"
+                            class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:border-blue-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm"
+                        >
+                        @error('last_name')
+                            <p class="mt-1.5 text-sm text-red-600 dark:text-red-400 flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                 </div>
 
                 <div>

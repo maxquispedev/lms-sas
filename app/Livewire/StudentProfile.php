@@ -14,6 +14,7 @@ use Livewire\Component;
 class StudentProfile extends Component
 {
     public string $name = '';
+    public string $last_name = '';
     public readonly string $email;
     public string $current_password = '';
     public string $new_password = '';
@@ -26,6 +27,7 @@ class StudentProfile extends Component
     {
         $user = Auth::user();
         $this->name = $user->name;
+        $this->last_name = $user->last_name ?? '';
         $this->email = $user->email;
     }
 
@@ -36,11 +38,15 @@ class StudentProfile extends Component
     {
         $this->validate([
             'name' => ['required', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+        ], [
+            'name.required' => 'El nombre es obligatorio.',
         ]);
 
         $user = Auth::user();
         $user->update([
             'name' => $this->name,
+            'last_name' => $this->last_name,
         ]);
 
         session()->flash('profile_updated', 'Perfil actualizado correctamente.');

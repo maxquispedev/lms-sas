@@ -100,7 +100,8 @@ class CourseCheckout extends Component
 
             // Create the user with the form data
             $user = User::create([
-                'name' => trim($this->first_name . ' ' . $this->last_name),
+                'name' => $this->first_name,
+                'last_name' => $this->last_name,
                 'email' => $this->email,
                 'password' => Hash::make($this->password),
             ]);
