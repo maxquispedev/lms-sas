@@ -34,6 +34,16 @@ class CourseResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
+    public static function getModelLabel(): string
+    {
+        return 'curso';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'cursos';
+    }
+
     public static function form(Schema $schema): Schema
     {
         return $schema
