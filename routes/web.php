@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\CertificateController;
+use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
+use App\Livewire\Auth\ResetPassword;
 use App\Livewire\CourseCheckout;
 use App\Livewire\CoursesCatalog;
 use App\Livewire\PaymentSuccess;
@@ -19,6 +21,12 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)
         ->name('login');
+    
+    Route::get('/forgot-password', ForgotPassword::class)
+        ->name('password.request');
+    
+    Route::get('/reset-password/{token}', ResetPassword::class)
+        ->name('password.reset');
 });
 
 Route::post('/logout', function (Request $request) {
