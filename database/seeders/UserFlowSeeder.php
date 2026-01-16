@@ -15,6 +15,7 @@ use App\Models\User;
 use App\Services\PaymentService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserFlowSeeder extends Seeder
 {
@@ -27,6 +28,7 @@ class UserFlowSeeder extends Seeder
         // ==========================================
         // 1. CREAR TU SUPER ADMIN (ESTO ES LO NUEVO)
         // ==========================================
+        $role = Role::firstOrCreate(['name' => 'super_admin']);
         $superAdmin = User::firstOrCreate(
             ['email' => 'contacto@seiaambiental.com'],
             [
@@ -37,6 +39,7 @@ class UserFlowSeeder extends Seeder
         );
 
         $this->command->warn("--- SUPER ADMIN CREADO: contacto@seiaambiental.com ---");
+        $superAdmin->assignRole($role);
 
         // Create test user
         $user = User::firstOrCreate(
