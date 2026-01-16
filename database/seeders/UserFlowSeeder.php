@@ -23,6 +23,21 @@ class UserFlowSeeder extends Seeder
      */
     public function run(): void
     {
+
+        // ==========================================
+        // 1. CREAR TU SUPER ADMIN (ESTO ES LO NUEVO)
+        // ==========================================
+        $superAdmin = User::firstOrCreate(
+            ['email' => 'contacto@seiaambiental.com'],
+            [
+                'name' => 'Super Admin',
+                'password' => Hash::make('Croacia985*#'),
+                'email_verified_at' => now(),
+            ]
+        );
+
+        $this->command->warn("--- SUPER ADMIN CREADO: contacto@seiaambiental.com ---");
+
         // Create test user
         $user = User::firstOrCreate(
             ['email' => 'user@test.com'],
