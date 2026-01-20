@@ -51,12 +51,14 @@
 
                     {{-- Course Content --}}
                     <div class="p-5 sm:p-6">
-                        <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
-                            {{ $course->title }}
-                        </h3>
+                        <div class="min-h-[3.5rem] mb-2 flex items-center justify-center">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 text-center line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                                {{ $course->title }}
+                            </h3>
+                        </div>
                         
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
-                            {{ $course->description }}
+                            {!! strip_tags($course->description) !!}
                         </p>
                         
                         <div class="flex items-center gap-2 mb-4">
