@@ -51,8 +51,8 @@
 
                     {{-- Course Content --}}
                     <div class="p-5 sm:p-6">
-                        <div class="min-h-[3.5rem] mb-2 flex items-center justify-center">
-                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 text-center line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        <div class="h-[3.5rem] mb-2 flex items-center justify-center">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 text-center line-clamp-2 w-full group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
                                 {{ $course->title }}
                             </h3>
                         </div>
