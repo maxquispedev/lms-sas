@@ -9,10 +9,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Password;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+// Estos imports están bien
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
+
+// CORRECCIÓN 1: Agregado "implements FilamentUser"
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -53,17 +57,11 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Get the orders for the user.
-     */
     public function orders(): HasMany
     {
         return $this->hasMany(Order::class);
     }
 
-    /**
-     * Get the courses that the user is enrolled in.
-     */
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_user')
@@ -71,9 +69,6 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    /**
-     * Get all lessons for the user (with completion status).
-     */
     public function lessons(): BelongsToMany
     {
         return $this->belongsToMany(Lesson::class, 'lesson_user')
@@ -81,9 +76,6 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    /**
-     * Get the lessons that the user has completed.
-     */
     public function lessons_completed(): BelongsToMany
     {
         return $this->belongsToMany(Lesson::class, 'lesson_user')
@@ -92,13 +84,18 @@ class User extends Authenticatable
             ->withTimestamps();
     }
 
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     */
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));
+    }
+    
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // CORRECCIÓN 2: Corregí el error de escritura en el dominio (seia aMB iental)
+        if ($this->email === 'contacto@seiaambiental.com') {
+            return true;
+        }
+
+        return $this->hasRole('super_admin');
     }
 }
