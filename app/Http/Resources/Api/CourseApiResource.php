@@ -22,11 +22,14 @@ class CourseApiResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'price' => (float) $this->price,
-            'image_url' => $this->image_url 
-                ? (str_starts_with($this->image_url, 'http') 
-                    ? $this->image_url 
+            'image_url' => $this->image_url
+                ? (str_starts_with($this->image_url, 'http')
+                    ? $this->image_url
                     : Storage::disk('public')->url($this->image_url))
                 : null,
+            'cover_type' => $this->cover_type ?? 'image',
+            'cover_video_embed' => $this->cover_video_embed,
+            'trailer_embed_src' => $this->resolveTrailerEmbedSrc(),
             'description' => $this->description,
             'teacher' => $this->when($this->relationLoaded('teacher') && $this->teacher, [
                 'name' => $this->teacher->name,
@@ -56,6 +59,26 @@ class CourseApiResource extends JsonResource
                 })->sortBy('sort_order')->values();
             }, []),
         ];
+    }
+
+    /**
+     * Devuelve la URL segura para usar como src del iframe del trailer.
+     * Acepta URL directa o HTML con iframe (extrae el src).
+     */
+    private function resolveTrailerEmbedSrc(): ?string
+    {
+        $raw = $this->cover_video_embed;
+        if (empty($raw)) {
+            return null;
+        }
+        $trimmed = trim($raw);
+        if (str_starts_with($trimmed, 'http://') || str_starts_with($trimmed, 'https://')) {
+            return $trimmed;
+        }
+        if (preg_match('/src\s*=\s*["\']([^"\']+)["\']/', (string) $raw, $m)) {
+            return $m[1];
+        }
+        return null;
     }
 }
 

@@ -14,6 +14,7 @@ use BackedEnum;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Resources\Resource;
@@ -86,8 +87,28 @@ class CourseResource extends Resource
                         // Columna Derecha: Meta & Precio
                         Section::make('Meta & Precio')
                             ->schema([
+                                ToggleButtons::make('cover_type')
+                                    ->label('Portada')
+                                    ->options([
+                                        'image' => 'Imagen (adjuntar archivo)',
+                                        'video' => 'Video (URL incrustada)',
+                                    ])
+                                    ->default('image')
+                                    ->inline()
+                                    ->required()
+                                    ->live(),
+
+                                Textarea::make('cover_video_embed')
+                                    ->label('Código de inserción (iframe) o URL del video')
+                                    ->placeholder('Pega la URL (ej. https://www.youtube.com/embed/xxx) o el HTML del iframe de YouTube, Vimeo, Bunny, etc.')
+                                    ->helperText('No se sube archivo. Pega la URL o el código que te da la plataforma (YouTube, Vimeo, Bunny.net, etc.), igual que en lecciones.')
+                                    ->rows(5)
+                                    ->visible(fn ($get): bool => $get('cover_type') === 'video')
+                                    ->columnSpanFull(),
+
                                 FileUpload::make('image_url')
-                                    ->label('Imagen')
+                                    ->label('Imagen de portada')
+                                    ->helperText('Solo cuando la portada es "Imagen": sube una imagen. Si es "Video", esta imagen opcional se usa como miniatura.')
                                     ->disk('public')
                                     ->directory('courses')
                                     ->visibility('public')
@@ -103,6 +124,7 @@ class CourseResource extends Resource
                                     ->acceptedFileTypes(['image/jpeg', 'image/png', 'image/webp'])
                                     ->downloadable()
                                     ->openable()
+                                    ->visible(fn ($get): bool => $get('cover_type') === 'image')
                                     ->columnSpanFull(),
 
                                 TextInput::make('price')

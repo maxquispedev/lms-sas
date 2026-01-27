@@ -31,6 +31,8 @@ class Course extends Model
         'description',
         'price',
         'image_url',
+        'cover_type',
+        'cover_video_embed',
         'status',
     ];
 
