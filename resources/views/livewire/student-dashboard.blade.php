@@ -1,7 +1,7 @@
 <div class="max-w-7xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
     {{-- Flash Messages --}}
     @if(session('message'))
-        <div class="mb-6 bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 dark:border-emerald-400 text-emerald-800 dark:text-emerald-200 px-4 py-3 rounded-r-lg shadow-sm">
+        <div class="mb-6 bg-primary/10 dark:bg-primary/20 border-l-4 border-primary dark:border-primary text-secondary dark:text-primary px-4 py-3 rounded-r-lg shadow-sm">
             <div class="flex items-center gap-2">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -53,7 +53,7 @@
         {{-- Courses Grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($this->courses as $course)
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 group">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md hover:border-primary/50 dark:hover:border-primary transition-all duration-300 group">
                     {{-- Course Image --}}
                     <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 overflow-hidden relative">
                         <img 
@@ -67,7 +67,7 @@
 
                     {{-- Course Content --}}
                     <div class="p-5 sm:p-6">
-                        <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                        <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2 group-hover:text-primary dark:group-hover:text-primary transition-colors">
                             {{ $course->title }}
                         </h3>
                         
@@ -86,13 +86,13 @@
                                 <span class="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
                                     Progreso
                                 </span>
-                                <span class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                                <span class="text-xs font-semibold text-primary dark:text-primary">
                                     {{ $course->progress }}%
                                 </span>
                             </div>
                             <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2.5 overflow-hidden">
                                 <div 
-                                    class="bg-gradient-to-r from-emerald-500 to-emerald-600 dark:from-emerald-500 dark:to-emerald-400 h-2.5 rounded-full transition-all duration-500 shadow-sm"
+                                    class="bg-gradient-to-r from-primary to-primary/90 dark:from-primary dark:to-primary/90 h-2.5 rounded-full transition-all duration-500 shadow-sm"
                                     style="width: {{ $course->progress }}%"
                                 ></div>
                             </div>
@@ -117,7 +117,7 @@
                         {{-- Action Button --}}
                         <a 
                             href="{{ route('course.learn', $course->slug) }}" 
-                            class="block w-full text-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
+                            class="block w-full text-center px-4 py-2.5 bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
                         >
                             Continuar Aprendiendo
                         </a>

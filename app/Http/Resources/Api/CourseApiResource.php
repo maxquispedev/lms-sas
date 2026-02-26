@@ -22,6 +22,8 @@ class CourseApiResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'price' => (float) $this->price,
+            'sale_price' => $this->sale_price !== null ? (float) $this->sale_price : null,
+            'effective_price' => (float) $this->effective_price,
             'image_url' => $this->image_url
                 ? (str_starts_with($this->image_url, 'http')
                     ? $this->image_url

@@ -28,13 +28,16 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
                     {{ $course->title }}
                 </h1>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">
-                        S/ {{ number_format($course->price, 2, '.', ',') }}
-                    </span>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                        PEN
-                    </span>
+                <div class="flex items-baseline gap-2 flex-wrap">
+                    @if($course->hasSalePrice())
+                        <span class="text-2xl text-gray-500 dark:text-gray-400 line-through">S/ {{ number_format((float) $course->price, 2, '.', ',') }}</span>
+                        <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">S/ {{ number_format((float) $course->sale_price, 2, '.', ',') }}</span>
+                    @else
+                        <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">
+                            S/ {{ number_format($course->price, 2, '.', ',') }}
+                        </span>
+                    @endif
+                    <span class="text-sm text-gray-500 dark:text-gray-400">PEN</span>
                 </div>
             </div>
 
@@ -203,7 +206,7 @@
                     type="button"
                     wire:click="validateAndPay"
                     wire:loading.attr="disabled"
-                    class="block w-full px-6 py-4 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                    class="block w-full px-6 py-4 bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                     <div class="flex items-center justify-center gap-3">
                         <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" wire:loading.remove wire:target="validateAndPay">
@@ -248,7 +251,7 @@
         const settings = {
             title: '{{ addslashes($course->title) }}',
             currency: 'PEN',
-            amount: {{ intval($course->price * 100) }},
+            amount: {{ intval($course->effective_price * 100) }},
         };
 
         const client = {

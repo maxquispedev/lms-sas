@@ -10,10 +10,10 @@
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
     
-    /* Colores personalizados principales - Coinciden con frontend */
-    --color-primary: #009a45;
-    --color-secondary: #0f392b;
-    --color-accent: #dbf228;
+    /* Colores corporativos SEIA - Coinciden con frontend */
+    --color-primary: #386641;   /* Verde Bosque - hoja */
+    --color-secondary: #1B263B; /* Azul Navy - tipografía SEIA y gota */
+    --color-accent: #F48C06;    /* Naranja de Seguridad - foco/bombilla */
     --color-surface: #f8fafc;
 }
 

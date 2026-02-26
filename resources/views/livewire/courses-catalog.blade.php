@@ -30,7 +30,7 @@
         {{-- Courses Grid --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($this->courses as $course)
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all duration-300 group">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md hover:border-primary/50 dark:hover:border-primary transition-all duration-300 group">
                     {{-- Course Image --}}
                     <div class="aspect-video bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800 overflow-hidden relative">
                         <img 
@@ -42,7 +42,7 @@
                         <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         @if($course->is_enrolled)
                             <div class="absolute top-3 right-3">
-                                <span class="px-3 py-1 bg-emerald-500 text-white text-xs font-semibold rounded-full shadow-md">
+                                <span class="px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full shadow-md">
                                     Inscrito
                                 </span>
                             </div>
@@ -52,7 +52,7 @@
                     {{-- Course Content --}}
                     <div class="p-5 sm:p-6">
                         <div class="h-[3.5rem] mb-2 flex items-center justify-center">
-                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 text-center line-clamp-2 w-full group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors">
+                            <h3 class="text-lg sm:text-xl font-semibold text-gray-900 dark:text-gray-100 text-center line-clamp-2 w-full group-hover:text-primary dark:group-hover:text-primary transition-colors">
                                 {{ $course->title }}
                             </h3>
                         </div>
@@ -72,23 +72,30 @@
 
                         {{-- Price --}}
                         <div class="mb-5">
-                            <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                                S/ {{ number_format($course->price, 2) }}
-                            </p>
+                            @if($course->hasSalePrice())
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-baseline gap-2 flex-wrap">
+                                    <span class="text-lg font-normal text-gray-500 dark:text-gray-400 line-through">S/ {{ number_format((float) $course->price, 2) }}</span>
+                                    <span>S/ {{ number_format((float) $course->sale_price, 2) }}</span>
+                                </p>
+                            @else
+                                <p class="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                                    S/ {{ number_format($course->price, 2) }}
+                                </p>
+                            @endif
                         </div>
 
                         {{-- Action Button --}}
                         @if($course->is_enrolled)
                             <a 
                                 href="{{ route('course.learn', $course->slug) }}" 
-                                class="block w-full text-center px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 dark:bg-emerald-500 dark:hover:bg-emerald-600 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
+                                class="block w-full text-center px-4 py-2.5 bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
                             >
                                 Continuar Aprendiendo
                             </a>
                         @else
                             <a 
                                 href="{{ route('course.checkout', $course->slug) }}" 
-                                class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 dark:from-emerald-500 dark:to-emerald-600 dark:hover:from-emerald-600 dark:hover:to-emerald-700 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
+                                class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-primary to-primary/90 hover:from-primary/90 hover:to-primary/80 dark:from-primary dark:to-primary/90 dark:hover:from-primary/90 dark:hover:to-primary/80 text-white font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
                             >
                                 Comprar Curso
                             </a>

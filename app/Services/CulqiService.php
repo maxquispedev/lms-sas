@@ -80,7 +80,7 @@ class CulqiService
         try {
             // Preparar los datos del cargo
             $chargeData = [
-                'amount' => (int) ($course->price * 100), // Culqi requiere el monto en centavos
+                'amount' => (int) ($course->effective_price * 100), // Culqi requiere el monto en centavos
                 'currency_code' => 'PEN', // Soles peruanos
                 'email' => $user->email,
                 'source_id' => $tokenId,

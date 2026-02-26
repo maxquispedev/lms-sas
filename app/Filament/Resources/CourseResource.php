@@ -134,6 +134,13 @@ class CourseResource extends Resource
                                     ->default(0)
                                     ->required(),
 
+                                TextInput::make('sale_price')
+                                    ->label('Precio rebajado')
+                                    ->numeric()
+                                    ->prefix('S/ ')
+                                    ->placeholder('Opcional. Si se define, este es el precio que se cobra.')
+                                    ->helperText('Dejar vacío para usar solo el precio normal.'),
+
                                 ToggleButtons::make('status')
                                     ->label('Estado')
                                     ->options(CourseStatus::class)
@@ -185,7 +192,13 @@ class CourseResource extends Resource
                 TextColumn::make('price')
                     ->label('Precio')
                     ->money('PEN')
-                    ->sortable(),
+                    ->sortable()
+                    ->formatStateUsing(function ($record) {
+                        if ($record->hasSalePrice()) {
+                            return 'S/ ' . number_format((float) $record->price, 2) . ' → S/ ' . number_format((float) $record->sale_price, 2);
+                        }
+                        return 'S/ ' . number_format((float) $record->price, 2);
+                    }),
 
                 TextColumn::make('created_at')
                     ->label('Creado')

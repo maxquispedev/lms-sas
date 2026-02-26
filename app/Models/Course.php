@@ -30,6 +30,7 @@ class Course extends Model
         'slug',
         'description',
         'price',
+        'sale_price',
         'image_url',
         'cover_type',
         'cover_video_embed',
@@ -45,8 +46,27 @@ class Course extends Model
     {
         return [
             'price' => 'decimal:2',
+            'sale_price' => 'decimal:2',
             'status' => CourseStatus::class,
         ];
+    }
+
+    /**
+     * Precio efectivo a cobrar: sale_price si existe, sino price.
+     */
+    protected function effectivePrice(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): float => (float) ($this->sale_price ?? $this->price),
+        );
+    }
+
+    /**
+     * Indica si el curso tiene precio rebajado.
+     */
+    public function hasSalePrice(): bool
+    {
+        return $this->sale_price !== null && $this->sale_price !== '';
     }
 
     /**

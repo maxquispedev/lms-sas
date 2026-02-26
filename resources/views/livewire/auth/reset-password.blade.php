@@ -8,7 +8,7 @@
         </div>
 
         @if(session('status'))
-            <div class="mb-6 bg-emerald-50 dark:bg-emerald-900/30 border-l-4 border-emerald-500 dark:border-emerald-400 text-emerald-800 dark:text-emerald-200 px-4 py-3 rounded-r-lg shadow-sm">
+            <div class="mb-6 bg-primary/10 dark:bg-primary/20 border-l-4 border-primary dark:border-primary text-secondary dark:text-primary px-4 py-3 rounded-r-lg shadow-sm">
                 <div class="flex items-center gap-2">
                     <svg class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -27,7 +27,7 @@
                     type="email"
                     id="email"
                     wire:model.defer="email"
-                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:focus:border-emerald-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:focus:border-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
                     placeholder="tu@correo.com"
                     required
                     readonly
@@ -45,7 +45,7 @@
                     type="password"
                     id="password"
                     wire:model.defer="password"
-                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:focus:border-emerald-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:focus:border-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
                     placeholder="Mínimo 8 caracteres"
                     required
                     autofocus
@@ -63,7 +63,7 @@
                     type="password"
                     id="password_confirmation"
                     wire:model.defer="password_confirmation"
-                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 dark:focus:border-emerald-400 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
+                    class="w-full px-4 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary dark:focus:border-primary bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 transition-all duration-200 shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500"
                     placeholder="Confirma tu nueva contraseña"
                     required
                 />
@@ -71,7 +71,7 @@
 
             <button
                 type="submit"
-                class="w-full inline-flex justify-center items-center px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-lg transition-colors duration-200 cursor-pointer"
+                class="w-full inline-flex justify-center items-center px-4 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors duration-200 cursor-pointer"
             >
                 Restablecer Contraseña
             </button>
@@ -80,7 +80,7 @@
         <div class="mt-6 text-center">
             <a 
                 href="{{ route('login') }}" 
-                class="text-sm text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium cursor-pointer"
+                class="text-sm text-primary dark:text-primary hover:text-primary/90 dark:hover:text-primary/80 font-medium cursor-pointer"
             >
                 ← Volver al Login
             </a>

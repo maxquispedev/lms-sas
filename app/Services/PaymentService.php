@@ -33,7 +33,7 @@ class PaymentService
             $order = Order::create([
                 'user_id' => $user->id,
                 'course_id' => $course->id,
-                'total_amount' => $course->price,
+                'total_amount' => $course->effective_price,
                 'status' => OrderStatus::Paid,
                 'payment_gateway' => PaymentGateway::Manual,
                 'transaction_id' => $transactionRef,
@@ -61,7 +61,7 @@ class PaymentService
             $order = Order::create([
                 'user_id' => $user->id,
                 'course_id' => $course->id,
-                'total_amount' => $course->price,
+                'total_amount' => $course->effective_price,
                 'status' => OrderStatus::Paid,
                 'payment_gateway' => PaymentGateway::Culqi,
                 'transaction_id' => $transactionId,
