@@ -35,6 +35,17 @@ class ModulesRelationManager extends RelationManager
                     ->required()
                     ->maxLength(255),
 
+                Textarea::make('iframe_code')
+                    ->label('Video del módulo (código iframe o URL)')
+                    ->helperText('Pega la URL de YouTube/Vimeo/Bunny o el código iframe completo.')
+                    ->rows(3)
+                    ->columnSpanFull(),
+
+                RichEditor::make('content')
+                    ->label('Contenido del módulo')
+                    ->helperText('Texto, recursos o descripción que se mostrará al ver el módulo.')
+                    ->columnSpanFull(),
+
                 TextInput::make('sort_order')
                     ->label('Orden')
                     ->numeric()

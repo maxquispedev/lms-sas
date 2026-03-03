@@ -22,6 +22,8 @@ class Module extends Model
     protected $fillable = [
         'course_id',
         'title',
+        'iframe_code',
+        'content',
         'sort_order',
     ];
 
