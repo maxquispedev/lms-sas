@@ -18,7 +18,7 @@ class CourseApiController extends Controller
     public function index(): JsonResponse
     {
         $courses = Course::where('status', CourseStatus::Published)
-            ->with(['teacher', 'modules.lessons'])
+            ->with(['teacher', 'modules.lessons', 'categories'])
             ->get();
 
         return response()->json([
@@ -36,7 +36,7 @@ class CourseApiController extends Controller
             abort(404, 'Course not found.');
         }
 
-        $course->load(['teacher', 'modules.lessons']);
+        $course->load(['teacher', 'modules.lessons', 'categories']);
 
         return response()->json([
             'data' => new CourseApiResource($course),

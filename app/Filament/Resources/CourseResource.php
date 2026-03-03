@@ -9,6 +9,7 @@ use App\Filament\Resources\CourseResource\Pages\CreateCourse;
 use App\Filament\Resources\CourseResource\Pages\EditCourse;
 use App\Filament\Resources\CourseResource\Pages\ListCourses;
 use App\Filament\Resources\CourseResource\RelationManagers\ModulesRelationManager;
+use App\Models\Category;
 use App\Models\Course;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
@@ -78,6 +79,14 @@ class CourseResource extends Resource
                                     ->required()
                                     ->unique(ignoreRecord: true)
                                     ->maxLength(255),
+
+                                Select::make('categories')
+                                    ->label('Categorías')
+                                    ->multiple()
+                                    ->relationship('categories', 'name')
+                                    ->preload()
+                                    ->searchable()
+                                    ->placeholder('Selecciona una o varias categorías'),
 
                                 RichEditor::make('description')
                                     ->label('Descripción')
@@ -156,7 +165,7 @@ class CourseResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn ($query) => $query->with('teacher'))
+            ->modifyQueryUsing(fn ($query) => $query->with(['teacher', 'categories']))
             ->columns([
                 ImageColumn::make('image_url')
                     ->label('Imagen')
@@ -178,6 +187,12 @@ class CourseResource extends Resource
                     ->label('Instructor')
                     ->sortable()
                     ->searchable(),
+
+                TextColumn::make('categories.name')
+                    ->label('Categorías')
+                    ->badge()
+                    ->separator(', ')
+                    ->wrap(),
 
                 TextColumn::make('status')
                     ->label('Estado')

@@ -33,6 +33,15 @@ class CourseApiResource extends JsonResource
             'cover_video_embed' => $this->cover_video_embed,
             'trailer_embed_src' => $this->resolveTrailerEmbedSrc(),
             'description' => $this->description,
+            'categories' => $this->whenLoaded('categories', function () {
+                return $this->categories->map(function ($category) {
+                    return [
+                        'id' => $category->id,
+                        'name' => $category->name,
+                        'slug' => $category->slug,
+                    ];
+                })->values();
+            }, []),
             'teacher' => $this->when($this->relationLoaded('teacher') && $this->teacher, [
                 'name' => $this->teacher->name,
                 'avatar_url' => $this->teacher->avatar_url 

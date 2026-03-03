@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Enums\CourseStatus;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentGateway;
+use App\Models\Category;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Module;
@@ -70,6 +71,31 @@ class UserFlowSeeder extends Seeder
                 'status' => CourseStatus::Published,
             ]
         );
+
+        // Create some categories and attach to course
+        $categories = [
+            [
+                'name' => 'Ambiental',
+                'slug' => 'ambiental',
+                'description' => 'Cursos relacionados con gestión y normativa ambiental.',
+            ],
+            [
+                'name' => 'Seguridad y Salud',
+                'slug' => 'seguridad-y-salud',
+                'description' => 'Cursos de seguridad y salud en el trabajo.',
+            ],
+        ];
+
+        foreach ($categories as $categoryData) {
+            $category = Category::firstOrCreate(
+                ['slug' => $categoryData['slug']],
+                $categoryData
+            );
+
+            if (! $course->categories()->where('categories.id', $category->id)->exists()) {
+                $course->categories()->attach($category->id);
+            }
+        }
 
         // Create module
         $module = Module::firstOrCreate(
