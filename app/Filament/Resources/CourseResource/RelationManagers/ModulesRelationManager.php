@@ -33,6 +33,18 @@ class ModulesRelationManager extends RelationManager
                 TextInput::make('title')
                     ->label('Nombre del Módulo')
                     ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, callable $set, $get) {
+                        if ($get('slug') === '' || $get('slug') === null) {
+                            $set('slug', Str::slug((string) $state));
+                        }
+                    })
+                    ->maxLength(255),
+
+                TextInput::make('slug')
+                    ->label('Slug')
+                    ->helperText('Se usa para la URL cuando el curso no tiene lecciones.')
+                    ->required()
                     ->maxLength(255),
 
                 Textarea::make('iframe_code')

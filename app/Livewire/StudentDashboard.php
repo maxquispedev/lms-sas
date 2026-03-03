@@ -41,20 +41,47 @@ class StudentDashboard extends Component
             ])
             ->orderByPivot('enrolled_at', 'desc')
             ->get()
-            ->each(function (Course $course) use ($completedLessonIds): void {
+            ->each(function (Course $course) use ($completedLessonIds, $user): void {
                 $lessonIds = $course->modules
                     ->flatMap->lessons
                     ->pluck('id');
 
-                $totalLessons = $lessonIds->count();
-                $completedCount = $lessonIds
-                    ->filter(fn (int $lessonId): bool => in_array($lessonId, $completedLessonIds, true))
+                $hasLessons = $lessonIds->isNotEmpty();
+
+                if ($hasLessons) {
+                    $total = $lessonIds->count();
+                    $completedCount = $lessonIds
+                        ->filter(fn (int $lessonId): bool => in_array($lessonId, $completedLessonIds, true))
+                        ->count();
+
+                    $course->progress_total_label = 'lecciones';
+                    $course->total_progress_items = $total;
+                    $course->completed_progress_items = $completedCount;
+                    $course->progress = $total > 0
+                        ? (int) floor(($completedCount / $total) * 100)
+                        : 0;
+
+                    return;
+                }
+
+                $moduleIds = $course->modules
+                    ->pluck('id');
+
+                $completedModuleIds = $user
+                    ->modules_completed()
+                    ->pluck('modules.id')
+                    ->toArray();
+
+                $total = $moduleIds->count();
+                $completedCount = $moduleIds
+                    ->filter(fn (int $moduleId): bool => in_array($moduleId, $completedModuleIds, true))
                     ->count();
 
-                $course->total_lessons = $totalLessons;
-                $course->completed_lessons = $completedCount;
-                $course->progress = $totalLessons > 0
-                    ? (int) floor(($completedCount / $totalLessons) * 100)
+                $course->progress_total_label = 'módulos';
+                $course->total_progress_items = $total;
+                $course->completed_progress_items = $completedCount;
+                $course->progress = $total > 0
+                    ? (int) floor(($completedCount / $total) * 100)
                     : 0;
             });
     }

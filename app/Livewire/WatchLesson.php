@@ -6,6 +6,7 @@ namespace App\Livewire;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Module;
 use App\Services\EnrollmentService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,9 @@ class WatchLesson extends Component
 {
     public Course $course;
     public ?Lesson $currentLesson = null;
+    public ?Module $currentModule = null;
     public bool $autoplay = false;
+    public bool $hasLessons = false;
 
     /**
      * Mount the component.
@@ -35,34 +38,58 @@ class WatchLesson extends Component
 
         $this->course = $course->load('modules.lessons');
 
-        // Resolve lesson
-        if ($lesson) {
-            $this->currentLesson = $course->modules
-                ->flatMap->lessons
-                ->firstWhere('slug', $lesson);
+        $this->hasLessons = $this->course->modules
+            ->flatMap->lessons
+            ->isNotEmpty();
 
-            if (!$this->currentLesson) {
-                abort(404, 'Lección no encontrada.');
+        // Resolver: item puede ser slug de lección (modo lecciones) o slug de módulo (modo módulos)
+        if ($this->hasLessons) {
+            if ($lesson) {
+                $this->currentLesson = $course->modules
+                    ->flatMap->lessons
+                    ->firstWhere('slug', $lesson);
+
+                if (! $this->currentLesson) {
+                    abort(404, 'Lección no encontrada.');
+                }
+            } else {
+                // Primera lección del primer módulo ordenado
+                $firstModule = $course->modules
+                    ->sortBy('sort_order')
+                    ->first();
+
+                if ($firstModule && $firstModule->lessons->isNotEmpty()) {
+                    $this->currentLesson = $firstModule->lessons
+                        ->sortBy('sort_order')
+                        ->first();
+                }
             }
-        } else {
-            // Load first lesson of first module (ordered by sort_order)
-            $firstModule = $course->modules
-                ->sortBy('sort_order')
-                ->first();
+        }
 
-            if ($firstModule && $firstModule->lessons->isNotEmpty()) {
-                $this->currentLesson = $firstModule->lessons
+        // Modo módulos (cuando no hay lecciones)
+        if (! $this->hasLessons) {
+            if ($lesson) {
+                $this->currentModule = $this->course->modules
+                    ->firstWhere('slug', $lesson);
+
+                if (! $this->currentModule) {
+                    abort(404, 'Módulo no encontrado.');
+                }
+            } else {
+                $this->currentModule = $this->course->modules
                     ->sortBy('sort_order')
                     ->first();
             }
         }
 
-        if (!$this->currentLesson) {
-            abort(404, 'No hay lecciones disponibles en este curso.');
+        if (! $this->currentLesson && ! $this->currentModule) {
+            abort(404, 'No hay contenido disponible en este curso.');
         }
 
-        // Ensure module relationship is loaded
-        $this->currentLesson->load('module');
+        // Ensure module relationship is loaded cuando hay lección
+        if ($this->currentLesson) {
+            $this->currentLesson->load('module');
+        }
     }
 
     /**
@@ -71,15 +98,31 @@ class WatchLesson extends Component
     public function toggleComplete(): void
     {
         $user = Auth::user();
-        $isCompleted = $this->isLessonCompleted();
+        $isCompleted = $this->isCompleted();
 
-        // Always use syncWithoutDetaching to ensure the pivot record exists
-        $user->lessons()->syncWithoutDetaching([
-            $this->currentLesson->id => [
-                'completed' => !$isCompleted,
-                'completed_at' => !$isCompleted ? now() : null,
-            ],
-        ]);
+        if ($this->hasLessons) {
+            if (! $this->currentLesson) {
+                return;
+            }
+
+            $user->lessons()->syncWithoutDetaching([
+                $this->currentLesson->id => [
+                    'completed' => ! $isCompleted,
+                    'completed_at' => ! $isCompleted ? now() : null,
+                ],
+            ]);
+        } else {
+            if (! $this->currentModule) {
+                return;
+            }
+
+            $user->modules()->syncWithoutDetaching([
+                $this->currentModule->id => [
+                    'completed' => ! $isCompleted,
+                    'completed_at' => ! $isCompleted ? now() : null,
+                ],
+            ]);
+        }
 
         // Refresh component state
         $this->dispatch('lesson-completion-toggled');
@@ -98,10 +141,33 @@ class WatchLesson extends Component
      */
     public function isLessonCompleted(): bool
     {
+        if (! $this->hasLessons) {
+            return false;
+        }
+
         return Auth::user()
             ->lessons_completed()
             ->where('lessons.id', $this->currentLesson->id)
             ->exists();
+    }
+
+    public function isModuleCompleted(): bool
+    {
+        if ($this->hasLessons) {
+            return false;
+        }
+
+        return Auth::user()
+            ->modules_completed()
+            ->where('modules.id', $this->currentModule->id)
+            ->exists();
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->hasLessons
+            ? $this->isLessonCompleted()
+            : $this->isModuleCompleted();
     }
 
     /**
@@ -109,6 +175,10 @@ class WatchLesson extends Component
      */
     public function getNextLesson(): ?Lesson
     {
+        if (! $this->hasLessons) {
+            return null;
+        }
+
         $modules = $this->course->modules
             ->sortBy('sort_order');
 
@@ -134,6 +204,10 @@ class WatchLesson extends Component
      */
     public function getPreviousLesson(): ?Lesson
     {
+        if (! $this->hasLessons) {
+            return null;
+        }
+
         $modules = $this->course->modules
             ->sortBy('sort_order');
 
@@ -154,31 +228,85 @@ class WatchLesson extends Component
         return null;
     }
 
+    public function getNextModule(): ?Module
+    {
+        $modules = $this->course->modules
+            ->sortBy('sort_order')
+            ->values();
+
+        $currentIndex = $modules->search(function ($module) {
+            return $this->currentModule !== null && $module->id === $this->currentModule->id;
+        });
+
+        if ($currentIndex !== false && $currentIndex < $modules->count() - 1) {
+            return $modules->get($currentIndex + 1);
+        }
+
+        return null;
+    }
+
+    public function getPreviousModule(): ?Module
+    {
+        $modules = $this->course->modules
+            ->sortBy('sort_order')
+            ->values();
+
+        $currentIndex = $modules->search(function ($module) {
+            return $this->currentModule !== null && $module->id === $this->currentModule->id;
+        });
+
+        if ($currentIndex !== false && $currentIndex > 0) {
+            return $modules->get($currentIndex - 1);
+        }
+
+        return null;
+    }
+
     /**
      * Calculate the course progress percentage.
      */
     public function getCourseProgress(): int
     {
         $user = Auth::user();
-        
-        $allLessonIds = $this->course->modules
-            ->flatMap->lessons
+
+        if ($this->hasLessons) {
+            $allLessonIds = $this->course->modules
+                ->flatMap->lessons
+                ->pluck('id')
+                ->toArray();
+
+            $completedLessonIds = $user
+                ->lessons_completed()
+                ->pluck('lessons.id')
+                ->toArray();
+
+            $total = count($allLessonIds);
+            $completed = count(array_intersect($allLessonIds, $completedLessonIds));
+
+            if ($total === 0) {
+                return 0;
+            }
+
+            return (int) floor(($completed / $total) * 100);
+        }
+
+        $allModuleIds = $this->course->modules
             ->pluck('id')
             ->toArray();
 
-        $completedLessonIds = $user
-            ->lessons_completed()
-            ->pluck('lessons.id')
+        $completedModuleIds = $user
+            ->modules_completed()
+            ->pluck('modules.id')
             ->toArray();
 
-        $totalLessons = count($allLessonIds);
-        $completedCount = count(array_intersect($allLessonIds, $completedLessonIds));
+        $total = count($allModuleIds);
+        $completed = count(array_intersect($allModuleIds, $completedModuleIds));
 
-        if ($totalLessons === 0) {
+        if ($total === 0) {
             return 0;
         }
 
-        return (int) floor(($completedCount / $totalLessons) * 100);
+        return (int) floor(($completed / $total) * 100);
     }
 
     /**
@@ -198,6 +326,11 @@ class WatchLesson extends Component
             ->pluck('lessons.id')
             ->toArray();
 
+        $completedModuleIds = Auth::user()
+            ->modules_completed()
+            ->pluck('modules.id')
+            ->toArray();
+
         // Load teacher relationship
         $this->course->load('teacher');
 
@@ -208,7 +341,12 @@ class WatchLesson extends Component
             'completedLessonIds' => $completedLessonIds,
             'nextLesson' => $this->getNextLesson(),
             'previousLesson' => $this->getPreviousLesson(),
+            'nextModule' => $this->getNextModule(),
+            'previousModule' => $this->getPreviousModule(),
             'courseProgress' => $courseProgress,
+            'hasLessons' => $this->hasLessons,
+            'currentModule' => $this->currentModule,
+            'completedModuleIds' => $completedModuleIds,
         ]);
     }
 }

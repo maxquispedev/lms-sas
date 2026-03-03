@@ -84,6 +84,21 @@ class User extends Authenticatable implements FilamentUser
             ->withTimestamps();
     }
 
+    public function modules(): BelongsToMany
+    {
+        return $this->belongsToMany(Module::class, 'module_user')
+            ->withPivot(['completed', 'completed_at'])
+            ->withTimestamps();
+    }
+
+    public function modules_completed(): BelongsToMany
+    {
+        return $this->belongsToMany(Module::class, 'module_user')
+            ->wherePivot('completed', true)
+            ->withPivot(['completed', 'completed_at'])
+            ->withTimestamps();
+    }
+
     public function sendPasswordResetNotification($token): void
     {
         $this->notify(new ResetPasswordNotification($token));

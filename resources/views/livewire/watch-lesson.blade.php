@@ -22,14 +22,14 @@
                     </svg>
                 </li>
                 <li class="text-gray-900 dark:text-gray-100 font-semibold truncate max-w-xs">
-                    {{ $currentLesson->title }}
+                    {{ $currentLesson->title ?? $currentModule?->title }}
                 </li>
             </ol>
         </nav>
         
-        {{-- Lesson Title --}}
+        {{-- Lesson / Module Title --}}
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-            {{ $currentLesson->title }}
+            {{ $currentLesson->title ?? $currentModule?->title }}
         </h1>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -37,9 +37,13 @@
             <div class="lg:col-span-2 space-y-6">
                 {{-- Video Player --}}
                 <div class="aspect-video bg-gray-900 dark:bg-black rounded-xl overflow-hidden relative shadow-xl border border-gray-200 dark:border-gray-800">
-                    @if($currentLesson->iframe_code)
+                    @php
+                        $playable = $currentLesson ?? $currentModule;
+                    @endphp
+
+                    @if($playable && $playable->iframe_code)
                         <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:absolute [&>iframe]:inset-0">
-                            {!! $currentLesson->iframe_code !!}
+                            {!! $playable->iframe_code !!}
                         </div>
                     @else
                         <div class="w-full h-full flex items-center justify-center absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 dark:from-black dark:to-gray-900">
@@ -80,11 +84,11 @@
                         </div>
                     @endif
 
-                    {{-- Course Description --}}
-                    @if($currentLesson->content)
+                    {{-- Course / Lesson / Module Description --}}
+                    @if($playable && $playable->content)
                         <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                             <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-primary dark:prose-a:text-primary prose-strong:text-gray-900 dark:prose-strong:text-gray-100">
-                                {!! $currentLesson->content !!}
+                                {!! $playable->content !!}
                             </div>
                         </div>
                     @elseif($course->description)
@@ -102,8 +106,8 @@
             </div>
 
             {{-- Right Column: Content Sidebar (1/3) --}}
-            <div class="lg:col-span-1">
-                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-6">
+            <div class="lg:col-span-1 min-w-0">
+                <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 p-6 sticky top-6 overflow-hidden">
                     <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-200 dark:border-gray-700">
                         <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100">
                             Contenido
@@ -115,13 +119,13 @@
                         {{-- Marcar Visto Button (Left) --}}
                         <button
                             wire:click="toggleComplete"
-                            class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm cursor-pointer {{ $this->isLessonCompleted() 
+                            class="group flex items-center justify-center gap-2.5 px-4 py-2.5 min-h-[44px] rounded-lg transition-all duration-200 font-medium text-sm shadow-sm cursor-pointer {{ $this->isCompleted() 
                                 ? 'bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700 text-white shadow-green-500/30 border border-green-600 dark:border-green-500' 
                                 : 'bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:border-primary/50 dark:hover:border-primary' 
                             }}"
-                            aria-label="{{ $this->isLessonCompleted() ? 'Marcar como no completado' : 'Marcar como completado' }}"
+                            aria-label="{{ $this->isCompleted() ? 'Marcar como no completado' : 'Marcar como completado' }}"
                         >
-                            @if($this->isLessonCompleted())
+                            @if($this->isCompleted())
                                 {{-- Check icon when completed --}}
                                 <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
@@ -139,11 +143,11 @@
                         {{-- Navigation Buttons (Right) --}}
                         <div class="flex items-center gap-2">
                             {{-- Previous Button --}}
-                            @if($previousLesson)
+                            @if($hasLessons ? $previousLesson : $previousModule)
                                 <a
-                                    href="{{ route('course.learn', [$course, $previousLesson->slug]) }}"
+                                    href="{{ route('course.learn', [$course, ($hasLessons ? $previousLesson->slug : $previousModule->slug)]) }}"
                                     class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 transition-all duration-200 shadow-sm hover:shadow cursor-pointer"
-                                    title="Lección anterior"
+                                    title="{{ $hasLessons ? 'Lección anterior' : 'Módulo anterior' }}"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -153,7 +157,7 @@
                                 <button
                                     disabled
                                     class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-300 dark:text-gray-700 cursor-not-allowed"
-                                    title="No hay lección anterior"
+                                    title="{{ $hasLessons ? 'No hay lección anterior' : 'No hay módulo anterior' }}"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -162,11 +166,11 @@
                             @endif
 
                             {{-- Next Button --}}
-                            @if($nextLesson)
+                            @if($hasLessons ? $nextLesson : $nextModule)
                                 <a
-                                    href="{{ route('course.learn', [$course, $nextLesson->slug]) }}"
+                                    href="{{ route('course.learn', [$course, ($hasLessons ? $nextLesson->slug : $nextModule->slug)]) }}"
                                     class="flex items-center justify-center w-10 h-10 rounded-lg bg-primary dark:bg-primary hover:bg-primary/90 dark:hover:bg-primary/90 text-white transition-all duration-200 shadow-sm hover:shadow-md active:scale-95 cursor-pointer"
-                                    title="Siguiente lección"
+                                    title="{{ $hasLessons ? 'Siguiente lección' : 'Siguiente módulo' }}"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -176,7 +180,7 @@
                                 <button
                                     disabled
                                     class="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-300 dark:text-gray-700 cursor-not-allowed"
-                                    title="No hay siguiente lección"
+                                    title="{{ $hasLessons ? 'No hay siguiente lección' : 'No hay siguiente módulo' }}"
                                 >
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
@@ -206,68 +210,93 @@
 
                     {{-- Modules and Lessons --}}
                     <div class="space-y-2" x-data="{ 
-                        expandedModules: @js([$currentLesson->module_id])
+                        expandedModules: @js([$currentLesson->module_id ?? $modules->first()?->id])
                     }">
                         @forelse($modules as $module)
                             <div class="border-b border-gray-200 dark:border-gray-700 last:border-b-0 pb-2 last:pb-0">
                                 {{-- Module Header --}}
-                                <button
-                                    @click="expandedModules.includes({{ $module->id }}) 
-                                        ? expandedModules = expandedModules.filter(id => id !== {{ $module->id }})
-                                        : expandedModules.push({{ $module->id }})"
-                                    class="w-full flex items-center justify-between py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group cursor-pointer"
-                                >
-                                    <h3 class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-primary dark:group-hover:text-primary transition-colors">
-                                        {{ $module->title }}
-                                    </h3>
-                                    <svg 
-                                        class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200"
-                                        :class="expandedModules.includes({{ $module->id }}) ? 'rotate-90 text-primary dark:text-primary' : ''"
-                                        fill="none" 
-                                        viewBox="0 0 24 24" 
-                                        stroke="currentColor"
+                                @if($module->lessons->isNotEmpty())
+                                    <button
+                                        @click="expandedModules.includes({{ $module->id }}) 
+                                            ? expandedModules = expandedModules.filter(id => id !== {{ $module->id }})
+                                            : expandedModules.push({{ $module->id }})"
+                                        class="w-full flex items-center gap-2 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group cursor-pointer overflow-hidden"
+                                        title="{{ $module->title }}"
                                     >
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                                    </svg>
-                                </button>
-
-                                {{-- Lessons List --}}
-                                <div 
-                                    x-show="expandedModules.includes({{ $module->id }})"
-                                    x-transition:enter="transition ease-out duration-200"
-                                    x-transition:enter-start="opacity-0 transform -translate-y-2"
-                                    x-transition:enter-end="opacity-100 transform translate-y-0"
-                                    x-transition:leave="transition ease-in duration-150"
-                                    x-transition:leave-start="opacity-100 transform translate-y-0"
-                                    x-transition:leave-end="opacity-0 transform -translate-y-2"
-                                    class="mt-2 space-y-1"
-                                >
-                                    @foreach($module->lessons as $lesson)
-                                        <a
-                                            href="{{ route('course.learn', [$course, $lesson->slug]) }}"
-                                            class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group cursor-pointer {{ $currentLesson->id === $lesson->id 
-                                                ? 'bg-primary/10 dark:bg-primary/20 text-secondary dark:text-primary font-semibold border-l-2 border-primary dark:border-primary' 
-                                                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary' 
-                                            }}"
+                                        <span class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-primary dark:group-hover:text-primary transition-colors truncate">
+                                            {{ $module->title }}
+                                        </span>
+                                        <svg 
+                                            class="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-200 flex-shrink-0 ml-auto"
+                                            :class="expandedModules.includes({{ $module->id }}) ? 'rotate-90 text-primary dark:text-primary' : ''"
+                                            fill="none" 
+                                            viewBox="0 0 24 24" 
+                                            stroke="currentColor"
                                         >
-                                            {{-- Check Icon if completed --}}
-                                            @if(in_array($lesson->id, $completedLessonIds))
-                                                <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                            @else
-                                                <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
-                                                    <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary dark:group-hover:bg-primary transition-colors"></div>
-                                                </div>
-                                            @endif
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                        </svg>
+                                    </button>
+                                @else
+                                    <a
+                                        href="{{ route('course.learn', [$course, $module->slug]) }}"
+                                        class="flex items-center gap-3 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 rounded-lg px-2 -mx-2 transition-colors duration-200 group cursor-pointer overflow-hidden {{ ($currentModule && $currentModule->id === $module->id) ? 'bg-primary/10 dark:bg-primary/20 text-secondary dark:text-primary font-semibold border-l-2 border-primary dark:border-primary' : '' }}"
+                                        title="{{ $module->title }}"
+                                    >
+                                        @if(in_array($module->id, $completedModuleIds, true))
+                                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        @else
+                                            <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
+                                                <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary dark:group-hover:bg-primary transition-colors"></div>
+                                            </div>
+                                        @endif
 
-                                            {{-- Lesson Title --}}
-                                            <span class="text-sm flex-1 truncate">
-                                                {{ $lesson->title }}
-                                            </span>
-                                        </a>
-                                    @endforeach
-                                </div>
+                                        <span class="font-semibold text-gray-900 dark:text-gray-100 text-sm group-hover:text-primary dark:group-hover:text-primary transition-colors truncate">
+                                            {{ $module->title }}
+                                        </span>
+                                    </a>
+                                @endif
+
+                                @if($module->lessons->isNotEmpty())
+                                    {{-- Lessons List --}}
+                                    <div 
+                                        x-show="expandedModules.includes({{ $module->id }})"
+                                        x-transition:enter="transition ease-out duration-200"
+                                        x-transition:enter-start="opacity-0 transform -translate-y-2"
+                                        x-transition:enter-end="opacity-100 transform translate-y-0"
+                                        x-transition:leave="transition ease-in duration-150"
+                                        x-transition:leave-start="opacity-100 transform translate-y-0"
+                                        x-transition:leave-end="opacity-0 transform -translate-y-2"
+                                        class="mt-2 space-y-1"
+                                    >
+                                        @foreach($module->lessons as $lesson)
+                                            <a
+                                                href="{{ route('course.learn', [$course, $lesson->slug]) }}"
+                                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group cursor-pointer {{ ($currentLesson && $currentLesson->id === $lesson->id)
+                                                    ? 'bg-primary/10 dark:bg-primary/20 text-secondary dark:text-primary font-semibold border-l-2 border-primary dark:border-primary' 
+                                                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary' 
+                                                }}"
+                                            >
+                                                {{-- Check Icon if completed --}}
+                                                @if(in_array($lesson->id, $completedLessonIds, true))
+                                                    <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg>
+                                                @else
+                                                    <div class="w-5 h-5 flex-shrink-0 flex items-center justify-center">
+                                                        <div class="w-2 h-2 rounded-full bg-gray-400 dark:bg-gray-500 group-hover:bg-primary dark:group-hover:bg-primary transition-colors"></div>
+                                                    </div>
+                                                @endif
+
+                                                {{-- Lesson Title --}}
+                                                <span class="text-sm flex-1 truncate">
+                                                    {{ $lesson->title }}
+                                                </span>
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
                             </div>
                         @empty
                             <p class="text-sm text-gray-500 dark:text-gray-400 text-center py-4">

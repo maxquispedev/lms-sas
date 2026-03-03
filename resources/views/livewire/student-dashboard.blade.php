@@ -97,7 +97,7 @@
                                 ></div>
                             </div>
                             <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                                {{ $course->completed_lessons }} de {{ $course->total_lessons }} lecciones completadas
+                                {{ $course->completed_progress_items ?? 0 }} de {{ $course->total_progress_items ?? 0 }} {{ $course->progress_total_label ?? 'lecciones' }} completados
                             </p>
                         </div>
 
