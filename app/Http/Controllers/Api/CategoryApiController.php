@@ -16,7 +16,7 @@ class CategoryApiController extends Controller
      */
     public function index(): JsonResponse
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy('sort_order')->orderBy('name')->get();
 
         return response()->json([
             'data' => CategoryApiResource::collection($categories),

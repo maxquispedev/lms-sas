@@ -20,6 +20,7 @@ class CategoryApiResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'sort_order' => $this->sort_order,
         ];
     }
 }

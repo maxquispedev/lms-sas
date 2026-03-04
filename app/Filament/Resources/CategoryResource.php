@@ -58,6 +58,14 @@ class CategoryResource extends Resource
                     ->unique(ignoreRecord: true)
                     ->maxLength(255),
 
+                TextInput::make('sort_order')
+                    ->label('Orden')
+                    ->helperText('Menor número = aparece primero en la academia.')
+                    ->numeric()
+                    ->default(0)
+                    ->minValue(0)
+                    ->required(),
+
                 RichEditor::make('description')
                     ->label('Descripción')
                     ->columnSpanFull(),
@@ -68,6 +76,10 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('sort_order')
+                    ->label('Orden')
+                    ->sortable(),
+
                 TextColumn::make('name')
                     ->label('Nombre')
                     ->searchable()
@@ -90,7 +102,7 @@ class CategoryResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->defaultSort('created_at', 'desc');
+            ->defaultSort('sort_order', 'asc');
     }
 
     public static function getRelations(): array
