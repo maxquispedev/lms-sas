@@ -22,25 +22,44 @@ class CertificateController extends Controller
     {
         $user = Auth::user();
 
-        // Verificar si el usuario ha completado el 100% del curso
         $course->load('modules.lessons', 'teacher');
-        $allLessonIds = $course->modules
-            ->flatMap->lessons
-            ->pluck('id')
-            ->toArray();
+        $hasLessons = $course->modules->flatMap->lessons->isNotEmpty();
 
-        $completedLessonIds = $user
-            ->lessons_completed()
-            ->pluck('lessons.id')
-            ->toArray();
+        if ($hasLessons) {
+            // Curso con lecciones: exigir 100% de lecciones completadas
+            $allLessonIds = $course->modules
+                ->flatMap->lessons
+                ->pluck('id')
+                ->toArray();
 
-        $totalLessons = count($allLessonIds);
-        $completedCount = count(array_intersect($allLessonIds, $completedLessonIds));
+            $completedLessonIds = $user
+                ->lessons_completed()
+                ->pluck('lessons.id')
+                ->toArray();
 
-        // Si no ha completado todas las lecciones, redirigir con error
-        if ($completedCount < $totalLessons || $totalLessons === 0) {
-            return redirect()->back()
-                ->with('error', 'Debes completar todas las lecciones');
+            $total = count($allLessonIds);
+            $completed = count(array_intersect($allLessonIds, $completedLessonIds));
+
+            if ($total === 0 || $completed < $total) {
+                return redirect()->back()
+                    ->with('error', 'Debes completar todas las lecciones');
+            }
+        } else {
+            // Curso solo con módulos: exigir 100% de módulos completados
+            $allModuleIds = $course->modules->pluck('id')->toArray();
+
+            $completedModuleIds = $user
+                ->modules_completed()
+                ->pluck('modules.id')
+                ->toArray();
+
+            $total = count($allModuleIds);
+            $completed = count(array_intersect($allModuleIds, $completedModuleIds));
+
+            if ($total === 0 || $completed < $total) {
+                return redirect()->back()
+                    ->with('error', 'Debes completar todos los módulos');
+            }
         }
 
         // Generar el PDF del certificado

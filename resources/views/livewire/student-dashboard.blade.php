@@ -104,7 +104,9 @@
                         {{-- Download Certificate Button (only when 100% complete) --}}
                         @if($course->progress == 100)
                             <a 
-                                href="{{ route('certificates.download', $course) }}" 
+                                href="{{ route('certificates.download', $course) }}"
+                                target="_blank"
+                                rel="noopener noreferrer"
                                 class="block w-full text-center px-4 py-2.5 bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 dark:from-yellow-500 dark:to-yellow-600 dark:hover:from-yellow-600 dark:hover:to-yellow-700 text-white font-semibold rounded-lg transition-all duration-200 shadow-md hover:shadow-lg active:scale-[0.98] mb-3 flex items-center justify-center gap-2 cursor-pointer"
                             >
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
