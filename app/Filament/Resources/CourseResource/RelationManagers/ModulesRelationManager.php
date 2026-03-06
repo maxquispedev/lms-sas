@@ -101,6 +101,7 @@ class ModulesRelationManager extends RelationManager
 
                         RichEditor::make('content')
                             ->label('Contenido y Recursos')
+                            ->helperText('Texto, recursos o descripción que se mostrará en la lección. Puedes adjuntar imágenes, PDF y Word.')
                             ->fileAttachmentsDirectory('lessons/content')
                             ->fileAttachmentsAcceptedFileTypes([
                                 'image/png',
