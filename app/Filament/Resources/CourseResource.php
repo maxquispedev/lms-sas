@@ -90,6 +90,17 @@ class CourseResource extends Resource
 
                                 RichEditor::make('description')
                                     ->label('Descripción')
+                                    ->fileAttachmentsDirectory('courses/descriptions')
+                                    ->fileAttachmentsAcceptedFileTypes([
+                                        'image/png',
+                                        'image/jpeg',
+                                        'image/gif',
+                                        'image/webp',
+                                        'application/pdf',
+                                        'application/msword', // .doc
+                                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+                                    ])
+                                    ->fileAttachmentsMaxSize(20480) // 20 MB
                                     ->columnSpanFull(),
                             ]),
 

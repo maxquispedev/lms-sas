@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\CourseStatus;
+use App\Support\HtmlRichContentHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -58,6 +59,16 @@ class Course extends Model
     {
         return Attribute::make(
             get: fn (): float => (float) ($this->sale_price ?? $this->price),
+        );
+    }
+
+    /**
+     * Descripción con adjuntos de archivo (PDF, Word) convertidos a enlaces de descarga.
+     */
+    protected function description(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value): string => HtmlRichContentHelper::fileAttachmentsToDownloadLinks($value),
         );
     }
 

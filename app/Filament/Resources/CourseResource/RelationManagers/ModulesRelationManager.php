@@ -56,6 +56,17 @@ class ModulesRelationManager extends RelationManager
                 RichEditor::make('content')
                     ->label('Contenido del módulo')
                     ->helperText('Texto, recursos o descripción que se mostrará al ver el módulo.')
+                    ->fileAttachmentsDirectory('modules/content')
+                    ->fileAttachmentsAcceptedFileTypes([
+                        'image/png',
+                        'image/jpeg',
+                        'image/gif',
+                        'image/webp',
+                        'application/pdf',
+                        'application/msword', // .doc
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+                    ])
+                    ->fileAttachmentsMaxSize(20480) // 20 MB
                     ->columnSpanFull(),
 
                 TextInput::make('sort_order')
@@ -90,6 +101,17 @@ class ModulesRelationManager extends RelationManager
 
                         RichEditor::make('content')
                             ->label('Contenido y Recursos')
+                            ->fileAttachmentsDirectory('lessons/content')
+                            ->fileAttachmentsAcceptedFileTypes([
+                                'image/png',
+                                'image/jpeg',
+                                'image/gif',
+                                'image/webp',
+                                'application/pdf',
+                                'application/msword', // .doc
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+                            ])
+                            ->fileAttachmentsMaxSize(20480) // 20 MB
                             ->columnSpanFull(),
 
                         Toggle::make('is_free')
