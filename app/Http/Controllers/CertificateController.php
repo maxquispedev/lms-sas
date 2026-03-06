@@ -64,11 +64,18 @@ class CertificateController extends Controller
 
         // Generar el PDF del certificado
         $date = now()->format('d/m/Y');
+        $backgroundPath = base_path('resources/views/certificates/modelo-certificado.png');
+        $backgroundImage = '';
+        if (file_exists($backgroundPath)) {
+            $mime = mime_content_type($backgroundPath);
+            $backgroundImage = 'data:' . $mime . ';base64,' . base64_encode((string) file_get_contents($backgroundPath));
+        }
 
         $pdf = Pdf::loadView('certificates.default', [
             'user' => $user,
             'course' => $course,
             'date' => $date,
+            'backgroundImage' => $backgroundImage,
         ])
             ->setPaper('a4', 'landscape');
 

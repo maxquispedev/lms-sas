@@ -2,149 +2,133 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Certificado de Finalización</title>
     <style>
-        * {
+        /* Elimina los márgenes automáticos del PDF */
+        @page {
+            margin: 0px;
+            size: 297mm 210mm; /* A4 Horizontal */
+        }
+
+        /* Dompdf necesita que body y html tengan 100% explícito */
+        html, body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            background: #f5f5f5;
-            padding: 30px;
-        }
-
-        .certificate-container {
-            background: white;
             width: 100%;
-            min-height: 100vh;
-            padding: 80px 100px;
-            border: 15px solid #2c3e50;
-            position: relative;
+            height: 100%;
+            font-family: 'Times New Roman', Times, serif;
         }
 
-        .certificate-title {
+        /* EL TRUCO PARA EL FONDO: Usar una imagen real, no background de CSS */
+        .bg-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1000;
+        }
+
+        /* Estructura de tabla principal para centrar */
+        .main-table {
+            width: 100%;
+            height: 100%;
+            border-collapse: collapse;
+        }
+
+        .main-cell {
+            vertical-align: middle;
             text-align: center;
-            font-size: 42px;
+            /* Empuja el contenido para no pisar la onda azul de la izquierda */
+            padding-left: 80mm; 
+            padding-right: 20mm;
+        }
+
+        /* Tipografía */
+        .title {
+            margin-top: 230px;
+            font-size: 38px;
             font-weight: bold;
+            color: #2c3e50;
             text-transform: uppercase;
             letter-spacing: 4px;
-            color: #2c3e50;
-            margin-bottom: 60px;
-            padding-bottom: 20px;
-            border-bottom: 3px solid #2c3e50;
+            margin-bottom: 20px;
         }
 
-        .certificate-body {
-            text-align: center;
-            margin: 80px 0;
-            line-height: 2;
-        }
-
-        .certificate-text {
-            font-size: 18px;
-            color: #333;
+        .subtitle {
+            font-size: 16px;
+            color: #666;
             margin-bottom: 30px;
         }
 
-        .student-name {
+        .student {
             font-size: 32px;
             font-weight: bold;
-            color: #2c3e50;
-            margin: 40px 0;
+            color: #1a1a1a;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            margin-bottom: 30px;
         }
 
-        .course-text {
-            font-size: 18px;
-            color: #333;
-            margin: 40px 0 20px 0;
-        }
-
-        .course-name {
-            font-size: 24px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin: 20px 0 60px 0;
-        }
-
-        .certificate-footer {
-            margin-top: 100px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-
-        .date-section {
-            text-align: left;
-        }
-
-        .date-label {
+        .course-label {
             font-size: 16px;
             color: #333;
             margin-bottom: 10px;
         }
 
-        .date-value {
-            font-size: 18px;
+        .course-name {
+            font-size: 22px;
             font-weight: bold;
             color: #2c3e50;
+            margin-bottom: 50px;
         }
 
-        .signature-section {
-            text-align: center;
+        /* Tabla anidada para la fecha alineada a la derecha */
+        .footer-table {
+            width: 100%;
+            border-collapse: collapse;
         }
 
-        .signature-line {
-            border-top: 2px solid #2c3e50;
-            width: 250px;
-            margin: 0 auto 10px;
-            padding-top: 5px;
-        }
-
-        .signature-name {
-            font-size: 18px;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-top: 5px;
-        }
-
-        .signature-label {
+        .footer-cell {
+            text-align: right;
             font-size: 14px;
-            color: #666;
-            margin-top: 5px;
+            color: #333;
+        }
+
+        .date-value {
+            font-weight: bold;
+            color: #2c3e50;
         }
     </style>
 </head>
 <body>
-    <div class="certificate-container">
-        <h1 class="certificate-title">CERTIFICADO DE FINALIZACIÓN</h1>
 
-        <div class="certificate-body">
-            <p class="certificate-text">Este certificado se otorga a:</p>
-            
-            <div class="student-name">{{ $user->name }}</div>
-            
-            <p class="course-text">Por haber completado satisfactoriamente el curso:</p>
-            
-            <div class="course-name">{{ $course->title }}</div>
-        </div>
+    @if(!empty($backgroundImage))
+        <img src="{{ $backgroundImage }}" class="bg-image" />
+    @endif
 
-        <div class="certificate-footer">
-            <div class="date-section">
-                <div class="date-label">Fecha de emisión:</div>
-                <div class="date-value">{{ $date }}</div>
-            </div>
-            <div class="signature-section">
-                <div class="signature-line"></div>
-                <div class="signature-name">{{ $course->teacher->name ?? 'Instructor' }}</div>
-                <div class="signature-label">Firma del Instructor</div>
-            </div>
-        </div>
-    </div>
+    <table class="main-table">
+        <tr>
+            <td class="main-cell">
+                
+                <div class="title">CONSTANCIA</div>
+                <div class="subtitle">Otorgada a:</div>
+                
+                <div class="student">{{ $user->name }}</div>
+                
+                <div class="course-label">Por haber completado satisfactoriamente el curso:</div>
+                <div class="course-name">{{ $course->title }}</div>
+
+                <table class="footer-table">
+                    <tr>
+                        <td class="footer-cell">
+                            Fecha de emisión: <span class="date-value">{{ $date }}</span>
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+        </tr>
+    </table>
+
 </body>
 </html>
