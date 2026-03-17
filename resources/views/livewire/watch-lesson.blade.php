@@ -61,29 +61,6 @@
 
                 {{-- Info --}}
                 <div>
-                    {{-- Instructor Information --}}
-                    @if($course->teacher)
-                        <div class="flex items-center gap-3 mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
-                            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 flex items-center justify-center overflow-hidden ring-2 ring-blue-100 dark:ring-blue-900/50 shadow-sm">
-                                @if($course->teacher->avatar_url)
-                                    <img src="{{ asset('storage/' . $course->teacher->avatar_url) }}" alt="{{ $course->teacher->name }}" class="w-full h-full object-cover">
-                                @else
-                                    <span class="text-white font-semibold text-base">
-                                        {{ substr($course->teacher->name, 0, 1) }}
-                                    </span>
-                                @endif
-                            </div>
-                            <div class="flex-1">
-                                <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                                    {{ $course->teacher->name }}
-                                </p>
-                                <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                                    Creador de Contenido
-                                </p>
-                            </div>
-                        </div>
-                    @endif
-
                     {{-- Course / Lesson / Module Description --}}
                     @if($playable && $playable->content)
                         <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">

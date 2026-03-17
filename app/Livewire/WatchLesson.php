@@ -331,9 +331,6 @@ class WatchLesson extends Component
             ->pluck('modules.id')
             ->toArray();
 
-        // Load teacher relationship
-        $this->course->load('teacher');
-
         $courseProgress = $this->getCourseProgress();
 
         return view('livewire.watch-lesson', [
