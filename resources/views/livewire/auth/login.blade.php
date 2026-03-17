@@ -1,7 +1,11 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
-    <div class="w-full max-w-md bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-8">
+    <div class="w-full max-w-md bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8">
         <div class="text-center mb-8">
-            <h1 class="text-2xl font-semibold text-gray-900 dark:text-gray-100">Iniciar Sesión</h1>
+            <img
+                src="{{ asset('img/seia-logo-new-transparent.png') }}"
+                alt="SEIA"
+                class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain"
+            />
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Accede a tu cuenta para continuar aprendiendo
             </p>
@@ -45,7 +49,7 @@
             <div class="flex items-center justify-end">
                 <a 
                     href="{{ route('password.request') }}" 
-                    class="text-sm text-primary dark:text-primary hover:text-primary/90 dark:hover:text-primary/80 font-medium cursor-pointer"
+                    class="text-sm text-primary hover:text-primary/90 font-semibold underline underline-offset-2 cursor-pointer dark:text-white dark:hover:text-primary/90"
                 >
                     ¿Olvidaste tu contraseña?
                 </a>
@@ -53,7 +57,7 @@
 
             <button
                 type="submit"
-                class="w-full inline-flex justify-center items-center px-4 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors duration-200 cursor-pointer"
+                class="w-full inline-flex justify-center items-center px-4 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-emerald-500 dark:hover:bg-emerald-600 dark:text-white"
             >
                 Ingresar
             </button>
