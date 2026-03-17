@@ -9,11 +9,11 @@
 @theme {
     --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
         'Segoe UI Symbol', 'Noto Color Emoji';
-    
-    /* Colores corporativos SEIA - Coinciden con frontend */
-    --color-primary: #386641;   /* Verde Bosque - hoja */
-    --color-secondary: #1B263B; /* Azul Navy - tipografía SEIA y gota */
-    --color-accent: #F48C06;    /* Naranja de Seguridad - foco/bombilla */
+
+    /* Colores corporativos SEIA */
+    --color-primary: #386641;
+    --color-secondary: #1b263b;
+    --color-accent: #f48c06;
     --color-surface: #f8fafc;
 }
 

@@ -4,21 +4,26 @@
         <div class="flex justify-between h-16">
             {{-- Logo / Nombre y Menú Principal --}}
             <div class="flex items-center gap-6">
-                <a href="{{ route('student.dashboard') }}" class="text-xl font-semibold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-200 transition-colors duration-200 cursor-pointer">
-                    {{ config('app.name', 'Tu Academia') }}
+                <a href="{{ route('student.dashboard') }}" class="flex items-center gap-2 text-xl font-semibold text-secondary dark:text-white hover:text-secondary/85 dark:hover:text-gray-200 transition-colors duration-200 cursor-pointer">
+                    <img
+                        src="{{ asset('img/seia-logo-new-transparent.png') }}"
+                        alt="SEIA"
+                        class="h-9 w-auto object-contain"
+                    >
+                    <span class="tracking-tight">SEIA</span>
                 </a>
                 
                 {{-- Menú de Navegación Desktop --}}
                 <nav class="hidden md:flex items-center gap-4">
                     <a 
                         href="{{ route('courses.catalog') }}" 
-                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 cursor-pointer"
                     >
                         Cursos
                     </a>
                     <a 
                         href="{{ route('student.dashboard') }}" 
-                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer"
+                        class="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors duration-200 px-3 py-2 rounded-lg hover:bg-primary/10 dark:hover:bg-gray-800 cursor-pointer"
                     >
                         Mis Cursos
                     </a>
@@ -131,14 +136,14 @@
             <div class="flex flex-col gap-2">
                 <a 
                     href="{{ route('courses.catalog') }}" 
-                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
+                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-primary/10 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
                     @click="mobileMenuOpen = false"
                 >
                     Cursos
                 </a>
                 <a 
                     href="{{ route('student.dashboard') }}" 
-                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
+                    class="block px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary hover:bg-primary/10 dark:hover:bg-gray-800 rounded-lg transition-colors duration-200 cursor-pointer"
                     @click="mobileMenuOpen = false"
                 >
                     Mis Cursos

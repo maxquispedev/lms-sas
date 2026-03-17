@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }} - @yield('title', 'Dashboard')</title>
+    <title>{{ config('app.name', 'SEIA') }} - @yield('title', 'Dashboard')</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -29,7 +29,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 antialiased transition-colors duration-200">
+<body class="bg-surface dark:bg-secondary antialiased transition-colors duration-200">
     <x-student-navigation />
 
     <main class="min-h-[calc(100vh-4rem)]">

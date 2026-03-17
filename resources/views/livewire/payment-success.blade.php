@@ -93,7 +93,7 @@
                 {{-- Primary Button: Go to Course --}}
                 <a
                     href="{{ route('course.learn', $course) }}"
-                    class="flex-1 px-6 py-4 bg-purple-600 hover:bg-purple-700 dark:bg-purple-500 dark:hover:bg-purple-600 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl cursor-pointer"
+                    class="flex-1 px-6 py-4 bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 text-white font-semibold rounded-lg transition-colors duration-200 text-center shadow-lg hover:shadow-xl cursor-pointer"
                 >
                     <div class="flex items-center justify-center gap-2">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -123,7 +123,7 @@
         <div class="mt-6 text-center">
             <p class="text-sm text-gray-500 dark:text-gray-400">
                 ¿Necesitas ayuda? 
-                <a href="#" class="text-purple-600 dark:text-purple-400 hover:underline font-medium cursor-pointer">
+                <a href="#" class="text-primary dark:text-primary hover:underline font-medium cursor-pointer">
                     Contacta con soporte
                 </a>
             </p>
@@ -145,7 +145,7 @@
             particleCount: 60,
             spread: 70,
             origin: { y: 0.6 },
-            colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+            colors: ['#1b263b', '#386641', '#f48c06', '#10b981', '#34d399', '#fbbf24']
         });
 
         // Configuración de la animación de confetti
@@ -164,7 +164,7 @@
                 angle: 60,
                 spread: 55,
                 origin: { x: 0 },
-                colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+                colors: ['#1b263b', '#386641', '#f48c06', '#10b981', '#34d399', '#fbbf24']
             });
 
             // Disparar confetti desde la derecha
@@ -173,7 +173,7 @@
                 angle: 120,
                 spread: 55,
                 origin: { x: 1 },
-                colors: ['#9333ea', '#a855f7', '#c084fc', '#10b981', '#34d399', '#fbbf24']
+                colors: ['#1b263b', '#386641', '#f48c06', '#10b981', '#34d399', '#fbbf24']
             });
 
             requestAnimationFrame(frame);
