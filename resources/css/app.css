@@ -18,3 +18,8 @@
 }
 
 @variant dark (&:is(.dark *));
+
+/* Fuerza el logo SEIA a blanco en modo oscuro para mejor contraste. */
+.dark .seia-logo-white {
+    filter: brightness(0) saturate(100%) invert(100%);
+}

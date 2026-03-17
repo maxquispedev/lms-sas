@@ -8,7 +8,7 @@
                     <img
                         src="{{ asset('img/seia-logo-new-transparent.png') }}"
                         alt="SEIA"
-                        class="h-9 w-auto object-contain"
+                        class="h-9 w-auto object-contain seia-logo-white"
                     >
                     <span class="tracking-tight">SEIA</span>
                 </a>

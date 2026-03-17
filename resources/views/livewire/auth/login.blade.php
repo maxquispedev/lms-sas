@@ -4,7 +4,7 @@
             <img
                 src="{{ asset('img/seia-logo-new-transparent.png') }}"
                 alt="SEIA"
-                class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain"
+                class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain seia-logo-white"
             />
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Accede a tu cuenta para continuar aprendiendo
