@@ -62,7 +62,7 @@ class TakeExam extends Component
             abort(403, 'No tienes acceso a este curso.');
         }
 
-        if ($exam->course_id !== $course->id || ! $exam->is_published) {
+        if ((int) $exam->course_id !== (int) $course->id || ! $exam->is_published) {
             abort(404);
         }
 
