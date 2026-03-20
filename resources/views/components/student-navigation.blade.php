@@ -7,10 +7,10 @@
                 <a href="{{ route('student.dashboard') }}" class="flex items-center gap-2 text-xl font-semibold text-secondary dark:text-white hover:text-secondary/85 dark:hover:text-gray-200 transition-colors duration-200 cursor-pointer">
                     <img
                         src="{{ asset('img/seia-logo-new-transparent.png') }}"
-                        alt="SEIA"
+                        alt="SEIA ACADEMIA"
                         class="h-9 w-auto object-contain seia-logo-white"
                     >
-                    <span class="tracking-tight">SEIA</span>
+                    <span class="tracking-tight">SEIA ACADEMIA</span>
                 </a>
                 
                 {{-- Menú de Navegación Desktop --}}
