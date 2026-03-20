@@ -23,7 +23,10 @@
     @if($step === 'take')
         <form wire:submit="submit" class="space-y-6">
             @foreach($questions as $index => $question)
-                <fieldset class="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 p-5 sm:p-6 shadow-sm">
+                <fieldset
+                    wire:key="exam-question-{{ $question->id }}"
+                    class="rounded-xl border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 p-5 sm:p-6 shadow-sm"
+                >
                     <legend class="sr-only">Pregunta {{ $index + 1 }}</legend>
 
                     <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500 mb-2">
@@ -34,8 +37,11 @@
                     </p>
 
                     <div class="space-y-2.5" role="radiogroup" aria-label="Opciones de respuesta">
-                        @foreach($question->options as $opt)
-                            <label class="flex items-start gap-3 cursor-pointer rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 p-3.5 transition-colors hover:border-primary hover:bg-green-50 dark:hover:bg-gray-600 has-[:checked]:border-primary has-[:checked]:bg-green-50 dark:has-[:checked]:bg-gray-600 dark:has-[:checked]:border-primary">
+                        @foreach($this->orderedOptions($question) as $opt)
+                            <label
+                                wire:key="exam-q-{{ $question->id }}-opt-{{ $opt->id }}"
+                                class="flex items-start gap-3 cursor-pointer rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 p-3.5 transition-colors hover:border-primary hover:bg-green-50 dark:hover:bg-gray-600 has-[:checked]:border-primary has-[:checked]:bg-green-50 dark:has-[:checked]:bg-gray-600 dark:has-[:checked]:border-primary"
+                            >
                                 <input
                                     type="radio"
                                     name="q_{{ $question->id }}"

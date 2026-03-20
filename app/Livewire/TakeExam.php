@@ -9,6 +9,7 @@ use App\Models\Exam;
 use App\Models\ExamAttempt;
 use App\Models\ExamAttemptAnswer;
 use App\Models\ExamQuestion;
+use App\Models\ExamQuestionOption;
 use App\Services\EnrollmentService;
 use App\Services\ExamEligibilityService;
 use Illuminate\Contracts\View\View;
@@ -31,6 +32,14 @@ class TakeExam extends Component
 
     /** @var array<int, int> question_id => option_id */
     public array $selectedOptions = [];
+
+    /**
+     * Orden estable de opciones por pregunta (barajado una vez en mount).
+     * Livewire recarga relaciones en cada request; sin esto el orden vuelve al de BD y los radios “saltan”.
+     *
+     * @var array<int, list<int>>
+     */
+    public array $shuffledOptionIdsByQuestion = [];
 
     public string $step = 'take';
 
@@ -79,12 +88,16 @@ class TakeExam extends Component
             abort(404, 'Este examen no tiene preguntas.');
         }
 
-        $this->questions = $rawQuestions->map(function (ExamQuestion $q): ExamQuestion {
-            $shuffled = $q->options->shuffle()->values();
-            $q->setRelation('options', $shuffled);
+        $this->questions = $rawQuestions->values();
 
-            return $q;
-        })->values();
+        foreach ($this->questions as $question) {
+            $this->shuffledOptionIdsByQuestion[$question->id] = $question->options
+                ->shuffle()
+                ->pluck('id')
+                ->map(static fn ($id): int => (int) $id)
+                ->values()
+                ->all();
+        }
 
         $existingAttempt = ExamAttempt::query()
             ->where('user_id', $user->id)
@@ -102,6 +115,29 @@ class TakeExam extends Component
                 'started_at' => now(),
             ]);
         }
+    }
+
+    /**
+     * Opciones en el mismo orden que al cargar el examen (persistido en Livewire).
+     *
+     * @return Collection<int, ExamQuestionOption>
+     */
+    public function orderedOptions(ExamQuestion $question): Collection
+    {
+        $ids = $this->shuffledOptionIdsByQuestion[$question->id] ?? [];
+        if ($ids === []) {
+            return $question->options->values();
+        }
+
+        $byId = $question->options->keyBy('id');
+
+        return collect($ids)
+            ->map(static function (int $id) use ($byId): ?ExamQuestionOption {
+                /** @var ExamQuestionOption|null */
+                return $byId->get($id);
+            })
+            ->filter()
+            ->values();
     }
 
     /**

@@ -183,11 +183,12 @@
                             </a>
                         </div>
                     @elseif($courseProgress == 100)
-                        <div class="mb-6 rounded-xl border border-amber-300/80 dark:border-amber-500/40 bg-amber-50 dark:bg-slate-900/80 px-4 py-4 shadow-sm">
-                            <p class="text-sm font-semibold text-amber-900 dark:text-amber-100 leading-relaxed">
+                        {{-- Claro: gris suave + texto negro. Oscuro: fondo oscuro + texto blanco. --}}
+                        <div class="mb-6 rounded-xl bg-gray-100 dark:bg-gray-800 px-4 py-4">
+                            <p class="text-sm font-semibold text-black dark:text-white leading-relaxed">
                                 Para descargar el certificado debes aprobar el examen del curso.
                             </p>
-                            <p class="text-sm text-amber-800 dark:text-amber-200 mt-2">
+                            <p class="text-sm text-gray-700 dark:text-gray-200 mt-2">
                                 Exámenes aprobados: {{ $passedExamsCount }} de {{ $publishedExamsCount }}.
                             </p>
                             <a
