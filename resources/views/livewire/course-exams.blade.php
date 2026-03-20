@@ -74,7 +74,7 @@
                             @elseif($cooldownEnds)
                                 {{-- Cooldown activo: temporizador --}}
                                 <div
-                                    class="min-w-[200px] rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-primary/60 px-4 py-3.5"
+                                    class="min-w-[200px] rounded-xl bg-gray-50 dark:bg-gray-900 px-4 py-4"
                                     x-data="{
                                         endMs: new Date(@js($cooldownEnds)).getTime(),
                                         remaining: 0,
