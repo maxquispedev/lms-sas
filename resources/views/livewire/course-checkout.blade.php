@@ -288,7 +288,7 @@
             appearance,
         };
 
-        const publicKey = 'pk_test_1Ejteu5U8jSpW630';
+        const publicKey = @json(config('services.culqi.public_key'));
 
         // Crear nueva instancia cada vez (evita problemas de estado)
         CulqiInstance = new CulqiCheckout(publicKey, config);
