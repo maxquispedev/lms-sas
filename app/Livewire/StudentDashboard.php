@@ -36,7 +36,6 @@ class StudentDashboard extends Component
             ->courses()
             ->wherePivot('status', 'active')
             ->with([
-                'teacher',
                 'modules.lessons',
             ])
             ->orderByPivot('enrolled_at', 'desc')

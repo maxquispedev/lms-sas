@@ -25,7 +25,7 @@ class CoursesCatalog extends Component
         $user = Auth::user();
         
         $courses = Course::where('status', CourseStatus::Published)
-            ->with(['teacher', 'modules.lessons'])
+            ->with(['modules.lessons'])
             ->orderBy('created_at', 'desc')
             ->get();
 

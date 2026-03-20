@@ -60,15 +60,6 @@
                         <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
                             {!! strip_tags($course->description) !!}
                         </p>
-                        
-                        <div class="flex items-center gap-2 mb-4">
-                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <p class="text-sm text-gray-600 dark:text-gray-400">
-                                <span class="font-medium text-gray-700 dark:text-gray-300">{{ $course->teacher->name ?? 'Sin instructor' }}</span>
-                            </p>
-                        </div>
 
                         {{-- Price --}}
                         <div class="mb-5">

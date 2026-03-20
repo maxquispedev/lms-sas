@@ -43,14 +43,6 @@ class CourseApiResource extends JsonResource
                     ];
                 })->values();
             }, []),
-            'teacher' => $this->when($this->relationLoaded('teacher') && $this->teacher, [
-                'name' => $this->teacher->name,
-                'avatar_url' => $this->teacher->avatar_url 
-                    ? (str_starts_with($this->teacher->avatar_url, 'http')
-                        ? $this->teacher->avatar_url
-                        : Storage::disk('public')->url($this->teacher->avatar_url))
-                    : null,
-            ]),
             'modules' => $this->whenLoaded('modules', function () {
                 return $this->modules->map(function ($module) {
                     return [

@@ -22,7 +22,7 @@ class CertificateController extends Controller
     {
         $user = Auth::user();
 
-        $course->load('modules.lessons', 'teacher');
+        $course->load('modules.lessons');
         $hasLessons = $course->modules->flatMap->lessons->isNotEmpty();
 
         if ($hasLessons) {
