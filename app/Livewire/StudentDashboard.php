@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Course;
+use App\Models\Exam;
+use App\Models\ExamAttempt;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -22,8 +24,8 @@ class StudentDashboard extends Component
     public function courses(): Collection
     {
         $user = Auth::user();
-        
-        if (!$user) {
+
+        if (! $user) {
             return collect();
         }
 
@@ -59,29 +61,44 @@ class StudentDashboard extends Component
                     $course->progress = $total > 0
                         ? (int) floor(($completedCount / $total) * 100)
                         : 0;
+                } else {
+                    $moduleIds = $course->modules
+                        ->pluck('id');
 
-                    return;
+                    $completedModuleIds = $user
+                        ->modules_completed()
+                        ->pluck('modules.id')
+                        ->toArray();
+
+                    $total = $moduleIds->count();
+                    $completedCount = $moduleIds
+                        ->filter(fn (int $moduleId): bool => in_array($moduleId, $completedModuleIds, true))
+                        ->count();
+
+                    $course->progress_total_label = 'módulos';
+                    $course->total_progress_items = $total;
+                    $course->completed_progress_items = $completedCount;
+                    $course->progress = $total > 0
+                        ? (int) floor(($completedCount / $total) * 100)
+                        : 0;
                 }
 
-                $moduleIds = $course->modules
+                $publishedExamIds = Exam::query()
+                    ->where('course_id', $course->id)
+                    ->where('is_published', true)
                     ->pluck('id');
 
-                $completedModuleIds = $user
-                    ->modules_completed()
-                    ->pluck('modules.id')
-                    ->toArray();
-
-                $total = $moduleIds->count();
-                $completedCount = $moduleIds
-                    ->filter(fn (int $moduleId): bool => in_array($moduleId, $completedModuleIds, true))
-                    ->count();
-
-                $course->progress_total_label = 'módulos';
-                $course->total_progress_items = $total;
-                $course->completed_progress_items = $completedCount;
-                $course->progress = $total > 0
-                    ? (int) floor(($completedCount / $total) * 100)
-                    : 0;
+                $course->published_exams_count = $publishedExamIds->count();
+                $course->passed_exams_count = $publishedExamIds->isEmpty()
+                    ? 0
+                    : ExamAttempt::query()
+                        ->where('user_id', $user->id)
+                        ->whereIn('exam_id', $publishedExamIds)
+                        ->where('passed', true)
+                        ->distinct('exam_id')
+                        ->count('exam_id');
+                $course->exam_requirement_met = $course->published_exams_count > 0
+                    && $course->passed_exams_count === $course->published_exams_count;
             });
     }
 
@@ -93,4 +110,3 @@ class StudentDashboard extends Component
         return view('livewire.student-dashboard');
     }
 }
-

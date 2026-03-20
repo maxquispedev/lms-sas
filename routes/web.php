@@ -5,10 +5,12 @@ use App\Livewire\Auth\ForgotPassword;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\ResetPassword;
 use App\Livewire\CourseCheckout;
+use App\Livewire\CourseExams;
 use App\Livewire\CoursesCatalog;
 use App\Livewire\PaymentSuccess;
 use App\Livewire\StudentDashboard;
 use App\Livewire\StudentProfile;
+use App\Livewire\TakeExam;
 use App\Livewire\WatchLesson;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,10 +23,10 @@ Route::get('/', function () {
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)
         ->name('login');
-    
+
     Route::get('/forgot-password', ForgotPassword::class)
         ->name('password.request');
-    
+
     Route::get('/reset-password/{token}', ResetPassword::class)
         ->name('password.reset');
 });
@@ -53,6 +55,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/my-profile', StudentProfile::class)
         ->name('student.profile');
+
+    /** Debe ir antes de `course.learn` para que `/exams` no se interprete como slug de lección. */
+    Route::get('/learn/{course:slug}/exams', CourseExams::class)
+        ->name('course.exams');
+
+    Route::get('/learn/{course:slug}/exams/{exam}', TakeExam::class)
+        ->name('course.exam.take');
 
     Route::get('/learn/{course:slug}/{lesson:slug?}', WatchLesson::class)
         ->name('course.learn');

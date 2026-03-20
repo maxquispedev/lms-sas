@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Services\CertificateCodeIssuer;
+use App\Services\ExamEligibilityService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -16,11 +17,14 @@ class CertificateController extends Controller
     /**
      * Descarga el certificado de un curso completado.
      *
-     * @param Course $course El curso del cual se descargará el certificado
+     * @param  Course  $course  El curso del cual se descargará el certificado
      * @return Response|RedirectResponse El PDF del certificado o una redirección con error
      */
-    public function download(Course $course, CertificateCodeIssuer $certificateCodeIssuer): Response|RedirectResponse
-    {
+    public function download(
+        Course $course,
+        CertificateCodeIssuer $certificateCodeIssuer,
+        ExamEligibilityService $examEligibilityService
+    ): Response|RedirectResponse {
         $user = Auth::user();
 
         $course->load('modules.lessons');
@@ -31,7 +35,7 @@ class CertificateController extends Controller
             ->wherePivot('status', 'active')
             ->exists();
 
-        if (!$isEnrolled) {
+        if (! $isEnrolled) {
             return redirect()->back()
                 ->with('error', 'No estás inscrito en este curso.');
         }
@@ -74,6 +78,23 @@ class CertificateController extends Controller
             }
         }
 
+        $publishedExams = $course->exams()
+            ->where('is_published', true)
+            ->get();
+
+        $publishedExamsCount = $publishedExams->count();
+        $passedExamsCount = $publishedExams
+            ->filter(fn ($exam): bool => $examEligibilityService->hasPassed($user, $exam))
+            ->count();
+        $examRequirementMet = $publishedExamsCount > 0 && $passedExamsCount === $publishedExamsCount;
+
+        if (! $examRequirementMet) {
+            return redirect()->back()->with(
+                'error',
+                "Debes aprobar el examen del curso para descargar tu certificado. Progreso de exámenes: {$passedExamsCount}/{$publishedExamsCount}."
+            );
+        }
+
         $certificateCode = $certificateCodeIssuer->getOrCreateForEnrollment($user, $course);
 
         // Generar el PDF del certificado
@@ -82,7 +103,7 @@ class CertificateController extends Controller
         $backgroundImage = '';
         if (file_exists($backgroundPath)) {
             $mime = mime_content_type($backgroundPath);
-            $backgroundImage = 'data:' . $mime . ';base64,' . base64_encode((string) file_get_contents($backgroundPath));
+            $backgroundImage = 'data:'.$mime.';base64,'.base64_encode((string) file_get_contents($backgroundPath));
         }
 
         $pdf = Pdf::loadView('certificates.default', [

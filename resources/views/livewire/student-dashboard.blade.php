@@ -92,8 +92,8 @@
                             </p>
                         </div>
 
-                        {{-- Download Certificate Button (only when 100% complete) --}}
-                        @if($course->progress == 100)
+                        {{-- Download Certificate Button (100% contenido + examen aprobado) --}}
+                        @if($course->progress == 100 && ($course->exam_requirement_met ?? false))
                             <a 
                                 href="{{ route('certificates.download', $course) }}"
                                 target="_blank"
@@ -105,6 +105,12 @@
                                 </svg>
                                 Descargar Certificado
                             </a>
+                        @elseif($course->progress == 100)
+                            <div class="mb-3 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
+                                <p class="text-xs text-amber-900 dark:text-amber-100 font-semibold">
+                                    Completa y aprueba el examen para descargar tu certificado.
+                                </p>
+                            </div>
                         @endif
 
                         {{-- Action Button --}}

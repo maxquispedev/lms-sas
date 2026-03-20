@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Livewire;
 
 use App\Models\Course;
+use App\Models\Exam;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Services\EnrollmentService;
+use App\Services\ExamEligibilityService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -17,22 +19,32 @@ use Livewire\Component;
 class WatchLesson extends Component
 {
     public Course $course;
+
     public ?Lesson $currentLesson = null;
+
     public ?Module $currentModule = null;
+
     public bool $autoplay = false;
+
     public bool $hasLessons = false;
+
+    public int $publishedExamsCount = 0;
+
+    public int $passedExamsCount = 0;
+
+    public bool $examRequirementMet = false;
 
     /**
      * Mount the component.
      */
     public function mount(
         EnrollmentService $enrollmentService,
+        ExamEligibilityService $examEligibilityService,
         Course $course,
         ?string $lesson = null,
-    ): void
-    {
+    ): void {
         // Check access
-        if (!$enrollmentService->checkAccess(Auth::user(), $course)) {
+        if (! $enrollmentService->checkAccess(Auth::user(), $course)) {
             abort(403, 'No tienes acceso a este curso.');
         }
 
@@ -90,6 +102,29 @@ class WatchLesson extends Component
         if ($this->currentLesson) {
             $this->currentLesson->load('module');
         }
+
+        $this->hydrateExamStatus($examEligibilityService);
+    }
+
+    /**
+     * Calcula estado de exámenes del curso para UI y reglas de certificado.
+     */
+    private function hydrateExamStatus(ExamEligibilityService $examEligibilityService): void
+    {
+        $user = Auth::user();
+
+        $publishedExams = Exam::query()
+            ->where('course_id', $this->course->id)
+            ->where('is_published', true)
+            ->orderBy('sort_order')
+            ->get();
+
+        $this->publishedExamsCount = $publishedExams->count();
+        $this->passedExamsCount = $publishedExams
+            ->filter(fn (Exam $exam): bool => $examEligibilityService->hasPassed($user, $exam))
+            ->count();
+        $this->examRequirementMet = $this->publishedExamsCount > 0
+            && $this->passedExamsCount === $this->publishedExamsCount;
     }
 
     /**
@@ -133,7 +168,7 @@ class WatchLesson extends Component
      */
     public function toggleAutoplay(): void
     {
-        $this->autoplay = !$this->autoplay;
+        $this->autoplay = ! $this->autoplay;
     }
 
     /**
@@ -318,6 +353,7 @@ class WatchLesson extends Component
             ->sortBy('sort_order')
             ->map(function ($module) {
                 $module->lessons = $module->lessons->sortBy('sort_order');
+
                 return $module;
             });
 
@@ -344,7 +380,9 @@ class WatchLesson extends Component
             'hasLessons' => $this->hasLessons,
             'currentModule' => $this->currentModule,
             'completedModuleIds' => $completedModuleIds,
+            'publishedExamsCount' => $this->publishedExamsCount,
+            'passedExamsCount' => $this->passedExamsCount,
+            'examRequirementMet' => $this->examRequirementMet,
         ]);
     }
 }
-
