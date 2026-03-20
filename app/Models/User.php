@@ -65,7 +65,7 @@ class User extends Authenticatable implements FilamentUser
     public function courses(): BelongsToMany
     {
         return $this->belongsToMany(Course::class, 'course_user')
-            ->withPivot(['status', 'enrolled_at', 'expires_at'])
+            ->withPivot(['status', 'enrolled_at', 'expires_at', 'certificate_code'])
             ->withTimestamps();
     }
 

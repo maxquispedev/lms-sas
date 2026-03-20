@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Services\CertificateCodeIssuer;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -18,11 +19,22 @@ class CertificateController extends Controller
      * @param Course $course El curso del cual se descargará el certificado
      * @return Response|RedirectResponse El PDF del certificado o una redirección con error
      */
-    public function download(Course $course): Response|RedirectResponse
+    public function download(Course $course, CertificateCodeIssuer $certificateCodeIssuer): Response|RedirectResponse
     {
         $user = Auth::user();
 
         $course->load('modules.lessons');
+
+        $isEnrolled = $user
+            ->courses()
+            ->where('courses.id', $course->id)
+            ->wherePivot('status', 'active')
+            ->exists();
+
+        if (!$isEnrolled) {
+            return redirect()->back()
+                ->with('error', 'No estás inscrito en este curso.');
+        }
         $hasLessons = $course->modules->flatMap->lessons->isNotEmpty();
 
         if ($hasLessons) {
@@ -62,9 +74,11 @@ class CertificateController extends Controller
             }
         }
 
+        $certificateCode = $certificateCodeIssuer->getOrCreateForEnrollment($user, $course);
+
         // Generar el PDF del certificado
         $date = now()->format('d/m/Y');
-        $backgroundPath = base_path('resources/views/certificates/modelo-certificado.png');
+        $backgroundPath = base_path('resources/views/certificates/modelo-certificado.jpg');
         $backgroundImage = '';
         if (file_exists($backgroundPath)) {
             $mime = mime_content_type($backgroundPath);
@@ -76,6 +90,7 @@ class CertificateController extends Controller
             'course' => $course,
             'date' => $date,
             'backgroundImage' => $backgroundImage,
+            'certificateCode' => $certificateCode,
         ])
             ->setPaper('a4', 'landscape');
 

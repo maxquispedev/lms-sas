@@ -98,6 +98,27 @@
             font-weight: bold;
             color: #2c3e50;
         }
+
+        /* Código único — esquina superior derecha (Dompdf soporta position: fixed) */
+        .certificate-code {
+            position: fixed;
+            top: 12mm;
+            right: 18mm;
+            font-size: 11px;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: 0.5px;
+            z-index: 1000;
+            text-align: right;
+            line-height: 1.3;
+        }
+
+        .certificate-code-label {
+            font-size: 9px;
+            font-weight: normal;
+            color: #555;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -105,6 +126,11 @@
     @if(!empty($backgroundImage))
         <img src="{{ $backgroundImage }}" class="bg-image" />
     @endif
+
+    <div class="certificate-code" aria-hidden="true">
+        <div class="certificate-code-label">Código de verificación</div>
+        <div>{{ $certificateCode }}</div>
+    </div>
 
     <table class="main-table">
         <tr>
