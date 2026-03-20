@@ -183,17 +183,17 @@
                             </a>
                         </div>
                     @elseif($courseProgress == 100)
-                        <div class="mb-6 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-4 py-3">
-                            <p class="text-sm font-semibold text-amber-900 dark:text-amber-100">
+                        <div class="mb-6 rounded-xl border border-amber-300/80 dark:border-amber-500/40 bg-amber-50 dark:bg-slate-900/80 px-4 py-4 shadow-sm">
+                            <p class="text-sm font-semibold text-amber-900 dark:text-amber-100 leading-relaxed">
                                 Para descargar el certificado debes aprobar el examen del curso.
                             </p>
-                            <p class="text-xs text-amber-800 dark:text-amber-200 mt-1">
+                            <p class="text-sm text-amber-800 dark:text-amber-200 mt-2">
                                 Exámenes aprobados: {{ $passedExamsCount }} de {{ $publishedExamsCount }}.
                             </p>
                             <a
                                 href="{{ route('course.exams', $course) }}"
                                 wire:navigate
-                                class="mt-3 inline-flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 text-white font-medium px-4 py-2 text-sm transition-colors"
+                                class="mt-4 inline-flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
                             >
                                 Ir a exámenes
                             </a>
@@ -300,11 +300,11 @@
                         @endforelse
 
                         {{-- Acceso natural al examen dentro del mismo flujo de estudio --}}
-                        <div class="pt-3 mt-3 border-t border-gray-200 dark:border-gray-700">
+                        <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
                             <a
                                 href="{{ route('course.exams', $course) }}"
                                 wire:navigate
-                                class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 group cursor-pointer text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary"
+                                class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group cursor-pointer text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary"
                             >
                                 @if($examRequirementMet)
                                     <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -318,7 +318,7 @@
                                 <span class="text-sm flex-1 truncate font-medium">
                                     Exámenes del curso
                                 </span>
-                                <span class="text-xs text-gray-500 dark:text-gray-400">
+                                <span class="text-xs font-semibold text-gray-500 dark:text-gray-300">
                                     {{ $passedExamsCount }}/{{ $publishedExamsCount }}
                                 </span>
                             </a>

@@ -106,8 +106,8 @@
                                 Descargar Certificado
                             </a>
                         @elseif($course->progress == 100)
-                            <div class="mb-3 rounded-lg border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
-                                <p class="text-xs text-amber-900 dark:text-amber-100 font-semibold">
+                            <div class="mb-3 rounded-xl border border-amber-300/80 dark:border-amber-500/40 bg-amber-50 dark:bg-slate-900/80 px-4 py-3.5 shadow-sm">
+                                <p class="text-sm text-amber-900 dark:text-amber-100 font-semibold leading-relaxed">
                                     Completa y aprueba el examen para descargar tu certificado.
                                 </p>
                             </div>
