@@ -1,13 +1,14 @@
 <div class="max-w-4xl mx-auto py-8 sm:py-12 px-4 sm:px-6 lg:px-8">
     <div class="mb-8">
         <a
-            href="{{ route('student.dashboard') }}"
+            href="{{ route('course.learn', $course) }}"
+            wire:navigate
             class="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary/80 dark:text-primary dark:hover:text-primary/80 mb-5 transition-colors"
         >
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
             </svg>
-            Volver a Mis cursos
+            Volver al curso
         </a>
         <h1 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-2">
             Exámenes: {{ $course->title }}
