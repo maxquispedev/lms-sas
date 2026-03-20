@@ -174,6 +174,14 @@ class CourseResource extends Resource
                                     ->default('Acceso por 1 año')
                                     ->maxLength(255)
                                     ->columnSpanFull(),
+
+                                TextInput::make('badge_label')
+                                    ->label('Etiqueta del curso')
+                                    ->required()
+                                    ->default('Más demandado')
+                                    ->maxLength(100)
+                                    ->helperText('Texto corto que aparece en la esquina superior izquierda de la tarjeta del curso.')
+                                    ->columnSpanFull(),
                             ]),
                     ])
                     ->columnSpanFull()

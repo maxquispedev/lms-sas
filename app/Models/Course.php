@@ -31,6 +31,7 @@ class Course extends Model
         'slug',
         'description',
         'access_text',
+        'badge_label',
         'price',
         'sale_price',
         'image_url',
@@ -72,6 +73,20 @@ class Course extends Model
             get: fn (?string $value): string => match (true) {
                 $value === null => 'Acceso por 1 año',
                 trim($value) === '' => 'Acceso por 1 año',
+                default => $value,
+            },
+        );
+    }
+
+    /**
+     * Etiqueta destacada del curso para cards del frontend.
+     */
+    protected function badgeLabel(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value): string => match (true) {
+                $value === null => 'Más demandado',
+                trim($value) === '' => 'Más demandado',
                 default => $value,
             },
         );
