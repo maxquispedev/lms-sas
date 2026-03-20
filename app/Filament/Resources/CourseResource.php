@@ -167,6 +167,13 @@ class CourseResource extends Resource
                                     ->inline()
                                     ->required()
                                     ->default(CourseStatus::Draft),
+
+                                TextInput::make('access_text')
+                                    ->label('Acceso del curso')
+                                    ->required()
+                                    ->default('Acceso por 1 año')
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
                             ]),
                     ])
                     ->columnSpanFull()

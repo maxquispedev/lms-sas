@@ -30,6 +30,7 @@ class Course extends Model
         'title',
         'slug',
         'description',
+        'access_text',
         'price',
         'sale_price',
         'image_url',
@@ -59,6 +60,20 @@ class Course extends Model
     {
         return Attribute::make(
             get: fn (): float => (float) ($this->sale_price ?? $this->price),
+        );
+    }
+
+    /**
+     * Texto editable que se muestra en el frontend (ej. "Acceso por 1 año").
+     */
+    protected function accessText(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value): string => match (true) {
+                $value === null => 'Acceso por 1 año',
+                trim($value) === '' => 'Acceso por 1 año',
+                default => $value,
+            },
         );
     }
 
