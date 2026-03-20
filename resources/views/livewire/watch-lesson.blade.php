@@ -182,23 +182,6 @@
                                 Descargar Certificado
                             </a>
                         </div>
-                    @elseif($courseProgress == 100)
-                        {{-- Claro: gris suave + texto negro. Oscuro: fondo oscuro + texto blanco. --}}
-                        <div class="mb-6 rounded-xl bg-gray-100 dark:bg-gray-800 px-4 py-4">
-                            <p class="text-sm font-semibold text-black dark:text-white leading-relaxed">
-                                Para descargar el certificado debes aprobar el examen del curso.
-                            </p>
-                            <p class="text-sm text-gray-700 dark:text-gray-200 mt-2">
-                                Exámenes aprobados: {{ $passedExamsCount }} de {{ $publishedExamsCount }}.
-                            </p>
-                            <a
-                                href="{{ route('course.exams', $course) }}"
-                                wire:navigate
-                                class="mt-4 inline-flex items-center justify-center rounded-lg bg-primary hover:bg-primary/90 text-white font-semibold px-4 py-2.5 text-sm transition-colors"
-                            >
-                                Ir a exámenes
-                            </a>
-                        </div>
                     @endif
 
                     {{-- Separator --}}
@@ -300,30 +283,39 @@
                             </p>
                         @endforelse
 
-                        {{-- Acceso natural al examen dentro del mismo flujo de estudio --}}
-                        <div class="pt-4 mt-4 border-t border-gray-200 dark:border-gray-700">
-                            <a
-                                href="{{ route('course.exams', $course) }}"
-                                wire:navigate
-                                class="flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 group cursor-pointer text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700/50 hover:text-primary dark:hover:text-primary"
-                            >
-                                @if($examRequirementMet)
-                                    <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
-                                @else
-                                    <svg class="w-5 h-5 text-primary dark:text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
-                                    </svg>
-                                @endif
-                                <span class="text-sm flex-1 truncate font-medium">
-                                    Exámenes del curso
-                                </span>
-                                <span class="text-xs font-semibold text-gray-500 dark:text-gray-300">
-                                    {{ $passedExamsCount }}/{{ $publishedExamsCount }}
-                                </span>
-                            </a>
-                        </div>
+                        {{-- Único acceso a exámenes: siempre al final del índice (misma info que antes evitaba el bloque superior) --}}
+                        @if($publishedExamsCount > 0)
+                            <div class="pt-3 mt-2 border-t border-gray-200 dark:border-gray-700">
+                                <a
+                                    href="{{ route('course.exams', $course) }}"
+                                    wire:navigate
+                                    class="flex flex-col gap-1.5 rounded-lg px-3 py-3 -mx-1 border border-gray-200/80 dark:border-gray-600/80 hover:border-primary/40 dark:hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/10 transition-all duration-200 cursor-pointer text-left w-full"
+                                >
+                                    <div class="flex items-center gap-3 min-w-0">
+                                        @if($examRequirementMet)
+                                            <svg class="w-5 h-5 text-green-600 dark:text-green-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        @else
+                                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M7 4h10a2 2 0 012 2v12a2 2 0 01-2 2H7a2 2 0 01-2-2V6a2 2 0 012-2z" />
+                                            </svg>
+                                        @endif
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 flex-1 truncate">
+                                            Exámenes del curso
+                                        </span>
+                                        <span class="text-xs font-bold tabular-nums text-gray-600 dark:text-gray-300 bg-gray-100 dark:bg-gray-700/80 px-2 py-0.5 rounded-md flex-shrink-0">
+                                            {{ $passedExamsCount }}/{{ $publishedExamsCount }}
+                                        </span>
+                                    </div>
+                                    @if($courseProgress == 100 && !$examRequirementMet)
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 leading-snug pl-8">
+                                            Para descargar el certificado, aprueba todos los exámenes.
+                                        </p>
+                                    @endif
+                                </a>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
