@@ -40,6 +40,7 @@ class BrandingSettings extends Page implements HasForms
             'academy_name' => $settings->academy_name,
             'logo_alt' => $settings->logo_alt,
             'logo_path' => $settings->logo_path,
+            'certificate_background_path' => $settings->certificate_background_path,
         ]);
     }
 
@@ -67,6 +68,18 @@ class BrandingSettings extends Page implements HasForms
                             ->maxSize(2048)
                             ->helperText('PNG/JPG/WebP. Máximo 2MB. Se mostrará en el menú del alumno.'),
                     ]),
+                Section::make('Certificados')
+                    ->description('Imagen de fondo para el certificado descargable (PDF).')
+                    ->schema([
+                        FileUpload::make('certificate_background_path')
+                            ->label('Fondo del certificado')
+                            ->disk('public')
+                            ->directory('certificates')
+                            ->image()
+                            ->imageEditor()
+                            ->maxSize(4096)
+                            ->helperText('Recomendado: formato horizontal (A4 apaisado). PNG/JPG/WebP. Máximo 4MB.'),
+                    ]),
             ])
             ->statePath('data');
     }
@@ -82,6 +95,10 @@ class BrandingSettings extends Page implements HasForms
         $settings->logo_alt = (string) $state['logo_alt'];
         $settings->logo_path = isset($state['logo_path']) && $state['logo_path'] !== ''
             ? (string) $state['logo_path']
+            : null;
+
+        $settings->certificate_background_path = isset($state['certificate_background_path']) && $state['certificate_background_path'] !== ''
+            ? (string) $state['certificate_background_path']
             : null;
         $settings->save();
 

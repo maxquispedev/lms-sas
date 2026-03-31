@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Course;
+use App\Support\Branding\BrandingRepository;
 use App\Services\CertificateCodeIssuer;
 use App\Services\ExamEligibilityService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CertificateController extends Controller
 {
@@ -23,7 +25,8 @@ class CertificateController extends Controller
     public function download(
         Course $course,
         CertificateCodeIssuer $certificateCodeIssuer,
-        ExamEligibilityService $examEligibilityService
+        ExamEligibilityService $examEligibilityService,
+        BrandingRepository $brandingRepository,
     ): Response|RedirectResponse {
         $user = Auth::user();
 
@@ -99,7 +102,21 @@ class CertificateController extends Controller
 
         // Generar el PDF del certificado
         $date = now()->format('d/m/Y');
-        $backgroundPath = base_path('resources/views/certificates/modelo-certificado.jpg');
+
+        $settings = $brandingRepository->get();
+        $backgroundPath = null;
+
+        if ($settings->certificate_background_path) {
+            $candidatePath = Storage::disk('public')->path($settings->certificate_background_path);
+            if (file_exists($candidatePath)) {
+                $backgroundPath = $candidatePath;
+            }
+        }
+
+        if (! $backgroundPath) {
+            $backgroundPath = base_path('resources/views/certificates/modelo-certificado.jpg');
+        }
+
         $backgroundImage = '';
         if (file_exists($backgroundPath)) {
             $mime = mime_content_type($backgroundPath);

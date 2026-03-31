@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 class BrandingRepository
 {
-    private const CACHE_KEY = 'branding_settings:v1';
+    private const CACHE_KEY = 'branding_settings:v2';
 
     public function get(): BrandingSetting
     {
@@ -19,6 +19,7 @@ class BrandingRepository
                     'academy_name' => 'SEIA ACADEMIA',
                     'logo_alt' => 'SEIA ACADEMIA',
                     'logo_path' => null,
+                    'certificate_background_path' => null,
                 ],
             );
         });

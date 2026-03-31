@@ -16,6 +16,7 @@ class BrandingSetting extends Model
         'academy_name',
         'logo_path',
         'logo_alt',
+        'certificate_background_path',
     ];
 }
 
