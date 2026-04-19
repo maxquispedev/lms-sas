@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Concerns\TriggersPloiStaticDeploy;
 use App\Support\HtmlRichContentHelper;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Lesson extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, TriggersPloiStaticDeploy;
 
     /**
      * The attributes that are mass assignable.

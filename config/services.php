@@ -42,4 +42,12 @@ return [
         'rsa_public_key' => env('CULQI_RSA_PUBLIC_KEY'),
     ],
 
+    /*
+    | Webhook GET de Ploi para reconstruir el frontend estático (Astro) cuando cambian datos públicos.
+    | Definir en .env: PLOI_DEPLOY_WEBHOOK_URL=https://ploi.io/webhooks/...
+    */
+    'ploi' => [
+        'deploy_webhook_url' => env('PLOI_DEPLOY_WEBHOOK_URL'),
+    ],
+
 ];
