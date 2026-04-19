@@ -22,12 +22,15 @@ trait TriggersPloiStaticDeploy
             return;
         }
 
-        static::saved(function () use ($webhookUrl): void {
-            dispatch(fn () => Http::timeout(60)->asJson()->post($webhookUrl))->afterResponse();
-        });
+        $schedule = static function () use ($webhookUrl): void {
+            PloiDeployWebhookRequestGate::runOnce(function () use ($webhookUrl): void {
+                dispatch(
+                    fn () => Http::timeout(10)->asJson()->post($webhookUrl)
+                )->afterResponse();
+            });
+        };
 
-        static::deleted(function () use ($webhookUrl): void {
-            dispatch(fn () => Http::timeout(60)->asJson()->post($webhookUrl))->afterResponse();
-        });
+        static::saved($schedule);
+        static::deleted($schedule);
     }
 }
