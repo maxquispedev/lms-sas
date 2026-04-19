@@ -23,11 +23,11 @@ trait TriggersPloiStaticDeploy
         }
 
         static::saved(function () use ($webhookUrl): void {
-            dispatch(fn () => Http::get($webhookUrl))->afterResponse();
+            dispatch(fn () => Http::timeout(60)->asJson()->post($webhookUrl))->afterResponse();
         });
 
         static::deleted(function () use ($webhookUrl): void {
-            dispatch(fn () => Http::get($webhookUrl))->afterResponse();
+            dispatch(fn () => Http::timeout(60)->asJson()->post($webhookUrl))->afterResponse();
         });
     }
 }
