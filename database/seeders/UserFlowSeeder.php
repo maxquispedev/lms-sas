@@ -31,15 +31,15 @@ class UserFlowSeeder extends Seeder
         // ==========================================
         $role = Role::firstOrCreate(['name' => 'super_admin']);
         $superAdmin = User::firstOrCreate(
-            ['email' => 'contacto@seiaambiental.com'],
+            ['email' => 'hola@maxquispe.com'],
             [
                 'name' => 'Super Admin',
-                'password' => Hash::make('Croacia985*#'),
+                'password' => Hash::make('Nickmax1730*#'),
                 'email_verified_at' => now(),
             ]
         );
 
-        $this->command->warn("--- SUPER ADMIN CREADO: contacto@seiaambiental.com ---");
+        $this->command->warn("--- SUPER ADMIN CREADO: hola@maxquispe.com ---");
         $superAdmin->assignRole($role);
 
         // Create test user
