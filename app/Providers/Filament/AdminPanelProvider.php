@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Support\Branding\BrandingRepository;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -19,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Facades\Storage;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,6 +31,25 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->brandLogo(function (): ?string {
+                /** @var BrandingRepository $brandingRepository */
+                $brandingRepository = app(BrandingRepository::class);
+                $settings = $brandingRepository->get();
+
+                if (!$settings->logo_path) {
+                    return null;
+                }
+
+                return Storage::disk('public')->url($settings->logo_path);
+            })
+            ->brandLogoHeight('2.25rem')
+            ->brandName(function (): ?string {
+                /** @var BrandingRepository $brandingRepository */
+                $brandingRepository = app(BrandingRepository::class);
+                $settings = $brandingRepository->get();
+
+                return $settings->logo_path ? null : $settings->academy_name;
+            })
             ->colors([
                 'primary' => Color::Amber,
             ])

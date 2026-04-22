@@ -38,7 +38,6 @@ class BrandingSettings extends Page implements HasForms
 
         $this->form->fill([
             'academy_name' => $settings->academy_name,
-            'logo_alt' => $settings->logo_alt,
             'logo_path' => $settings->logo_path,
             'certificate_background_path' => $settings->certificate_background_path,
         ]);
@@ -53,10 +52,6 @@ class BrandingSettings extends Page implements HasForms
                     ->schema([
                         TextInput::make('academy_name')
                             ->label('Nombre')
-                            ->required()
-                            ->maxLength(120),
-                        TextInput::make('logo_alt')
-                            ->label('Texto alternativo (alt)')
                             ->required()
                             ->maxLength(120),
                         FileUpload::make('logo_path')
@@ -92,7 +87,7 @@ class BrandingSettings extends Page implements HasForms
         $settings = BrandingSetting::query()->firstOrCreate(['id' => 1]);
 
         $settings->academy_name = (string) $state['academy_name'];
-        $settings->logo_alt = (string) $state['logo_alt'];
+        $settings->logo_alt = (string) $settings->academy_name;
         $settings->logo_path = isset($state['logo_path']) && $state['logo_path'] !== ''
             ? (string) $state['logo_path']
             : null;

@@ -18,7 +18,9 @@
                         alt="{{ $brandingSettings->logo_alt }}"
                         class="h-9 w-auto object-contain seia-logo-white"
                     >
-                    <span class="tracking-tight">{{ $brandingSettings->academy_name }}</span>
+                    @if (!$brandingLogoUrl)
+                        <span class="tracking-tight">{{ $brandingSettings->academy_name }}</span>
+                    @endif
                 </a>
                 
                 {{-- Menú de Navegación Desktop --}}
