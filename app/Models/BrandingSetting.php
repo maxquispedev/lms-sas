@@ -14,6 +14,7 @@ class BrandingSetting extends Model
     /** @var array<int, string> */
     protected $fillable = [
         'academy_name',
+        'primary_color',
         'logo_path',
         'dark_logo_path',
         'logo_alt',

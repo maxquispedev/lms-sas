@@ -17,6 +17,7 @@ class BrandingRepository
                 ['id' => 1],
                 [
                     'academy_name' => 'SEIA ACADEMIA',
+                    'primary_color' => null,
                     'logo_alt' => 'SEIA ACADEMIA',
                     'logo_path' => null,
                     'dark_logo_path' => null,

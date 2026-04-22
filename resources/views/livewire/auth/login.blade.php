@@ -65,7 +65,7 @@
 
             <button
                 type="submit"
-                class="w-full inline-flex justify-center items-center px-4 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-emerald-500 dark:hover:bg-emerald-600 dark:text-white"
+                class="w-full inline-flex justify-center items-center px-4 py-3 bg-primary hover:bg-primary/90 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transition-all duration-200 cursor-pointer dark:bg-primary dark:hover:bg-primary/90 dark:text-white"
             >
                 Ingresar
             </button>

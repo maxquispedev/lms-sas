@@ -14,10 +14,19 @@
         $faviconUrl = $brandingSettings->favicon_path
             ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->favicon_path)
             : null;
+        $primaryColor = $brandingSettings->primary_color ?: null;
     @endphp
 
     @if ($faviconUrl)
         <link rel="icon" href="{{ $faviconUrl }}">
+    @endif
+
+    @if ($primaryColor)
+        <style>
+            :root {
+                --color-primary: {{ $primaryColor }};
+            }
+        </style>
     @endif
 
     <!-- Fonts -->

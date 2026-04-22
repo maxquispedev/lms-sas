@@ -39,6 +39,7 @@ class BrandingSettings extends Page implements HasForms
 
         $this->form->fill([
             'academy_name' => $settings->academy_name,
+            'primary_color' => $settings->primary_color,
             'logo_path' => $settings->logo_path,
             'dark_logo_path' => $settings->dark_logo_path,
             'certificate_background_path' => $settings->certificate_background_path,
@@ -57,6 +58,11 @@ class BrandingSettings extends Page implements HasForms
                             ->label('Nombre')
                             ->required()
                             ->maxLength(120),
+                        TextInput::make('primary_color')
+                            ->label('Color principal')
+                            ->placeholder('#386641')
+                            ->helperText('Hex (ej: #386641). Se usa como color primary en el área de alumnos.')
+                            ->maxLength(32),
                         Grid::make()
                             ->columns(3)
                             ->schema([
@@ -109,6 +115,9 @@ class BrandingSettings extends Page implements HasForms
         $settings = BrandingSetting::query()->firstOrCreate(['id' => 1]);
 
         $settings->academy_name = (string) $state['academy_name'];
+        $settings->primary_color = isset($state['primary_color']) && $state['primary_color'] !== ''
+            ? (string) $state['primary_color']
+            : null;
         $settings->logo_alt = (string) $settings->academy_name;
         $settings->logo_path = isset($state['logo_path']) && $state['logo_path'] !== ''
             ? (string) $state['logo_path']
