@@ -54,15 +54,19 @@ class BrandingSettings extends Page implements HasForms
                 Section::make('Identidad')
                     ->description('Configura el logo y el nombre que se muestra a los alumnos.')
                     ->schema([
-                        TextInput::make('academy_name')
-                            ->label('Nombre')
-                            ->required()
-                            ->maxLength(120),
-                        TextInput::make('primary_color')
-                            ->label('Color principal')
-                            ->placeholder('#386641')
-                            ->helperText('Hex (ej: #386641). Se usa como color primary en el área de alumnos.')
-                            ->maxLength(32),
+                        Grid::make()
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('academy_name')
+                                    ->label('Nombre')
+                                    ->required()
+                                    ->maxLength(120),
+                                TextInput::make('primary_color')
+                                    ->label('Color principal')
+                                    ->placeholder('#386641')
+                                    ->helperText('Hex (ej: #386641). Se usa como color primary en el área de alumnos.')
+                                    ->maxLength(32),
+                            ]),
                         Grid::make()
                             ->columns(3)
                             ->schema([
@@ -116,7 +120,13 @@ class BrandingSettings extends Page implements HasForms
 
         $settings->academy_name = (string) $state['academy_name'];
         $settings->primary_color = isset($state['primary_color']) && $state['primary_color'] !== ''
-            ? (string) $state['primary_color']
+            ? (function (string $value): string {
+                $normalized = strtolower(trim($value));
+
+                return str_starts_with($normalized, '#')
+                    ? $normalized
+                    : "#{$normalized}";
+            })((string) $state['primary_color'])
             : null;
         $settings->logo_alt = (string) $settings->academy_name;
         $settings->logo_path = isset($state['logo_path']) && $state['logo_path'] !== ''
