@@ -1,9 +1,17 @@
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 px-4">
     <div class="w-full max-w-md bg-white dark:bg-gray-800 shadow-xl rounded-2xl p-8">
         <div class="text-center mb-8">
+            @php
+                /** @var \App\Support\Branding\BrandingRepository $branding */
+                $branding = app(\App\Support\Branding\BrandingRepository::class);
+                $brandingSettings = $branding->get();
+                $brandingLogoUrl = $brandingSettings->logo_path
+                    ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->logo_path)
+                    : null;
+            @endphp
             <img
-                src="{{ asset('img/seia-logo-new-transparent.png') }}"
-                alt="SEIA"
+                src="{{ $brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png') }}"
+                alt="{{ $brandingSettings->logo_alt }}"
                 class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain seia-logo-white"
             />
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
