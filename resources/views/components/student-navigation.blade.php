@@ -12,11 +12,19 @@
                         $brandingLogoUrl = $brandingSettings->logo_path
                             ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->logo_path)
                             : null;
+                        $brandingDarkLogoUrl = $brandingSettings->dark_logo_path
+                            ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->dark_logo_path)
+                            : null;
                     @endphp
                     <img
                         src="{{ $brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png') }}"
                         alt="{{ $brandingSettings->logo_alt }}"
-                        class="h-9 w-auto object-contain seia-logo-white"
+                        class="h-9 w-auto object-contain dark:hidden"
+                    >
+                    <img
+                        src="{{ $brandingDarkLogoUrl ?? ($brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png')) }}"
+                        alt="{{ $brandingSettings->logo_alt }}"
+                        class="h-9 w-auto object-contain hidden dark:block"
                     >
                     @if (!$brandingLogoUrl)
                         <span class="tracking-tight">{{ $brandingSettings->academy_name }}</span>

@@ -7,6 +7,19 @@
 
     <title>{{ config('app.name', 'SEIA') }} - @yield('title', 'Dashboard')</title>
 
+    @php
+        /** @var \App\Support\Branding\BrandingRepository $branding */
+        $branding = app(\App\Support\Branding\BrandingRepository::class);
+        $brandingSettings = $branding->get();
+        $faviconUrl = $brandingSettings->favicon_path
+            ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->favicon_path)
+            : null;
+    @endphp
+
+    @if ($faviconUrl)
+        <link rel="icon" href="{{ $faviconUrl }}">
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
