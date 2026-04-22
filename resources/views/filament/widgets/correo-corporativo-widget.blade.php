@@ -12,7 +12,7 @@
 
             {{-- Texto --}}
             <div class="flex flex-col gap-3">
-                <p class="text-xs font-bold uppercase tracking-[0.15em] text-primary-600 dark:text-primary-400">
+                <p class="text-xs font-bold uppercase tracking-widest text-primary-600 dark:text-primary-400">
                     Correo Corporativo
                 </p>
                 <h3 class="text-2xl font-bold leading-tight text-gray-950 dark:text-white">

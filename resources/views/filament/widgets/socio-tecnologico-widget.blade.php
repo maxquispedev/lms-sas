@@ -12,7 +12,7 @@
 
             {{-- Texto --}}
             <div class="flex flex-col gap-3">
-                <p class="text-xs font-bold uppercase tracking-[0.15em] text-gray-400 dark:text-gray-500">
+                <p class="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
                     Espacio Veloz
                 </p>
                 <h3 class="text-2xl font-bold leading-tight text-gray-950 dark:text-white">
