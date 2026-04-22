@@ -6,6 +6,7 @@ use App\Models\BrandingSetting;
 use App\Support\Branding\BrandingRepository;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
@@ -61,11 +62,9 @@ class BrandingSettings extends Page implements HasForms
                                     ->label('Nombre')
                                     ->required()
                                     ->maxLength(120),
-                                TextInput::make('primary_color')
+                                ColorPicker::make('primary_color')
                                     ->label('Color principal')
-                                    ->placeholder('#386641')
-                                    ->helperText('Hex (ej: #386641). Se usa como color primary en el área de alumnos.')
-                                    ->maxLength(32),
+                                    ->helperText('Se usa como color primary en el área de alumnos.'),
                             ]),
                         Grid::make()
                             ->columns(3)
