@@ -42,6 +42,21 @@ class AdminPanelProvider extends PanelProvider
 
                 return Storage::disk('public')->url($settings->logo_path);
             })
+            ->darkModeBrandLogo(function (): ?string {
+                /** @var BrandingRepository $brandingRepository */
+                $brandingRepository = app(BrandingRepository::class);
+                $settings = $brandingRepository->get();
+
+                if ($settings->dark_logo_path) {
+                    return Storage::disk('public')->url($settings->dark_logo_path);
+                }
+
+                if ($settings->logo_path) {
+                    return Storage::disk('public')->url($settings->logo_path);
+                }
+
+                return null;
+            })
             ->brandLogoHeight('2.25rem')
             ->brandName(function (): ?string {
                 /** @var BrandingRepository $brandingRepository */
@@ -49,6 +64,17 @@ class AdminPanelProvider extends PanelProvider
                 $settings = $brandingRepository->get();
 
                 return $settings->logo_path ? null : $settings->academy_name;
+            })
+            ->favicon(function (): ?string {
+                /** @var BrandingRepository $brandingRepository */
+                $brandingRepository = app(BrandingRepository::class);
+                $settings = $brandingRepository->get();
+
+                if (!$settings->favicon_path) {
+                    return null;
+                }
+
+                return Storage::disk('public')->url($settings->favicon_path);
             })
             ->colors([
                 'primary' => Color::Amber,

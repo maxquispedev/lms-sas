@@ -19,7 +19,9 @@ class BrandingRepository
                     'academy_name' => 'SEIA ACADEMIA',
                     'logo_alt' => 'SEIA ACADEMIA',
                     'logo_path' => null,
+                    'dark_logo_path' => null,
                     'certificate_background_path' => null,
+                    'favicon_path' => null,
                 ],
             );
         });

@@ -15,8 +15,10 @@ class BrandingSetting extends Model
     protected $fillable = [
         'academy_name',
         'logo_path',
+        'dark_logo_path',
         'logo_alt',
         'certificate_background_path',
+        'favicon_path',
     ];
 }
 

@@ -10,6 +10,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Storage;
@@ -39,7 +40,9 @@ class BrandingSettings extends Page implements HasForms
         $this->form->fill([
             'academy_name' => $settings->academy_name,
             'logo_path' => $settings->logo_path,
+            'dark_logo_path' => $settings->dark_logo_path,
             'certificate_background_path' => $settings->certificate_background_path,
+            'favicon_path' => $settings->favicon_path,
         ]);
     }
 
@@ -54,14 +57,33 @@ class BrandingSettings extends Page implements HasForms
                             ->label('Nombre')
                             ->required()
                             ->maxLength(120),
-                        FileUpload::make('logo_path')
-                            ->label('Logo')
-                            ->disk('public')
-                            ->directory('branding')
-                            ->image()
-                            ->imageEditor()
-                            ->maxSize(2048)
-                            ->helperText('PNG/JPG/WebP. Máximo 2MB. Se mostrará en el menú del alumno.'),
+                        Grid::make()
+                            ->columns(3)
+                            ->schema([
+                                FileUpload::make('logo_path')
+                                    ->label('Logo')
+                                    ->disk('public')
+                                    ->directory('branding')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->maxSize(2048)
+                                    ->helperText('PNG/JPG/WebP. Máximo 2MB.'),
+                                FileUpload::make('dark_logo_path')
+                                    ->label('Logo (modo oscuro)')
+                                    ->disk('public')
+                                    ->directory('branding')
+                                    ->image()
+                                    ->imageEditor()
+                                    ->maxSize(2048)
+                                    ->helperText('PNG/JPG/WebP. Máximo 2MB.'),
+                                FileUpload::make('favicon_path')
+                                    ->label('Favicon')
+                                    ->disk('public')
+                                    ->directory('branding')
+                                    ->image()
+                                    ->maxSize(1024)
+                                    ->helperText('PNG/ICO recomendado. Máximo 1MB.'),
+                            ]),
                     ]),
                 Section::make('Certificados')
                     ->description('Imagen de fondo para el certificado descargable (PDF).')
@@ -91,9 +113,15 @@ class BrandingSettings extends Page implements HasForms
         $settings->logo_path = isset($state['logo_path']) && $state['logo_path'] !== ''
             ? (string) $state['logo_path']
             : null;
+        $settings->dark_logo_path = isset($state['dark_logo_path']) && $state['dark_logo_path'] !== ''
+            ? (string) $state['dark_logo_path']
+            : null;
 
         $settings->certificate_background_path = isset($state['certificate_background_path']) && $state['certificate_background_path'] !== ''
             ? (string) $state['certificate_background_path']
+            : null;
+        $settings->favicon_path = isset($state['favicon_path']) && $state['favicon_path'] !== ''
+            ? (string) $state['favicon_path']
             : null;
         $settings->save();
 
