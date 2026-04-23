@@ -13,6 +13,7 @@ use App\Models\Category;
 use App\Models\Course;
 use BackedEnum;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -61,12 +62,8 @@ class CourseResource extends Resource
                         // Columna Izquierda: Detalles Principales
                         Section::make('Detalles Principales')
                             ->schema([
-                                Select::make('teacher_id')
-                                    ->label('Instructor')
-                                    ->relationship('teacher', 'name')
-                                    ->searchable()
-                                    ->required()
-                                    ->preload(),
+                                Hidden::make('teacher_id')
+                                    ->dehydrated(true),
 
                                 TextInput::make('title')
                                     ->label('Título')
@@ -186,6 +183,12 @@ class CourseResource extends Resource
                                     ->default('Más demandado')
                                     ->maxLength(100)
                                     ->helperText('Texto corto que aparece en la esquina superior izquierda de la tarjeta del curso.')
+                                    ->columnSpanFull(),
+
+                                TextInput::make('profesor')
+                                    ->label('Profesor (opcional)')
+                                    ->helperText('Si deseas mostrar un nombre distinto al instructor logueado, escríbelo aquí. Si no, déjalo vacío.')
+                                    ->maxLength(255)
                                     ->columnSpanFull(),
                             ]),
                     ])
