@@ -163,7 +163,7 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <p class="text-sm font-semibold text-gray-800 leading-tight line-clamp-2">{{ $course->title }}</p>
-                                    <p class="text-xs text-gray-500 mt-0.5">Acceso de por vida</p>
+                                    <p class="text-xs text-gray-500 mt-0.5">{{ $course->access_text }}</p>
                                 </div>
                             </div>
 
