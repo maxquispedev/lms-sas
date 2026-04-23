@@ -17,6 +17,7 @@ use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class CategoryResource extends Resource
 {
@@ -26,6 +27,10 @@ class CategoryResource extends Resource
      * @var string|BackedEnum|null
      */
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedTag;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Academia';
+
+    protected static ?int $navigationSort = 3;
 
     public static function getModelLabel(): string
     {

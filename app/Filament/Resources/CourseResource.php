@@ -29,12 +29,17 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class CourseResource extends Resource
 {
     protected static ?string $model = Course::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Academia';
+
+    protected static ?int $navigationSort = 1;
 
     public static function getModelLabel(): string
     {

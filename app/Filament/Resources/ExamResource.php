@@ -33,6 +33,8 @@ class ExamResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Academia';
 
+    protected static ?int $navigationSort = 2;
+
     public static function getModelLabel(): string
     {
         return 'examen';

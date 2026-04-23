@@ -90,6 +90,12 @@ class AdminPanelProvider extends PanelProvider
                 CorreoCorporativoWidget::class,
                 SocioTecnologicoWidget::class,
             ])
+            ->navigationGroups([
+                'Academia',
+                'Órdenes y Alumnos',
+                'Configuración',
+                'Admin',
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -102,7 +108,9 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->plugins([
-                FilamentShieldPlugin::make(),
+                FilamentShieldPlugin::make()
+                    ->navigationGroup('Admin')
+                    ->navigationSort(999),
             ])
             ->authMiddleware([
                 Authenticate::class,
