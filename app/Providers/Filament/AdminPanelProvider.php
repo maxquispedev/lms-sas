@@ -20,7 +20,6 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Illuminate\Support\Facades\Storage;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -41,7 +40,7 @@ class AdminPanelProvider extends PanelProvider
                     return null;
                 }
 
-                return Storage::disk('public')->url($settings->logo_path);
+                return $brandingRepository->urlFor($settings->logo_path);
             })
             ->darkModeBrandLogo(function (): ?string {
                 /** @var BrandingRepository $brandingRepository */
@@ -49,11 +48,11 @@ class AdminPanelProvider extends PanelProvider
                 $settings = $brandingRepository->get();
 
                 if ($settings->dark_logo_path) {
-                    return Storage::disk('public')->url($settings->dark_logo_path);
+                    return $brandingRepository->urlFor($settings->dark_logo_path);
                 }
 
                 if ($settings->logo_path) {
-                    return Storage::disk('public')->url($settings->logo_path);
+                    return $brandingRepository->urlFor($settings->logo_path);
                 }
 
                 return null;
@@ -75,7 +74,7 @@ class AdminPanelProvider extends PanelProvider
                     return null;
                 }
 
-                return Storage::disk('public')->url($settings->favicon_path);
+                return $brandingRepository->urlFor($settings->favicon_path);
             })
             ->colors([
                 'primary' => Color::Amber,

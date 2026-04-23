@@ -12,7 +12,7 @@
         $branding = app(\App\Support\Branding\BrandingRepository::class);
         $brandingSettings = $branding->get();
         $faviconUrl = $brandingSettings->favicon_path
-            ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->favicon_path)
+            ? $branding->urlFor($brandingSettings->favicon_path)
             : null;
         $primaryColor = $brandingSettings->primary_color ?: null;
     @endphp

@@ -6,7 +6,7 @@
                 $branding = app(\App\Support\Branding\BrandingRepository::class);
                 $brandingSettings = $branding->get();
                 $brandingLogoUrl = $brandingSettings->logo_path
-                    ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->logo_path)
+                    ? $branding->urlFor($brandingSettings->logo_path)
                     : null;
             @endphp
             @if ($brandingLogoUrl)
