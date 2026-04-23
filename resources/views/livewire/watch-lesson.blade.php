@@ -39,11 +39,12 @@
                 <div class="aspect-video bg-gray-900 dark:bg-black rounded-xl overflow-hidden relative shadow-xl border border-gray-200 dark:border-gray-800">
                     @php
                         $playable = $currentLesson ?? $currentModule;
+                        $videoIframeHtml = \App\Support\VideoEmbedHelper::toIframeHtml($playable?->iframe_code);
                     @endphp
 
-                    @if($playable && $playable->iframe_code)
+                    @if($videoIframeHtml)
                         <div class="w-full h-full [&>iframe]:w-full [&>iframe]:h-full [&>iframe]:absolute [&>iframe]:inset-0">
-                            {!! $playable->iframe_code !!}
+                            {!! $videoIframeHtml !!}
                         </div>
                     @else
                         <div class="w-full h-full flex items-center justify-center absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 dark:from-black dark:to-gray-900">

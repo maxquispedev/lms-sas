@@ -7,6 +7,7 @@ namespace App\Http\Resources\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
+use App\Support\VideoEmbedHelper;
 
 class CourseApiResource extends JsonResource
 {
@@ -76,13 +77,21 @@ class CourseApiResource extends JsonResource
         if (empty($raw)) {
             return null;
         }
-        $trimmed = trim($raw);
+
+        $trimmed = trim((string) $raw);
+        if ($trimmed === '') {
+            return null;
+        }
+
         if (str_starts_with($trimmed, 'http://') || str_starts_with($trimmed, 'https://')) {
-            return $trimmed;
+            return VideoEmbedHelper::resolveEmbedSrcFromUrl($trimmed) ?? $trimmed;
         }
+
         if (preg_match('/src\s*=\s*["\']([^"\']+)["\']/', (string) $raw, $m)) {
-            return $m[1];
+            $src = (string) $m[1];
+            return VideoEmbedHelper::resolveEmbedSrcFromUrl($src) ?? $src;
         }
+
         return null;
     }
 }
