@@ -9,11 +9,19 @@
                     ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->logo_path)
                     : null;
             @endphp
-            <img
-                src="{{ $brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png') }}"
-                alt="{{ $brandingSettings->logo_alt }}"
-                class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain seia-logo-white"
-            />
+            @if ($brandingLogoUrl)
+                <img
+                    src="{{ $brandingLogoUrl }}"
+                    alt="{{ $brandingSettings->logo_alt }}"
+                    class="mx-auto h-14 sm:h-16 md:h-20 w-auto object-contain"
+                />
+            @else
+                <div class="mx-auto max-w-xs">
+                    <h1 class="text-xl sm:text-2xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+                        {{ $brandingSettings->academy_name }}
+                    </h1>
+                </div>
+            @endif
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
                 Accede a tu cuenta para continuar aprendiendo
             </p>
