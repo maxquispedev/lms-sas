@@ -6,7 +6,7 @@
             <div class="flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-100 dark:bg-white/5">
                 <x-filament::icon
                     icon="heroicon-o-rocket-launch"
-                    class="h-8 w-8 text-gray-600 dark:text-gray-400"
+                    class="h-8 w-8 text-primary-600 dark:text-primary-400"
                 />
             </div>
 
