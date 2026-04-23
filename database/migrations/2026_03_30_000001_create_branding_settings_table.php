@@ -11,9 +11,9 @@ return new class extends Migration
         Schema::create('branding_settings', function (Blueprint $table): void {
             $table->id();
 
-            $table->string('academy_name')->default('SEIA ACADEMIA');
+            $table->string('academy_name');
             $table->string('logo_path')->nullable();
-            $table->string('logo_alt')->default('SEIA ACADEMIA');
+            $table->string('logo_alt')->nullable();
 
             $table->timestamps();
         });

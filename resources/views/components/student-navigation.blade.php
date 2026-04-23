@@ -16,16 +16,18 @@
                             ? \Illuminate\Support\Facades\Storage::disk('public')->url($brandingSettings->dark_logo_path)
                             : null;
                     @endphp
-                    <img
-                        src="{{ $brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png') }}"
-                        alt="{{ $brandingSettings->logo_alt }}"
-                        class="h-9 w-auto object-contain dark:hidden"
-                    >
-                    <img
-                        src="{{ $brandingDarkLogoUrl ?? ($brandingLogoUrl ?? asset('img/seia-logo-new-transparent.png')) }}"
-                        alt="{{ $brandingSettings->logo_alt }}"
-                        class="h-9 w-auto object-contain hidden dark:block"
-                    >
+                    @if ($brandingLogoUrl)
+                        <img
+                            src="{{ $brandingLogoUrl }}"
+                            alt="{{ $brandingSettings->logo_alt }}"
+                            class="h-9 w-auto object-contain dark:hidden"
+                        >
+                        <img
+                            src="{{ $brandingDarkLogoUrl ?? $brandingLogoUrl }}"
+                            alt="{{ $brandingSettings->logo_alt }}"
+                            class="h-9 w-auto object-contain hidden dark:block"
+                        >
+                    @endif
                     @if (!$brandingLogoUrl)
                         <span class="tracking-tight">{{ $brandingSettings->academy_name }}</span>
                     @endif
