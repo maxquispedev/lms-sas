@@ -19,14 +19,13 @@
                     Tu socio tecnológico
                 </h3>
                 <p class="text-base leading-loose text-gray-500 dark:text-gray-400">
-                    Hosting, servidores, dominios, despliegues y soporte técnico.
+                    Servidores, dominios, Desarrolos a medida.
                     Todo lo que necesitas para crecer en línea, en un solo lugar y con respaldo profesional.
                 </p>
             </div>
 
             {{-- CTA --}}
             <div class="flex items-center justify-between border-t border-gray-100 pt-6 dark:border-white/10">
-                <span class="text-xs text-gray-400 dark:text-gray-500">espacioveloz.com</span>
                 <x-filament::button
                     tag="a"
                     href="https://espacioveloz.com/"

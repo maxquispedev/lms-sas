@@ -20,13 +20,13 @@
                 </h3>
                 <p class="text-base leading-loose text-gray-500 dark:text-gray-400">
                     Tu plan incluye <strong class="font-semibold text-gray-700 dark:text-gray-300">1 correo corporativo</strong>.
-                    Si tu equipo crece o necesitas más espacio, tenemos planes con dominio propio, acceso web y soporte incluido.
+                    Si tu equipo crece o necesitas más espacio, tenemos planes con cuentas ilimitadas.
                 </p>
             </div>
 
             {{-- CTA --}}
             <div class="flex items-center justify-between border-t border-gray-100 pt-6 dark:border-white/10">
-                <span class="text-xs text-gray-400 dark:text-gray-500">espacioveloz.com</span>
+            
                 <x-filament::button
                     tag="a"
                     href="https://espacioveloz.com/correo-corporativo/"
