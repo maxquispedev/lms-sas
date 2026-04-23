@@ -63,13 +63,13 @@
                 {{-- Info --}}
                 <div>
                     {{-- Course / Lesson / Module Description --}}
-                    @if($playable && $playable->content)
+                    @if($playable && trim(strip_tags($playable->content ?? '')))
                         <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                             <div class="prose prose-sm sm:prose-base dark:prose-invert max-w-none prose-headings:text-gray-900 dark:prose-headings:text-gray-100 prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-a:text-primary dark:prose-a:text-primary prose-strong:text-gray-900 dark:prose-strong:text-gray-100">
                                 {!! $playable->content !!}
                             </div>
                         </div>
-                    @elseif($course->description)
+                    @elseif(trim(strip_tags($course->description ?? '')))
                         <div class="mt-6 p-6 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
                             <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4 pb-3 border-b border-gray-200 dark:border-gray-700">
                                 Sobre este curso
