@@ -11,11 +11,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-// Estos imports están bien
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 
-// CORRECCIÓN 1: Agregado "implements FilamentUser"
 class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -106,11 +104,10 @@ class User extends Authenticatable implements FilamentUser
     
     public function canAccessPanel(Panel $panel): bool
     {
-        // CORRECCIÓN 2: Corregí el error de escritura en el dominio (seia aMB iental)
-        if ($this->email === 'contacto@seiaambiental.com') {
+        if ($this->email === 'hola@maxquispe.com') {
             return true;
         }
 
-        return $this->hasRole('super_admin');
+        return $this->roles()->exists();
     }
 }

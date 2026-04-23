@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use UnitEnum;
 
 class UserResource extends Resource
@@ -27,12 +28,17 @@ class UserResource extends Resource
 
     public static function getModelLabel(): string
     {
-        return 'usuario';
+        return 'alumno';
     }
 
     public static function getPluralModelLabel(): string
     {
-        return 'usuarios';
+        return 'alumnos';
+    }
+
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()->whereDoesntHave('roles');
     }
 
     public static function form(Schema $schema): Schema
